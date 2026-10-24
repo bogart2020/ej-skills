@@ -1,0 +1,3 @@
+interface:
+  display_name: "Compare"
+  short_description: "Compare options head-to-head with category winners, ties, and an overall verdict"

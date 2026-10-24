@@ -1,0 +1,12 @@
+{
+  "name": "ej-skills",
+  "displayName": "EJ Skills",
+  "version": "0.1.0",
+  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head comparisons across any domain, TCO-backed buying decisions, and stress-tested trip planning.",
+  "suggestedPrompts": [
+    "Compare these options head-to-head across categories with category winners, ties, and an overall winner",
+    "Fact-check this topic and trace every claim to primary sources",
+    "Should I buy this item? Walk me through TCO, failure modes, and a calibrated verdict",
+    "Plan or stress-test this trip itinerary with door-to-door transit math and local vetting"
+  ]
+}

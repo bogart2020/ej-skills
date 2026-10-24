@@ -1,0 +1,3 @@
+interface:
+  display_name: "Should I Buy"
+  short_description: "Evaluate purchases via TCO, failure modes, and calibrated verdicts"

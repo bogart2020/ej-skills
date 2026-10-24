@@ -1,0 +1,3 @@
+interface:
+  display_name: "Trip Planner"
+  short_description: "Plan and stress-test trips with door-to-door transit math and local vetting"

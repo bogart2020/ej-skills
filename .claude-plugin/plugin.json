@@ -1,0 +1,34 @@
+{
+  "name": "ej-skills",
+  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head multi-criteria comparisons, financial buying decisions, and stress-tested trip planning across all AI platforms.",
+  "author": {
+    "name": "bogart2020",
+    "url": "https://github.com/bogart2020"
+  },
+  "homepage": "https://github.com/bogart2020/ej-skills",
+  "repository": "https://github.com/bogart2020/ej-skills",
+  "license": "MIT",
+  "keywords": [
+    "compare",
+    "head-to-head",
+    "fact-check",
+    "should-i-buy",
+    "trip-planner",
+    "buying-decision",
+    "travel-planning",
+    "itinerary",
+    "mcda",
+    "tco",
+    "verification",
+    "citations",
+    "primary-sources",
+    "skills",
+    "productivity"
+  ],
+  "skills": [
+    "./skills/compare",
+    "./skills/fact-check",
+    "./skills/should-i-buy",
+    "./skills/trip-planner"
+  ]
+}

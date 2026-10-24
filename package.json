@@ -1,0 +1,11 @@
+{
+  "name": "ej-skills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Personal AI skills plugin across Claude Desktop, Claude Code, Codex, Copilot, Antigravity, Gemini CLI, and skills.sh.",
+  "license": "MIT",
+  "scripts": {
+    "package": "bash scripts/package-skills.sh",
+    "link": "bash scripts/link-skills.sh"
+  }
+}

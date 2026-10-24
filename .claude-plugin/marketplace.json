@@ -1,0 +1,31 @@
+{
+  "name": "ej-skills",
+  "owner": {
+    "name": "bogart2020",
+    "url": "https://github.com/bogart2020"
+  },
+  "description": "Personal AI skills plugin for Claude Desktop, Claude Code, Codex, Copilot, Antigravity, Gemini CLI, and skills.sh.",
+  "plugins": [
+    {
+      "name": "ej-skills",
+      "source": "./",
+      "description": "Personal AI skills for rigorous primary-source fact-checking, head-to-head comparisons across any domain, TCO-backed buying verdicts, and stress-tested trip planning.",
+      "category": "productivity",
+      "keywords": [
+        "compare",
+        "head-to-head",
+        "fact-check",
+        "should-i-buy",
+        "trip-planner",
+        "buying-decision",
+        "travel-planning",
+        "itinerary",
+        "mcda",
+        "tco",
+        "verification",
+        "citations",
+        "primary-sources"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ license: MIT
 
 # Compare
 
-Run a rigorous toe-to-toe comparison across any entity class by framing the **contenders** and **knockout constraints**, constructing **4 to 7 weighted MECE categories**, normalizing domain evidence symmetrically, scoring **horizontally one category at a time** with calibrated **indifference thresholds (`Tie`)**, auditing **non-alignable differentiators**, and delivering a **dual-accounting scoreboard** with an unambiguous **overall winner** and **crossover conditions**.
+Run a rigorous toe-to-toe comparison across any entity class by interviewing the user, framing the **contenders** and **knockout constraints**, constructing **4 to 7 weighted MECE categories**, normalizing domain evidence symmetrically, scoring **horizontally one category at a time** with calibrated **indifference thresholds (`Tie`)**, auditing **non-alignable differentiators**, and delivering a **dual-accounting scoreboard** with an unambiguous **overall winner** and **crossover conditions**.
 
 ## Environment adaptation
 
@@ -15,6 +15,53 @@ Adapt tool use and context discovery to the active runtime:
 
 - **Chat environment** (Claude Desktop, web chat): inspect conversation history, project instructions, built-in memory, and attached files for user priorities and constraints. Use web search to retrieve symmetric primary and independent data for every contender.
 - **Code and CLI environment** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): inspect relevant local workspace files (such as `package.json`, architecture docs, or user notes) when the comparison relates to the active project before asking questions. Use Python or shell (`python3 -c ...`) for exact weighted-score, geometric-mean, purchasing-power, Total Cost of Ownership (TCO), and Z-score calculations. When comparing **3 or more contenders** in a harness that supports subagents, dispatch parallel verification subagents so raw search pages stay out of the main context window; handle 2 contenders inline.
+
+## Plain-language output
+
+The bolded terms and formulas in this skill (MECE, weights $w_j$, thresholds $q_j$ / $p_j$ / $v_j$, $U$, Even Swap, non-alignable differences, Z-scores, TCO, RPP, BARS, GeoMean) are your working vocabulary. Everything the user sees, including interview questions and the report, speaks everyday language a non-specialist understands on first read:
+
+- Print the **user-facing label** from the table below wherever an internal term would appear.
+- Show math as labeled plain arithmetic ("\$1,850/month rent + \$400 taxes = \$2,250/month") rather than formulas or symbols.
+- Keep step and method names from this skill internal: describe the work by what it does (*"scoring battery life for both phones before moving on"*, not *"Step 4 horizontal scoring with Ideal-Mode AHP"*).
+- When a technical term is unavoidable (a benchmark name, a stat like WAR), explain it in a short clause the first time it appears.
+
+| Internal term | User-facing label |
+| :--- | :--- |
+| Contender | Option |
+| Knockout / Veto ($v_j$) | Dealbreaker |
+| Category weight ($w_j$) | How much it matters (%) |
+| Weighted Composite Score ($U$) | Overall score (out of 10) |
+| Category Win-Loss-Tie Record | Categories won |
+| Separate-Evaluation Reality Check | Will you notice it day to day? |
+| Normalized evidence | Like-for-like evidence |
+| Non-alignable differentiators | What only one option has |
+| Even Swap | The core trade-off, in plain units |
+| Crossover thresholds | What would change the winner |
+| TCO / RPP / Z-score / GeoMean | Total cost over N years / cost-of-living-adjusted pay / era-adjusted stats / average across benchmarks |
+
+## Interview rounds
+
+Interview the user in rounds before researching, so the comparison is weighted for their situation rather than a generic one.
+
+1. Ask at least one round on every run. Skip the interview only when the user explicitly says "just answer", "no questions", or equivalent; then state the default priorities and weights in one line at the top of the report.
+2. The **frontier** is every open question whose prerequisites are already settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word each question so "yes" accepts your recommendation. Then stop and wait for the user's answers.
+3. Find facts yourself (web search, attached files, workspace files, conversation history, memory). Ask the user only for decisions, preferences, and facts only they know. When existing context already answers a question, turn it into a quick confirmation with that answer as your recommendation.
+4. Each answer can open new questions: recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a later round.
+5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin research once the user confirms.
+
+Format every round like so:
+
+```
+❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+
+---
+
+❓ **Q2** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+```
 
 ## Progressive disclosure pointers
 
@@ -31,22 +78,25 @@ Before running Step 2 and Step 3, read the matching section in [`references/enti
 
 ## Comparison sequence
 
-Run these six steps in order.
+Run these seven steps in order.
 
-### Step 1: Frame contenders, screen knockouts, and gate on context
+### Step 1: Frame contenders, interview the user, and screen knockouts
 
-1. **Establish the contender set ($2$ to $5$ finalists)**:
+1. **Draft the contender set ($2$ to $5$ finalists)**:
    - **2 to 5 contenders named**: compare all named contenders head-to-head in a unified matrix.
    - **Only 1 contender named** (for example, *"Compare Postgres against the best alternatives"*): select the top 1 to 2 archetype competitors in that domain so the matchup is a genuine toe-to-toe test.
    - **6 or more contenders named**: run a fast **Elimination by Aspects (EBA)** knockout pass first to narrow the field to the **top 3 to 4 finalists** for deep category scoring, recording the exact reason each eliminated option was cut.
-2. **Screen knockouts, decoys, and phantoms**:
-   - **Knockouts**: test each contender against non-negotiable user dealbreakers (legal/visa eligibility, hard budget ceiling, OS/platform compatibility, latency/compliance floor). Flag any failing option as `Disqualified (Knockout)`.
+2. **Interview the user**: run **Interview rounds** on the questions that flip category weights or knockouts:
+   - **Decision and purpose**: what the choice is for and who it serves (relocating a family, a specific workload, a gift, settling a debate).
+   - **Contender set**: confirm the drafted finalists, the archetype rivals you picked for a 1-contender request, or the shortlist left after the EBA pass.
+   - **Dealbreakers**: non-negotiables such as legal/visa eligibility, hard budget ceiling, OS/platform compatibility, or a latency/compliance floor.
+   - **Top priorities**: the 2 to 3 things that matter most, which anchor the category weights in Step 2.
+   - **Lens for general or canonical matchups** (historical figures, sports eras, general technology or policy debates): which era or rules, which yardstick (peak vs. whole career, today vs. at the time), and what "better" means to the user.
+3. **Screen knockouts, decoys, and phantoms** using the interview answers:
+   - **Knockouts**: test each contender against the user's dealbreakers. Flag any failing option as `Disqualified (Knockout)`.
    - **Asymmetric decoys and phantoms**: strip asymmetrically dominated decoy tiers (middle pricing tiers engineered to push buyers toward a target tier) and flag unavailable phantom options so they do not distort category scoring.
-3. **Adaptive Context Gate**:
-   - **Personal or workload-specific decisions** (such as choosing a city to relocate to, picking between job offers, or selecting a database for a specific system): if 1 to 3 high-leverage variables that flip category weights or knockouts are missing (and the user has not asked for an immediate comparison), ask **2 to 3 concise, high-information-gain questions** and wait for confirmation.
-   - **General or canonical matchups** (such as historical/sports comparisons, general technology/policy matchups, or when the user requests an immediate answer): proceed immediately without asking questions by stating the default evaluation profile and category weights upfront.
 
-**Completion criterion**: A clean finalist set of 2 to 5 available contenders is locked, any knockout-disqualified or decoy options are identified, and the evaluation profile is bounded via user confirmation or explicit default assumptions.
+**Completion criterion**: The user has confirmed the finalist set of 2 to 5 available contenders, their dealbreakers, and top priorities (or explicitly opted out of questions, with default weights stated), and any knockout-disqualified or decoy options are identified.
 
 ### Step 2: Construct MECE categories, weights, and tie thresholds
 
@@ -103,32 +153,38 @@ Evaluate **one category at a time horizontally across all contenders** before mo
 
 **Completion criterion**: High-impact non-alignable differentiators are documented, the core trade-off between the top contenders is translated into a concrete Even Swap, and all verdicts pass the Order-Swap Invariance check.
 
-### Step 6: Aggregate dual-accounting scoreboard and render the overall verdict
+### Step 6: Aggregate the dual-accounting scoreboard
 
-Compute the final results and render the Comparison Report inline using five sections:
+Compute the final results before writing anything for the user:
 
-1. **Dual-Accounting Aggregation**:
-   - **Category Win-Loss-Tie Record**: tally total category wins for each contender (breaking down `Decisive` vs. `Narrow Edge` wins) and total `Ties`.
-   - **Weighted Composite Score ($U$)**: compute each contender's weighted score out of $10.0$ (or $100$):
-     $$U(x_i) = \sum_{j=1}^{m} w_j s_{ij}$$
-   - **Reconciliation & Veto Check**: check whether any contender triggered a non-compensatory **Veto ($v_j$)**. Whenever the **Overall Winner** on weighted score ($U$) won fewer raw categories than the runner-up (for example, winning 2 high-weight categories decisively vs. losing 3 low-weight categories narrowly), explain that mathematical reconciliation explicitly in the summary.
-2. **Render the 5-Section Comparison Report**:
-   - **Section 1: Overall Verdict & Bottom Line**
-     - **Overall Verdict**: assign one label from the **Overall Verdict taxonomy** below (`Overall Winner: [Entity] (Decisive)`, `Overall Winner: [Entity] (On Points / Narrow Edge)`, `Overall Winner: [Entity] (Default) / Split by Profile`, `Overall Tie (Dead Heat)`, or `Disqualified / Pivot to [Entity Z]`).
-     - **Scorecard Snapshot**: display the **Category Win-Loss-Tie Record** alongside each contender's **Weighted Composite Score ($U$)**.
-     - **Bottom Line**: 2 to 3 decisive sentences explaining why the winner took the crown (or why they tied) and reconciling category count with weighted utility.
-   - **Section 2: Master Toe-to-Toe Scoreboard Table**
-     - Present a single Markdown table with columns: `Category (Weight %)` | `Contender A (Score / 10)` | `Contender B (Score / 10)` | `[Contender C...]` | `Category Winner / Tie`.
-     - Include summary bottom rows for **Category Win-Loss-Tie Tally** and **Weighted Overall Score ($U / 10.0$)**.
-   - **Section 3: Category-by-Category Breakdown**
-     - For each category ($1$ to $m$), show: **Weight ($w_j\%$)**, **Toe-to-Toe Normalized Evidence** (with session-verified citations and dates), **Separate-Evaluation Reality Check**, **Contender Scores ($0.0\text{–}10.0$)**, and **Category Verdict** (`Winner: [Entity] (Decisive)`, `Winner: [Entity] (Narrow Edge)`, or `Tie` with its rationale).
-   - **Section 4: Non-Alignable Differentiators & Even-Swap Trade-Off**
-     - Detail unique one-sided strengths, structural paradigm differences, or asymmetric risks that sit outside shared table columns, followed by the concrete **Even Swap** between the top contenders.
-   - **Section 5: Winner by Scenario & Crossover Conditions**
-     - **Winner by User Profile**: concise bullet rules (`Choose [Entity A] if...`, `Choose [Entity B] if...`).
-     - **What Flips This Verdict (Crossover Thresholds)**: state exact, falsifiable numerical or contextual thresholds that would cause the runner-up to overtake the overall winner (for example, *"Contender B overtakes Contender A overall if you weight Category X above 40%, if Contender B's price drops below \$Y, or if workload exceeds Z RPS"*).
+1. **Category Win-Loss-Tie Record**: tally total category wins for each contender (breaking down `Decisive` vs. `Narrow Edge` wins) and total `Ties`.
+2. **Weighted Composite Score ($U$)**: compute each contender's weighted score out of $10.0$ (or $100$):
+   $$U(x_i) = \sum_{j=1}^{m} w_j s_{ij}$$
+3. **Reconciliation & Veto Check**: check whether any contender triggered a non-compensatory **Veto ($v_j$)**. Whenever the **Overall Winner** on weighted score ($U$) won fewer raw categories than the runner-up (for example, winning 2 high-weight categories decisively vs. losing 3 low-weight categories narrowly), note the reconciliation for the report.
+4. **Overall verdict**: assign one entry from the **Overall verdict taxonomy** below.
 
-**Completion criterion**: The report delivers all five sections, reconciles the Category Win-Loss-Tie tally with the Weighted Composite Score ($U$), assigns a calibrated verdict to every category and to the overall matchup, cites session-verified sources, and states exact numerical crossover conditions.
+**Completion criterion**: Every contender has a Win-Loss-Tie record and a weighted score $U$, any veto is identified, any category-count vs. $U$ divergence is reconciled, and one overall verdict is assigned.
+
+### Step 7: Render the comparison report in plain language
+
+Render the Comparison Report inline in the plain language set by **Plain-language output**, using five sections:
+
+1. **Verdict & Bottom Line**
+   - **Verdict**: the user-facing label of the overall verdict from Step 6 (see the **Show the user** column in the taxonomy below).
+   - **Scorecard**: each option's categories won (clear wins, slight edges, ties) next to its overall score out of 10.
+   - **Bottom line**: 2 to 3 decisive sentences on why the winner won (or why it is too close to call). When the winner took fewer categories than the runner-up, explain in one plain sentence that it won the categories that matter most to the user.
+2. **Head-to-Head Scoreboard**
+   - A single Markdown table with columns: `Category (how much it matters %)` | `Option A (score / 10)` | `Option B (score / 10)` | `[Option C...]` | `Winner`.
+   - Bottom rows: **Categories won** and **Overall score (out of 10)**.
+3. **Category by Category**
+   - For each category, show: how much it matters (%), the like-for-like evidence (with dated, session-verified sources), whether the user will notice the difference day to day, each option's score out of 10, and the result (clear win, slight edge, or tie) with its reason.
+4. **What Only One Option Has, and the Core Trade-off**
+   - Unique strengths, structural differences, or one-sided risks that do not fit the table, followed by the core trade-off between the top two options in plain units (for example, *"Choosing A over B costs about \$X more per year and gets you Y"*).
+5. **Who Should Pick What, and What Would Change the Winner**
+   - **Pick by situation**: concise bullet rules (`Choose [Option A] if...`, `Choose [Option B] if...`).
+   - **What would change the winner**: exact numbers or conditions that would make the runner-up come out on top (for example, *"B wins instead if price matters more to you than battery life, if B drops below \$Y, or if you need more than Z users"*).
+
+**Completion criterion**: The report delivers all five sections, explains any gap between categories won and overall score, gives every category and the overall matchup a result, cites session-verified sources, states exact conditions that would change the winner, and reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
 ---
 
@@ -136,21 +192,21 @@ Compute the final results and render the Comparison Report inline using five sec
 
 ### Category verdict scale
 
-| Category Verdict | Condition & Meaning |
-| :--- | :--- |
-| **`Winner: [Entity] (Decisive)`** | Margin exceeds the strict preference threshold ($|\Delta g_j| \ge p_j$). Unmistakable, high-confidence advantage in real-world separate evaluation. |
-| **`Winner: [Entity] (Narrow Edge)`** | Margin exceeds the indifference threshold ($q_j < |\Delta g_j| < p_j$). Real, verifiable advantage, but modest in magnitude or partially offset by secondary sub-metrics. |
-| **`Tie`** | Margin lies inside the indifference threshold ($|\Delta g_j| \le q_j$), falls within measurement/source uncertainty, or washes out across equally important internal sub-criteria. |
+| Category Verdict | Show the user | Condition & Meaning |
+| :--- | :--- | :--- |
+| **`Winner: [Entity] (Decisive)`** | `[Option] wins clearly` | Margin exceeds the strict preference threshold ($|\Delta g_j| \ge p_j$). Unmistakable, high-confidence advantage in real-world separate evaluation. |
+| **`Winner: [Entity] (Narrow Edge)`** | `[Option] has a slight edge` | Margin exceeds the indifference threshold ($q_j < |\Delta g_j| < p_j$). Real, verifiable advantage, but modest in magnitude or partially offset by secondary sub-metrics. |
+| **`Tie`** | `Tie` | Margin lies inside the indifference threshold ($|\Delta g_j| \le q_j$), falls within measurement/source uncertainty, or washes out across equally important internal sub-criteria. |
 
 ### Overall verdict taxonomy
 
-| Overall Verdict | When to assign |
-| :--- | :--- |
-| **`Overall Winner: [Entity] (Decisive)`** | Passes all knockout/veto checks, leads by a wide weighted margin ($\Delta U \ge 0.8$ on a 10-point scale / $\ge 8.0$ on a 100-point scale), and stays #1 across reasonable weight sensitivity shifts. |
-| **`Overall Winner: [Entity] (On Points / Narrow Edge)`** | Passes all knockout/veto checks and wins the weighted composite scorecard ($0.25 < \Delta U < 0.8$ on a 10-point scale) under the active weight profile while ceding specific categories to the runner-up. |
-| **`Overall Winner: [Entity] (Default) / Split by Profile`** | Names the **#1 Overall Winner for the primary/default profile** upfront so the verdict never hedges, while highlighting that the contenders split sharply across opposing high-weight axes (`Winner for [Profile A]: Entity X` vs. `Winner for [Profile B]: Entity Y`). |
-| **`Overall Tie (Dead Heat)`** | Weighted composite scores fall inside the overall indifference zone ($|\Delta U| \le 0.25$ on a 10-point scale) and category margins cancel out symmetrically. Always pair with a concrete **1-Step Tiebreaker Rule**. |
-| **`Disqualified / Pivot to [Entity Z]`** | All compared contenders fail a hard knockout/veto constraint ($v_j$), or all are strictly dominated by a superior external benchmark `[Entity Z]`. |
+| Overall Verdict | Show the user | When to assign |
+| :--- | :--- | :--- |
+| **`Overall Winner: [Entity] (Decisive)`** | `Clear winner: [Option]` | Passes all knockout/veto checks, leads by a wide weighted margin ($\Delta U \ge 0.8$ on a 10-point scale / $\ge 8.0$ on a 100-point scale), and stays #1 across reasonable weight sensitivity shifts. |
+| **`Overall Winner: [Entity] (On Points / Narrow Edge)`** | `Narrow winner: [Option]` | Passes all knockout/veto checks and wins the weighted composite scorecard ($0.25 < \Delta U < 0.8$ on a 10-point scale) under the active weight profile while ceding specific categories to the runner-up. |
+| **`Overall Winner: [Entity] (Default) / Split by Profile`** | `Best for most people: [Option] (but it depends on you)` | Names the **#1 Overall Winner for the primary/default profile** upfront so the verdict never hedges, while highlighting that the contenders split sharply across opposing high-weight axes (`Best if you [Profile A]: Option X` vs. `Best if you [Profile B]: Option Y`). |
+| **`Overall Tie (Dead Heat)`** | `Too close to call` | Weighted composite scores fall inside the overall indifference zone ($|\Delta U| \le 0.25$ on a 10-point scale) and category margins cancel out symmetrically. Always pair with a concrete **1-Step Tiebreaker Rule**. |
+| **`Disqualified / Pivot to [Entity Z]`** | `None of these fit: consider [Option Z]` | All compared contenders fail a hard knockout/veto constraint ($v_j$), or all are strictly dominated by a superior external benchmark `[Entity Z]`. |
 
 ### Verification & debiasing guardrails
 

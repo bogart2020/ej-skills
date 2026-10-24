@@ -7,7 +7,7 @@ license: MIT
 
 # Fact Check
 
-Verify claims by decomposing them into **atomic claims**, testing each with paired primary-source and **falsification queries**, and tracing every secondary report back to its **Tier 1 primary source**.
+Verify claims by interviewing the user on scope and purpose, decomposing the target into **atomic claims**, testing each with paired primary-source and **falsification queries**, and tracing every secondary report back to its **Tier 1 primary source**.
 
 ## Environment adaptation
 
@@ -16,9 +16,51 @@ Adapt tool use to the active runtime:
 - **Chat environment** (Claude Desktop, web chat): verify claims using web search, URL fetching, and any attached documents or images. Run the verification sequence inline.
 - **Code and CLI environment** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor): combine web search with local codebase inspection (`grep`, file reads, `git log`), shell/Python execution for quantitative checks, and test runs. When auditing **4 or more atomic claims** or investigating a broad topic in a harness that supports subagents, dispatch parallel verification subagents so raw search pages stay out of the main context window; handle 1 to 3 claims inline.
 
+## Plain-language output
+
+The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, falsification, citogenesis, entailment) are your working vocabulary. Everything the user sees, including interview questions and the report, speaks everyday language a non-specialist understands on first read:
+
+- Print the **user-facing label** from the table below wherever an internal term would appear.
+- Keep step, tier, and section names from this skill internal: describe the work by what it does (*"checking the original study"*, not *"Step 4: trace to Tier 1"*).
+- When a technical term is unavoidable (a study type, a filing name), explain it in a short clause the first time it appears.
+
+| Internal term | User-facing label |
+| :--- | :--- |
+| Atomic claim | Claim |
+| Citogenesis | Many outlets repeating one unchecked source |
+| Tier 1 source | Original source (the official document, dataset, study, or recording itself) |
+| Tier 2 source | Trusted secondhand source (a reputable fact-checker, newsroom, or review that cites the original) |
+| Tier 3 / Tier 4 source | Lead only / Unreliable source |
+| Falsification query | Search for counter-evidence |
+| Citation entailment | The quote that proves it |
+
+## Interview rounds
+
+Interview the user in rounds before researching, so the check answers the question they actually care about.
+
+1. Ask at least one round on every run. Skip the interview only when the user explicitly says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
+2. The **frontier** is every open question whose prerequisites are already settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word each question so "yes" accepts your recommendation. Then stop and wait for the user's answers.
+3. Find facts yourself (web search, the attached document, conversation history, memory). Ask the user only for decisions, preferences, and facts only they know. When existing context already answers a question, turn it into a quick confirmation with that answer as your recommendation.
+4. Each answer can open new questions: recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a later round.
+5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin research once the user confirms.
+
+Format every round like so:
+
+```
+❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+
+---
+
+❓ **Q2** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+```
+
 ## Domain playbooks
 
-When a claim falls into one of the specialized domains below, read [`references/domain-playbooks.md`](references/domain-playbooks.md) before running Step 2:
+When a claim falls into one of the specialized domains below, read [`references/domain-playbooks.md`](references/domain-playbooks.md) before running Step 3:
 
 | Claim domain | What `references/domain-playbooks.md` provides |
 | :--- | :--- |
@@ -29,7 +71,7 @@ When a claim falls into one of the specialized domains below, read [`references/
 
 ## Verification sequence
 
-Run these five steps in order.
+Run these six steps in order.
 
 ### Step 1: Decompose and decontextualize
 
@@ -47,7 +89,18 @@ Rewrite the extracted propositions into a numbered list of **atomic claims**:
 
 **Completion criterion**: Every checkworthy proposition in the target is listed as a numbered, self-contained atomic claim carrying its explicit entity names and temporal anchor.
 
-### Step 2: Triangulate and falsify
+### Step 2: Interview the user on scope and purpose
+
+Run **Interview rounds** on these verdict-shaping questions, showing the numbered claim list from Step 1 in plain wording so the user can react to it:
+
+- **Scope**: which claims to check (all of them, or the ones that matter most to the user).
+- **Meaning**: which interpretation the user means wherever Step 1 found an ambiguous claim.
+- **Time and place frame**: "true as of when, and where" for claims that vary by date, version, or country.
+- **Purpose and depth**: what the user will do with the answer (settle a debate, share a post, publish a piece, make a health or money decision), which sets how deep to dig and how to frame the report.
+
+**Completion criterion**: The user has confirmed the settled scope, meaning, time frame, and purpose (or explicitly opted out of questions, with assumptions stated), and the atomic claim list reflects their answers.
+
+### Step 3: Triangulate and falsify
 
 Route each atomic claim to the tool that owns its ground truth:
 
@@ -58,9 +111,9 @@ Route each atomic claim to the tool that owns its ground truth:
   2. **Popperian falsification query**: actively search for counter-evidence, errata, deprecations, retractions, or methodological critiques (`"<topic or claim>" errata OR deprecated OR criticism OR limitation OR retraction`).
   3. **Temporal anchor**: include the relevant year, date, or version number in queries for time-sensitive facts.
 
-**Completion criterion**: Every atomic claim from Step 1 has been tested by both a primary-source retrieval pass and an explicit falsification pass (or direct local tool execution for code and math).
+**Completion criterion**: Every atomic claim in scope has been tested by both a primary-source retrieval pass and an explicit falsification pass (or direct local tool execution for code and math).
 
-### Step 3: Read laterally and trace to Tier 1
+### Step 4: Read laterally and trace to Tier 1
 
 Defeat **citogenesis** (circular reporting where multiple secondary blogs or news outlets repeat the same unsourced claim):
 
@@ -70,29 +123,29 @@ Defeat **citogenesis** (circular reporting where multiple secondary blogs or new
 
 **Completion criterion**: Every atomic claim's evidence chain terminates at a verified **Tier 1** primary source, or explicitly records why Tier 1 is inaccessible and documents independent **Tier 2** corroboration.
 
-### Step 4: Assign calibrated verdicts
+### Step 5: Assign calibrated verdicts
 
 Assign each atomic claim one categorical label from the **Verdict taxonomy** below (`Verified`, `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`), paired with the highest source tier verified (`Tier 1` or `Tier 2`). Express certainty through the categorical verdict and source tier rather than invented single-claim confidence percentages.
 
-**Completion criterion**: Every atomic claim from Step 1 carries one categorical verdict and its verified source tier.
+**Completion criterion**: Every atomic claim in scope carries one categorical verdict and its verified source tier.
 
-### Step 5: Report with citation entailment
+### Step 6: Report in plain language
 
-Render the Fact-Check Report inline using three sections (write to a Markdown file on disk only when the user asks to save a file):
+Render the Fact-Check Report inline in the plain language set by **Plain-language output**, using three sections (write to a Markdown file on disk only when the user asks to save a file):
 
-1. **Verdict Summary**:
-   - **Precision tally**: `X / Y atomic claims Verified` (plus counts of `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, `Unverifiable`).
-   - **Bottom line**: 2 to 3 sentences synthesizing what holds up, what fails, and the most important context discovered.
-2. **Claim-by-Claim Audit**:
-   For each numbered atomic claim:
-   - **Claim**: The decontextualized atomic claim (and original quote/location if auditing a text).
-   - **Verdict**: `[Verified | Refuted | Mixed / Needs Context | Outdated | Disputed | Unverifiable]` (`Tier 1` / `Tier 2`).
-   - **Evidence & Analysis**: Concise explanation of what the primary source shows, including any caveats surfaced by the falsification query.
-   - **Primary Citation**: `[Source Title, Author/Org (YYYY-MM-DD or Version)](URL)` followed by a **verbatim excerpt** (or exact file and line range `[file.ext](file:///path#L10-L20)` for local code) proving entailment or contradiction.
-3. **Drop-in Corrections** (include whenever any claim is `Refuted`, `Mixed / Needs Context`, or `Outdated`):
-   - Provide exact, ready-to-paste replacement text that fixes the factual error or supplies the missing baseline context.
+1. **Bottom Line**:
+   - **Scorecard**: `X of Y claims hold up`, plus how many came out `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`.
+   - **Summary**: 2 to 3 sentences on what holds up, what fails, and the most important context discovered, framed for the purpose the user gave in Step 2.
+2. **Claim by Claim**:
+   For each numbered claim:
+   - **Claim**: the claim spelled out in full (plus the original quote and its location when checking a text).
+   - **Verdict**: the verdict label, then how strong the backing is in plain words: "checked against the original source" or "based on trusted secondhand reporting; the original was not reachable".
+   - **Why**: a short explanation of what the source shows, including anything the search for counter-evidence turned up.
+   - **Source**: `[Source Title, Author/Org (YYYY-MM-DD or Version)](URL)` followed by **the exact quote that proves it** (or the exact file and line range `[file.ext](file:///path#L10-L20)` for local code).
+3. **Suggested Fixes** (include whenever any claim is `Refuted`, `Mixed / Needs Context`, or `Outdated`):
+   - Provide exact, ready-to-paste replacement text that fixes the error or adds the missing context.
 
-**Completion criterion**: Every atomic claim from Step 1 appears in the Claim-by-Claim Audit with a session-verified URL, date/version, source tier, and verbatim excerpt, and every flawed claim has a drop-in correction.
+**Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; every flawed claim has a suggested fix; and the report reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
 ---
 

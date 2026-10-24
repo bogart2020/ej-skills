@@ -16,6 +16,52 @@ Adapt tool use and memory discovery to the active runtime:
 - **Chat environment** (Claude Desktop, web chat): inspect conversation history, project instructions, built-in memory, and any attached files for existing buyer context. Run web searches for independent lab tests, historical street prices, resale values, and long-term owner failure reports. When the user wants to persist their preferences or decision log, output a copyable Markdown snippet following [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
 - **Code and CLI environment** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): check whether `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` exists and read it before asking questions. Use Python or shell (`python3 -c ...`) for exact TCO, APR, Net Present Value (NPV), and break-even calculations. When comparing **3 or more candidate products** in a harness that supports subagents, dispatch parallel verification subagents so raw search pages stay out of the main context window; handle 1 or 2 items inline.
 
+## Plain-language output
+
+The bolded terms and formulas in this skill (TCO, CPU, CPH, $V_{\text{salvage}}$, $N^*$, EBA, Diderot spiral, premortem, Action/Inaction Regret, fundamental vs. means objective) are your working vocabulary. Everything the user sees, including interview questions and the report, speaks everyday language a non-specialist understands on first read:
+
+- Print the **user-facing label** from the table below wherever an internal term would appear.
+- Show math as labeled plain arithmetic ("\$1,200 up front + \$15/month for 3 years - \$300 resale = \$1,440 total") rather than formulas or symbols.
+- Keep step, tier, and section names from this skill internal: describe the work by what it does (*"checking owner complaints after a year of use"*, not *"Standard tier: Step 3 experience attributes"*).
+- When a technical term is unavoidable (APR, a lab certification), explain it in a short clause the first time it appears.
+
+| Internal term | User-facing label |
+| :--- | :--- |
+| Fundamental objective | Your real goal |
+| Knockout constraint / EBA | Dealbreaker |
+| $\text{TCO}(T)$ | Total cost over N years (after resale) |
+| 50%-deflated $\text{CPU}$ / $\text{CPH}$ | Cost per use / per hour, even if you use it half as much as you expect |
+| $V_{\text{salvage}}$ | Resale value |
+| Break-even $N^*$ | Uses needed before buying beats renting |
+| Non-purchase baseline | Not buying (keep, repair, wait, or rent) |
+| Diderot spiral | Add-ons you'll likely end up buying |
+| Opportunity cost | What else this money could do |
+| 12-month premortem / Action vs. Inaction Regret | If you regret this in a year, here's the likely reason / regret of buying vs. regret of skipping |
+
+## Interview rounds
+
+Interview the user in rounds before researching, so the verdict fits their real situation rather than a generic buyer.
+
+1. Ask at least one round on every run. Skip the interview only when the user explicitly says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
+2. The **frontier** is every open question whose prerequisites are already settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word each question so "yes" accepts your recommendation. Then stop and wait for the user's answers.
+3. Find facts yourself (web search, attached files, buyer profile, conversation history, memory). Ask the user only for decisions, preferences, and facts only they know. When existing context already answers a question, turn it into a quick confirmation with that answer as your recommendation.
+4. Each answer can open new questions: recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a later round.
+5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin research once the user confirms.
+
+Format every round like so:
+
+```
+❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+
+---
+
+❓ **Q2** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+```
+
 ## Progressive disclosure pointers
 
 - **Category playbooks**: Before running Step 3, read the matching section in [`references/category-playbooks.md`](references/category-playbooks.md):
@@ -43,19 +89,19 @@ Scale verification and financial math to the commitment's 3-year cash outflow:
 
 Run these six steps in order.
 
-### Step 1: Load buyer context and gate on verdict-flipping variables
+### Step 1: Load buyer context and interview the user
 
 1. **Check existing buyer context**: inspect `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` (when file tools exist) or platform memory and prior turns for currency, tax region, financial guardrails, owned ecosystem/gear, active subscriptions, and past purchase lessons.
 2. **Separate fundamental from means objectives**: identify the underlying job to be done (**fundamental objective**, such as sleeping through street noise or cutting meal-prep time) separately from the specific commercial SKU (**means objective**).
-3. **Audit the 5 verdict-flipping variables**:
+3. **Map the 5 verdict-flipping variables**:
    - **Fundamental objective**: the concrete problem to solve and why it matters now.
    - **Current baseline**: what the user currently owns, uses, or does today (`Status Quo`), and its exact pain point.
    - **Utilization and horizon**: realistic usage frequency (uses per week/month or hours per day) and expected holding period $T$.
    - **Financial mode and guardrails**: paying cash from discretionary funds versus credit/financing/BNPL, budget ceiling, and any high-APR debt or emergency-fund constraints.
    - **Hard knockout constraints**: non-negotiable dealbreakers (physical dimensions, OS/ecosystem compatibility, battery platform, safety, offline capability, local warranty/repairability).
-4. **Adaptive Context Gate**: when any of the 5 verdict-flipping variables is missing or ambiguous (and the user has not requested an immediate one-shot verdict), pause and ask **2 to 4 concise, high-information-gain questions** before rendering a verdict. Repeat in a follow-up round only when an answer exposes a new dependency until shared understanding is reached.
+4. **Interview the user**: run **Interview rounds** on the 5 verdict-flipping variables, phrased in everyday words (for example, *"How often will you realistically use it?"* rather than *"utilization"*). Variables already answered by buyer context become quick confirmations.
 
-**Completion criterion**: All 5 verdict-flipping variables are bounded via existing buyer context or user confirmation, or the user explicitly requested an immediate verdict with stated assumptions.
+**Completion criterion**: The user has confirmed all 5 verdict-flipping variables (or explicitly opted out of questions, with assumptions stated).
 
 ### Step 2: Benchmark non-purchase baselines and prune by knockouts
 
@@ -116,26 +162,26 @@ Stress-test the purchase against four behavioral traps:
 
 **Completion criterion**: Fake discount anchors are stripped, Diderot add-on costs are priced in, and the 12-month premortem failure causes and reversibility are evaluated.
 
-### Step 6: Render the calibrated verdict and reversal conditions
+### Step 6: Render the verdict report in plain language
 
-Assign one categorical label from the **Verdict taxonomy** below and render the Decision Report inline using four sections (plus an optional fifth memory prompt when new durable context was learned):
+Assign one categorical label from the **Verdict taxonomy** below and render the Decision Report inline in the plain language set by **Plain-language output**, using four sections (plus an optional fifth save prompt when new durable context was learned):
 
-1. **Verdict Summary**:
+1. **Verdict**:
    - **Verdict**: `[Buy | Buy With Conditions / Wait | Buy Alternative Instead | Rent / Borrow / Trial First | Keep Current / Repair | Do Not Buy]`
-   - **Bottom Line**: 2 to 3 decisive sentences stating the verdict, the primary financial and functional reason, the net $\text{TCO}(T)$, and the 50%-deflated $\text{CPU}$ or $\text{CPH}$.
-2. **TCO, Utilization & Baseline Comparison**:
-   - Present a side-by-side Markdown table comparing the **Target Item**, the **Best Competing Alternative** (or Used/Refurbished tier), and the **Strongest Non-Purchase Baseline** (`Keep Current / Repair` or `Rent / Trial`) across: Upfront Cost, Hidden/Recurring Costs, Net Resale Value ($V_{\text{salvage}}$), Net $\text{TCO}(T)$, 50%-Deflated $\text{CPU}$/$\text{CPH}$, and Primary Trade-off.
-3. **Verification, Failure Modes & Behavioral Audit**:
-   - **Evidence & Failure Modes**: what independent testing and 1-to-3 star long-term owner reports show, with session-verified links and publication dates.
-   - **Diderot & Opportunity Cost Check**: itemized secondary add-on costs and what else $\text{TCO}(T)$ buys or earns.
-   - **12-Month Premortem**: the likeliest regret scenario and how easily the decision can be reversed (return policy, restocking fees, resale liquidity).
-4. **Reversal Conditions & Action Plan**:
-   - **What would flip this verdict**: state exact, falsifiable numerical or contextual thresholds that would change the verdict (for example, *"Flips from `Do Not Buy` to `Buy` if street price drops below \$X or verified usage exceeds Y uses/month"*).
-   - **Next steps**: if buying or trialing, state the target price ceiling, recommended buying channel/tier, and a return-window stress-test checklist; if skipping or waiting, state the exact price alert or trigger condition to set.
-5. **Buyer Profile Update (when applicable)**:
-   - If the session revealed new durable buyer context (currency, budget guardrails, hourly time valuation, owned gear/subscriptions) or a final purchase decision, ask in one line whether to save it to `.agents/buyer-profile.md` / `~/.agents/buyer-profile.md` (following [`references/buyer-profile-template.md`](references/buyer-profile-template.md)).
+   - **Bottom line**: 2 to 3 decisive sentences stating the verdict, the main money and practical reason, the total cost over the holding period, and the cost per use (or per hour) even if the user uses it half as much as they expect.
+2. **Cost Comparison**:
+   - A side-by-side Markdown table comparing **This Item**, the **Best Alternative** (or a used/refurbished version), and the **Best Not-Buying Option** (keep, repair, or rent) across these rows: Upfront Cost, Hidden & Recurring Costs, Resale Value, Total Cost Over N Years, Cost Per Use (at half your expected use), and Main Trade-off.
+3. **What Could Go Wrong**:
+   - **Real-world problems**: what independent testers and long-term owner complaints show, with dated, session-verified links.
+   - **Add-ons and other uses for the money**: the extra items people usually end up buying, priced out, and what else the same money could do (pay down debt, build savings, fund a bigger goal).
+   - **If you regret this in a year**: the most likely reason, and how easy it is to undo (return window, restocking fees, how quickly it resells).
+4. **What Would Change the Verdict, and Next Steps**:
+   - **What would change the verdict**: exact numbers or conditions (for example, *"Switches from `Do Not Buy` to `Buy` if the price drops below \$X or you'd use it more than Y times a month"*).
+   - **Next steps**: if buying or trying, the price to pay at most, where and which version to buy, and a checklist to test it during the return window; if skipping or waiting, the exact price alert or trigger to set.
+5. **Save for Next Time (when applicable)**:
+   - If the session revealed lasting buyer context (currency, budget limits, the value of the user's time, owned gear or subscriptions) or a final purchase decision, ask in one line whether to save it as the user's buyer profile for future decisions (stored per **Environment adaptation**, following [`references/buyer-profile-template.md`](references/buyer-profile-template.md)).
 
-**Completion criterion**: The report delivers a single unambiguous verdict from the 6-level taxonomy, a side-by-side TCO and utilization table against the non-purchase baseline, session-verified sources, and explicit numerical reversal conditions.
+**Completion criterion**: The report delivers a single unambiguous verdict from the 6-level taxonomy, a side-by-side cost table against the best not-buying option, session-verified sources, and exact conditions that would change the verdict, and it reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
 ---
 

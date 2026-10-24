@@ -5,7 +5,7 @@ Specialized verification, transit math, physiological pacing, and anti-tourist-t
 ## 1. Native anti-tourist-trap and culinary vetting
 
 1. **Apply the 3-Block Repeat-Local Rule (Akerlof & MacCannell defense)**:
-   - Venues directly facing Tier 1 monuments, cruise terminals, or major transit hubs operate in a **zero-repeat-customer equilibrium**: 99% of diners are one-time visitors, allowing high-margin, low-quality operators ("lemons") to outbid local kitchens for prime tourist frontage.
+   - Venues directly facing major landmarks, cruise terminals, or major transit hubs operate in a **zero-repeat-customer equilibrium**: 99% of diners are one-time visitors, allowing high-margin, low-quality operators ("lemons") to outbid local kitchens for prime tourist frontage.
    - Route meals and coffee stops **3 to 6 blocks away** into residential or office backstreets where restaurants depend on repeat local patronage.
 2. **Cross-check against native regional platforms and curated directories**:
    - Filter out English-only SEO listicles, paid influencer roundups, and viral social-media queue traps by checking native-language platforms and independent local guides:

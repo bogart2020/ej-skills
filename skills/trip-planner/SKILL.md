@@ -7,7 +7,7 @@ license: MIT
 
 # Trip Planner
 
-Build or audit any travel itinerary by bounding the **5 verdict-flipping variables**, clearing the **Logistics and Entry Knockout Gate**, clustering stops around bases scored by **True Location-Adjusted Nightly Cost ($C_{\text{night, true}}$)**, computing realistic **Door-to-Door Transit ($T_{\text{D2D}}$)** and connection buffers, enforcing **1 Fixed Anchor + 1 Flexible Option per half-day** with native **anti-tourist-trap vetting**, running a **Travel Premortem**, and delivering a calibrated **readiness verdict** with explicit **reversal conditions**.
+Build or audit any travel itinerary by interviewing the user on the **5 verdict-flipping variables**, clearing the **Logistics and Entry Knockout Gate**, clustering stops around bases scored by **True Location-Adjusted Nightly Cost ($C_{\text{night, true}}$)**, computing realistic **Door-to-Door Transit ($T_{\text{D2D}}$)** and connection buffers, enforcing **1 Fixed Anchor + 1 Flexible Option per half-day** with native **anti-tourist-trap vetting**, running a **Travel Premortem**, and delivering a calibrated **readiness verdict** with explicit **reversal conditions**.
 
 ## Environment adaptation
 
@@ -15,6 +15,55 @@ Adapt tool use and memory discovery to the active runtime:
 
 - **Chat environment** (Claude Desktop, web chat): inspect conversation history, project instructions, built-in memory, and any attached bookings or screenshots for traveler context. Run web searches to verify consular entry rules, operating hours, weekly closure days, live transit durations, and local dining directories. When the user wants to save their traveler preferences or trip post-mortem, output a copyable Markdown snippet following [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
 - **Code and CLI environment** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): check whether `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` exists and read it before asking questions. Use Python or shell (`python3 -c ...`) for exact $T_{\text{D2D}}$ time budgets, $C_{\text{night, true}}$ comparisons, rail-pass break-even math, and currency conversions. When auditing or planning across **3 or more cities, candidate base neighborhoods, or multi-week legs** in a harness that supports subagents, dispatch parallel verification subagents so raw search pages stay out of the main context window; handle 1 or 2 cities inline.
+
+## Plain-language output
+
+The bolded terms and formulas in this skill ($C_{\text{night, true}}$, $T_{\text{D2D}}$, Hotel Change Tax, Fixed Anchor, Space-Time Prism, Single-PNR, MCT, IRROPs, premortem, Peak-End Rule) are your working vocabulary. Everything the user sees, including interview questions and the report, speaks everyday language a non-specialist understands on first read:
+
+- Print the **user-facing label** from the table below wherever an internal term would appear.
+- Show math as labeled plain arithmetic ("\$180 room + \$25 resort fee + \$12 city tax + \$20 taxis = \$237 a night") rather than formulas or symbols.
+- Keep step, tier, and gate names from this skill internal: describe the work by what it does (*"checking your passport dates for Europe"*, not *"Step 2 Logistics and Entry Knockout Gate"*).
+- When a technical term is unavoidable (ETIAS, an IDP), explain it in a short clause the first time it appears.
+
+| Internal term | User-facing label |
+| :--- | :--- |
+| Verdict-flipping variables | The basics of your trip |
+| Logistics and Entry Knockout Gate | Before-you-go checks (passport, visa, permits, health, weather, holidays) |
+| $C_{\text{night, true}}$ / True Location-Adjusted Nightly Cost | Real cost per night (with fees, taxes, and getting around) |
+| $T_{\text{D2D}}$ / Door-to-Door Transit | Door-to-door travel time |
+| Hotel Change Tax | Time lost changing hotels |
+| 1 Fixed Anchor + 1 Flexible Option | One main plan + one optional extra |
+| Space-Time Prism | Fits between your fixed plans |
+| Single-PNR / Self-Transfer | One booking (the airline rebooks you) / Separate tickets (a missed connection is on you) |
+| MCT | The airport's minimum connection time |
+| IRROPs | Delays and cancellations |
+| Travel Premortem / If/Then Fallback Triggers | What could go wrong / Plan B |
+| 3-Block Rule / native vetting | Eat a few blocks away from the big sights / local review sites |
+| Peak-End Rule / circadian resynchronization | Save the best for unhurried moments / jet-lag recovery |
+
+## Interview rounds
+
+Interview the user in rounds before researching, so the plan fits their real trip rather than a generic traveler.
+
+1. Ask at least one round on every run. Skip the interview only when the user explicitly says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
+2. The **frontier** is every open question whose prerequisites are already settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word each question so "yes" accepts your recommendation. Then stop and wait for the user's answers.
+3. Find facts yourself (web search, attached bookings, traveler profile, conversation history, memory). Ask the user only for decisions, preferences, and facts only they know. When existing context already answers a question, turn it into a quick confirmation with that answer as your recommendation.
+4. Each answer can open new questions: recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a later round.
+5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin research once the user confirms.
+
+Format every round like so:
+
+```
+❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+
+---
+
+❓ **Q2** - **<short title>**: <question in everyday words, with options when useful>
+
+➡️ <your recommended answer>
+```
 
 ## Progressive disclosure pointers
 
@@ -43,7 +92,7 @@ Scale verification depth and quantitative math to the trip's complexity:
 
 Run these six steps in order.
 
-### Step 1: Load traveler context and gate on verdict-flipping variables
+### Step 1: Load traveler context and interview the user
 
 1. **Check existing traveler context**: inspect `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` (when file tools exist) or platform memory and prior turns for passport nationality and validity, home hub, mobility/walking ceiling, luggage style, dietary/medical rules, and past trip post-mortems.
 2. **Audit the 5 verdict-flipping variables**:
@@ -52,9 +101,9 @@ Run these six steps in order.
    - **Budget tier and transit/base style**: nightly or total trip budget ceiling, public transit versus rental car or private transfers, and preferred base neighborhood pace.
    - **Peak priorities and hard anti-goals**: top 2 to 3 peak experiences to optimize for, alongside explicit anti-goals (such as skipping crowded checklist museums, avoiding pre-9:00 AM starts, or banning 1-night hotel hops).
    - **Authority, medical, and dietary knockouts**: passport nationality and issue/expiry dates for international trips, severe allergies or dietary laws, and high-altitude or heat sensitivities.
-3. **Adaptive Context Gate**: when any of the 5 verdict-flipping variables is missing or ambiguous (and the user has not requested an immediate one-shot itinerary), pause and ask **2 to 4 concise, high-information-gain questions** (while surfacing any immediate date, visa, or safety knockout warning right away). Repeat in a follow-up round only when an answer exposes a new dependency until shared understanding is reached.
+3. **Interview the user**: run **Interview rounds** on the 5 verdict-flipping variables, phrased in everyday words (for example, *"How much walking per day feels comfortable?"* rather than *"mobility ceiling"*). Variables already answered by traveler context become quick confirmations. Raise any date, visa, or safety warning you can already see in the first round.
 
-**Completion criterion**: All 5 verdict-flipping variables are bounded via existing traveler context or user confirmation, or the user explicitly requested an immediate itinerary or audit with stated assumptions.
+**Completion criterion**: The user has confirmed all 5 verdict-flipping variables (or explicitly opted out of questions, with assumptions stated).
 
 ### Step 2: Clear the logistics, authority, and environmental knockout gate
 
@@ -120,7 +169,7 @@ Consult [`references/destination-and-mode-playbooks.md`](references/destination-
 4. **Verify day-of-week operating and last-entry windows**:
    - Annotate every day with its explicit **day of the week** (`Mon`, `Tue`, etc.) and check each POI satisfies $O_{im} \le s_{im} \le L_{im} \le C_{im} - d_i$, accounting for Monday closures (such as Musée d'Orsay, Versailles, Uffizi) versus Tuesday closures (such as the Louvre, Prado, Musée Rodin), seasonal early dusk, and last-entry cutoffs (typically 30 to 60 minutes before closing).
 5. **Run anti-tourist-trap vetting**:
-   - Apply the **3-Block Repeat-Local Rule**: route dining and shopping **3 to 6 blocks away** from Tier 1 monument perimeters, cruise terminals, and main station plazas into residential or office streets where venues compete for repeat local regulars.
+   - Apply the **3-Block Repeat-Local Rule**: route dining and shopping **3 to 6 blocks away** from major-landmark perimeters, cruise terminals, and main station plazas into residential or office streets where venues compete for repeat local regulars.
    - Cross-check dining and activity picks against **native regional guides** listed in [`references/destination-and-mode-playbooks.md`](references/destination-and-mode-playbooks.md) (such as Tabelog $\ge 3.20\text{ to }3.50+$ in Japan, Slow Food *Osterie d'Italia* / Gambero Rosso in Italy, Le Fooding / *Fait Maison* in France, Guía Repsol *Soletes* in Spain, Naver/KakaoMap + Blue Ribbon in Korea, Dianping/OpenRice in China/HK/TW, and Michelin *Bib Gourmand*) rather than English-only SEO listicles or viral social media queues.
 
 **Completion criterion**: Every half-day respects the `1 Fixed Anchor + 1 Flexible Option` cap and alternates cognitive load, Days 1 to 2 and the Final 24 Hours follow circadian and Peak-End pacing, every fixed stop lists verified day-of-week hours and last-entry cutoffs, and dining/activity recommendations cite native regional vetting or the 3-Block Rule.
@@ -134,27 +183,27 @@ Consult [`references/destination-and-mode-playbooks.md`](references/destination-
      - **Queue or lockout pivot**: pre-vetted neighborhood alternative if walk-up lines exceed 45 minutes or a ticket lottery is missed.
      - **Low-energy or sick-day graceful degradation**: confirm that dropping any half-day's Flexible Option leaves all downstream hotel transfers and fixed reservations intact.
    - **Refundability and cancellation audit**: check free-cancellation cutoff dates on hotels/cars, airline fare refundability versus credit expiry, and travel insurance or credit-card coverage for non-refundable anchors.
-2. **Assign one calibrated verdict and render the report**:
-   - Select one label from the **Verdict taxonomy** below and present the report inline using four sections (plus an optional fifth traveler profile prompt when new durable context was learned):
-     1. **Readiness Verdict & Executive Summary**:
+2. **Assign one calibrated verdict and render the report in plain language**:
+   - Select one label from the **Verdict taxonomy** below and present the report inline in the plain language set by **Plain-language output**, using four sections (plus an optional fifth save prompt when new durable context was learned):
+     1. **Verdict & Bottom Line**:
         - **Verdict**: `[Ready to Book | Viable With Adjustments | Cut Stops / Slow Down | Reroute / Change Base | Shift Season / Dates | Do Not Book As Planned]`
-        - **Bottom Line**: 2 to 3 decisive sentences stating the verdict, primary routing or pacing rationale, and key knockout or cost findings.
-        - **Logistics & Entry Gate Table**: status of passport validity, visas/ETAs, IDP, health/altitude rules, weather window, and macro-holidays.
-        - **Base & True Nightly Cost ($C_{\text{night, true}}$) Table** (when choosing bases, hotels, or routes): side-by-side comparison of candidate bases/options across Base Rate, Mandatory Fees/Taxes, Daily Transit/Commute Cost, Daily Commute Time ($\Delta T_{\text{commute}}$), Net $C_{\text{night, true}}$, and Walkability/Vibe Trade-off.
-     2. **Clustered Day-by-Day Itinerary & Door-to-Door Transit Math**:
-        - Head each day with **Day $N$ (Day-of-Week, Date/Season) | Base Neighborhood | Geographic Cluster**.
-        - Show **Morning**, **Afternoon**, and **Evening** blocks with `1 Fixed Anchor [Verified Hours & Last Entry] + 1 Flexible Option`, explicit **$T_{\text{D2D}}$ transit legs** (mode + in-vehicle time + friction buffer + luggage handling), **3-Block / native-vetted dining zone**, and a one-line **If/Then Pivot** (weather/fatigue backup in the same cluster).
-     3. **Failure, Connection & Cancellation Audit (Travel Premortem)**:
-        - **Connection & Transfer Protection**: Single-PNR versus Self-Transfer status, layover buffer vs. MCT, and high-risk choke points.
-        - **Cancellation & Refundability Traps**: non-refundable outlays, free-cancellation deadlines, and coverage gaps.
-        - **Top Premortem Failure Scenarios**: the 2 to 3 likeliest ways this specific trip could derail and the exact mitigation built into the plan.
-     4. **Booking Action Timeline & Reversal Conditions**:
-        - **Chronological Booking Checklist**: bucket actionable bookings into `90+ Days Out`, `60 to 30 Days Out`, `14 to 7 Days Out`, and `48 Hours / Walk-Up` with official primary booking portals.
-        - **What would flip this verdict**: state exact, falsifiable conditions that would change the verdict (for example, *"Flips from `Cut Stops / Slow Down` to `Ready to Book` if trip duration increases from 6 to 9 nights or if Day 4 is run as a luggage-free day trip from Kyoto instead of a 1-night hotel change"*).
-     5. **Traveler Profile Update (when applicable)**:
-        - If the session revealed new durable traveler context (passport rules, home hub, daily walking ceiling, dietary/medical guardrails, or post-mortem lessons), ask in one line whether to save it to `.agents/traveler-profile.md` / `~/.agents/traveler-profile.md` (following [`references/traveler-profile-template.md`](references/traveler-profile-template.md)).
+        - **Bottom line**: 2 to 3 decisive sentences stating the verdict, the main routing or pacing reason, and any blocker or cost surprise.
+        - **Before-you-go checks**: a table with the status of passport dates, visa or entry permit, driving permit, health and altitude rules, weather, and holidays or closures.
+        - **Where to stay** (when choosing bases, hotels, or routes): a side-by-side table across Room Rate, Required Fees & Taxes, Daily Getting-Around Cost, Daily Commute Time, Real Cost per Night, and Walkability & Feel.
+     2. **Day by Day**:
+        - Head each day with **Day N (weekday, date) | where you're staying | area of town**.
+        - Show **Morning**, **Afternoon**, and **Evening**, each with one main plan (opening hours and last entry checked) plus one optional extra, every travel leg with its door-to-door time (how you get there, ride time, extra buffer, what to do with bags), where to eat nearby, and a one-line Plan B for bad weather or low energy in the same area.
+     3. **What Could Go Wrong**:
+        - **Connections**: whether each connection is on one booking or separate tickets, the layover against the airport's minimum connection time, and the riskiest points in the trip.
+        - **Money at risk**: non-refundable bookings, free-cancellation deadlines, and gaps in insurance or card coverage.
+        - **Likeliest problems**: the 2 to 3 likeliest ways this specific trip could go wrong and what the plan already does about each.
+     4. **What to Book When, and What Would Change the Verdict**:
+        - **Booking checklist**: bookings grouped into `90+ Days Out`, `60 to 30 Days Out`, `14 to 7 Days Out`, and `48 Hours / Walk-Up`, each linked to the official booking site.
+        - **What would change the verdict**: exact conditions (for example, *"Switches from `Cut Stops / Slow Down` to `Ready to Book` if you add 3 nights or visit Nara as a day trip from Kyoto instead of moving hotels"*).
+     5. **Save for Next Time (when applicable)**:
+        - If the session revealed lasting traveler context (passport dates, home airport, daily walking limit, dietary or medical needs, or lessons from this trip), ask in one line whether to save it as the user's traveler profile for future trips (stored per **Environment adaptation**, following [`references/traveler-profile-template.md`](references/traveler-profile-template.md)).
 
-**Completion criterion**: The report delivers a single unambiguous readiness verdict from the 6-level taxonomy, a verified Logistics & Entry Gate summary, a geographically clustered schedule with $T_{\text{D2D}}$ buffers and If/Then pivots, a chronologically bucketed Booking Action Timeline, and falsifiable reversal conditions.
+**Completion criterion**: The report delivers a single unambiguous verdict from the 6-level taxonomy, verified before-you-go checks, a day-by-day plan grouped by area with door-to-door travel times and a Plan B per half-day, a booking checklist grouped by lead time, and exact conditions that would change the verdict, and it reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
 ---
 

@@ -2,6 +2,8 @@
 
 Section layout for Step 6 of [`SKILL.md`](../SKILL.md). Read it before writing the final report.
 
+**Money in every section**: lead every cost with the user's home currency, in tables and sentences alike, with the local price after it ("₱7,170 (S\$150)", never "S\$150 (₱7,170)"), including daily costs and taxi or ticket prices mentioned in passing. Never write a local amount alone: write "entry is about ₱1,150 (¥3,000) each", not "entry is about ¥3,000 each". Put the home currency in the first price column of every budget and hotel table. State each exchange rate and its date once above the first table, or say it is approximate.
+
 ## 1. Verdict & Bottom Line
 
 - **Verdict**: `[Ready to Book | Viable With Adjustments | Cut Stops / Slow Down | Reroute / Change Base | Shift Season / Dates | Do Not Book As Planned]`

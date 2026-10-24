@@ -11,14 +11,15 @@ Run a rigorous head-to-head comparison of any options: settle the user's priorit
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached files for priorities and constraints. Use web search for symmetric primary and independent data on every option.
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): when the comparison concerns the active project, read relevant workspace files (`package.json`, architecture docs, notes) before asking. Use Python or shell for exact weighted scores, geometric means, purchasing power, TCO, and Z-scores. For **3 or more options**, dispatch parallel verification subagents when the harness supports them; handle 2 inline.
+- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): when the comparison concerns the active project, read relevant workspace files (`package.json`, architecture docs, notes) before asking. Use Python or shell for exact weighted scores, geometric means, purchasing power, TCO, and Z-scores. For **3 or more options**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 2 inline.
 
 ## Plain-language output
 
-The bolded terms and formulas in this skill (MECE, weights $w_j$, thresholds $q_j$ / $p_j$ / $v_j$, $U$, Even Swap, non-alignable differences, Z-scores, TCO, RPP, BARS, GeoMean) are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
+The bolded terms, formulas, and table's internal terms in this skill are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
 - Show math as labeled plain arithmetic ("\$1,850/month rent + \$400 taxes = \$2,250/month"), never formulas or symbols.
+- **Money**: never silently default to US dollars. Lead every amount, in tables and prose, with the user's currency; after a converted one, add the original and one dated rate looked up this session ("₱16,800 (US\$299 at ₱56.20 per US\$1, 25 Oct 2026)"), or flag amounts approximate if no rate is current. Prefer local sellers' prices to converted ones.
 - Keep step and method names internal: describe the work by what it does (*"scoring battery life for both phones before moving on"*).
 - Explain any unavoidable technical term (a benchmark name, a stat like WAR) in a short clause the first time it appears.
 
@@ -43,7 +44,7 @@ Interview the user in rounds before researching, so the comparison is weighted f
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state the default priorities and weights in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
 3. Find facts yourself (web search, attached files, workspace, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
-4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
+4. Recompute the frontier after each answer. A question that depends on another open question (a budget depends on the currency) belongs to a later round.
 5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
 Format every round like so:
@@ -62,7 +63,7 @@ Format every round like so:
 
 ## Reference pointers
 
-- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for canonical categories, weights, normalization formulas, and tie thresholds: products and services (TCO, lab benchmarks, failure clusters, resale), places (cost-of-living-adjusted surplus, safety, transit, climate days), job candidates and providers (validity hierarchy, BARS), athletes and historical figures (era-adjusted Z-scores, WAR, JAWS), technologies (ISO/IEC 25010, ATAM, geometric-mean benchmarks), and companies, careers, policies, and creative works.
+- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for canonical categories, weights, normalization formulas, and tie thresholds: products and services (TCO, lab benchmarks, failure clusters, resale), places (cost-of-living-adjusted surplus, safety, transit, climate days), job candidates and providers (validity hierarchy, BARS), athletes and historical figures (era-adjusted Z-scores, WAR, JAWS), technologies, and companies, careers, policies, and creative works.
 - **Before Step 7**, read [`references/report-format.md`](references/report-format.md) for the five report sections.
 
 ## Comparison sequence
@@ -72,10 +73,10 @@ Run these seven steps in order.
 ### Step 1: Frame the options, interview the user, and screen dealbreakers
 
 1. **Draft 2 to 5 finalists**: compare all of 2 to 5 named options. With only 1 named (*"Postgres vs. the best alternatives"*), add the top 1 to 2 archetype rivals. With 6 or more, run a fast **Elimination by Aspects** pass down to 3 or 4 finalists, recording why each was cut.
-2. **Interview** on what flips weights or knockouts: the decision and who it serves; the finalist set; dealbreakers (legal or visa eligibility, budget ceiling, platform compatibility, a latency or compliance floor); the top 2 to 3 priorities; and for canonical debates (historical figures, sports eras, general technology or policy), the era or rules, the yardstick (peak vs. career, today vs. then), and what "better" means.
+2. **Interview** on what flips weights or knockouts: the decision and who it serves; the finalist set; dealbreakers (legal or visa eligibility, budget ceiling, platform compatibility, a latency or compliance floor); the top 2 to 3 priorities; when prices matter, the user's country and currency (confirm any guess from cues like ₱; with none, ask without suggesting one); and for canonical debates (historical figures, sports eras, general technology or policy), the era or rules, the yardstick (peak vs. career, today vs. then), and what "better" means.
 3. **Screen**: mark options that fail a dealbreaker `Disqualified (Knockout)`; strip asymmetrically dominated decoy tiers and flag unavailable phantom options so they do not distort scoring.
 
-**Completion criterion**: The user has confirmed 2 to 5 available finalists, their dealbreakers, and top priorities (or opted out, with default weights stated), and every knocked-out or decoy option is identified.
+**Completion criterion**: The user has confirmed 2 to 5 available finalists, their dealbreakers, top priorities, and (when prices matter) their country and currency (or opted out, with default weights stated), and every knocked-out or decoy option is identified.
 
 ### Step 2: Build categories, weights, and tie thresholds
 
@@ -124,9 +125,9 @@ Score each category across all options before moving to the next, so an early wi
 
 ### Step 7: Write the report in plain language
 
-Write the five sections in `references/report-format.md`: verdict and bottom line, head-to-head scoreboard, category by category, what only one option has with the core trade-off, and who should pick what with what would change the winner.
+Write the five sections in `references/report-format.md`.
 
-**Completion criterion**: All five sections are present, any gap between categories won and overall score is explained, every category and the overall matchup has a result, sources are session-verified, the conditions that would change the winner are exact, and every internal term is replaced by its user-facing label.
+**Completion criterion**: All five sections are present, any gap between categories won and overall score is explained, every category and the overall matchup has a result, sources are session-verified, the conditions that would change the winner are exact, and every internal term is replaced by its user-facing label. A last scan finds no foreign amount alone or first, even in prices quoted from news or stores.
 
 ## Verdict tables
 

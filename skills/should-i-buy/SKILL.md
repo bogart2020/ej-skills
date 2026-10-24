@@ -10,17 +10,18 @@ Evaluate any purchase or financial commitment against **not buying**, real-world
 
 ## Environment adaptation
 
-- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attachments for buyer context. Search for independent lab tests, price history, resale values, and long-term owner failure reports. To save preferences or a decision log, output a copyable snippet following [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` before asking questions. Use Python or shell for exact TCO, APR, NPV, and break-even math. For **3 or more candidate products**, dispatch parallel verification subagents when the harness supports them; handle 1 or 2 inline.
+- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attachments for buyer context. Search for local prices, lab tests, price history, resale values, and owner failure reports. To save preferences or a decision log, output a copyable snippet following [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
+- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` before asking questions. Use Python or shell for exact TCO, APR, NPV, and break-even math. For **3 or more candidate products**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 inline.
 
 ## Plain-language output
 
-The bolded terms and formulas in this skill (TCO, CPU, CPH, $V_{\text{salvage}}$, $N^*$, EBA, Diderot spiral, premortem, Action/Inaction Regret, fundamental vs. means objective) are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
+The bolded terms, formulas, and table's internal terms in this skill are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
-- Show math as labeled plain arithmetic ("\$1,200 up front + \$15/month for 3 years - \$300 resale = \$1,440 total"), never formulas or symbols.
+- Show math as labeled plain arithmetic ("\$1,200 up front + \$540 in fees - \$300 resale = \$1,440 total"), never formulas or symbols.
+- **Money**: never silently default to US dollars. Lead every amount, in tables and prose, with the user's currency; after a converted one, add the original and one dated rate looked up this session ("₱16,800 (US\$299 at ₱56.20 per US\$1, 25 Oct 2026)"), or flag amounts approximate if no rate is current. Prefer local sellers' prices to converted ones.
 - Keep step, tier, and section names internal: describe the work by what it does (*"checking owner complaints after a year of use"*).
-- Explain any unavoidable technical term (APR, a lab certification) in a short clause the first time it appears.
+- Explain any unavoidable technical term (APR, a lab certification) in a short clause on first use.
 
 | Internal term | User-facing label |
 | :--- | :--- |
@@ -42,7 +43,7 @@ Interview the user in rounds before researching, so the verdict fits their real 
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
 3. Find facts yourself (web search, attachments, buyer profile, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
-4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
+4. Recompute the frontier after each answer. A question that depends on another open question (a budget depends on the currency) belongs to a later round.
 5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
 Format every round like so:
@@ -61,14 +62,14 @@ Format every round like so:
 
 ## Reference pointers
 
-- **Before Step 3**, read the matching section of [`references/category-playbooks.md`](references/category-playbooks.md): consumer tech and gear (specs, teardowns, repairability, generation pricing, accessories), subscriptions and courses (compounding cost, active hours, cancellation friction), vehicles, real estate, and financed assets (lifecycle cost, APR, depreciation, liquidity stress), B2B and SaaS (ROI, payback, NPV, build vs. buy), health and credence goods (human RCTs, effect sizes, USP/NSF/NIOSH/UL), or experiences and time-saving services (cost per hour saved, cancellation and weather risk).
+- **Before Step 3**, read the matching section of [`references/category-playbooks.md`](references/category-playbooks.md): consumer tech and gear (specs, teardowns, repairability, generation pricing, accessories), subscriptions and courses (compounding cost, active hours, cancellation friction), vehicles, real estate, and financed assets (lifecycle cost, APR, depreciation, liquidity stress), B2B and SaaS, health and credence goods, or experiences and time-saving services (cost per hour saved, cancellation and weather risk).
 - **Before Step 4**, read [`references/cost-math.md`](references/cost-math.md) for the TCO, cost-per-use, break-even, and opportunity-cost formulas.
 - **Before Step 6**, read [`references/report-format.md`](references/report-format.md) for the report sections.
 - **When saving a profile**, read [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
 
 ## Proportional rigor
 
-Scale to the commitment's 3-year cash outflow:
+Scale to the commitment's 3-year cash outflow (in US dollars; convert to the user's currency):
 
 - **Everyday** (under \$100, one-time): street price, 50%-deflated cost per use, top failure mode, and a comparison against keeping what the user has or a proven budget pick, in a concise report.
 - **Standard** (\$100 to \$2,500, or any subscription): full TCO, resale, deflated cost per use or hour, independent tests and 1-to-3 star failure audit, add-on check, and 12-month premortem.
@@ -80,7 +81,7 @@ Run these six steps in order.
 
 ### Step 1: Load buyer context and interview the user
 
-1. Check the buyer profile, memory, and prior turns for currency, tax region, financial guardrails, owned gear and ecosystem, active subscriptions, and past purchase lessons.
+1. Check the buyer profile, memory, prior turns, and cues (₱, a city, a store; with none, ask without suggesting one) for country and currency, tax region, financial guardrails, owned gear and ecosystem, active subscriptions, and past purchase lessons.
 2. Separate the **fundamental objective** (the job to be done, such as sleeping through street noise) from the **means objective** (the specific product).
 3. Settle the **5 verdict-flipping variables**:
    - **Fundamental objective**: the problem to solve and why now.
@@ -90,7 +91,7 @@ Run these six steps in order.
    - **Dealbreakers**: physical size, OS or ecosystem fit, battery platform, safety, offline use, local warranty or repairability.
 4. Run **Interview rounds** on these in everyday words (*"How often will you realistically use it?"*); context-answered variables become quick confirmations.
 
-**Completion criterion**: The user has confirmed all 5 variables (or opted out, with assumptions stated).
+**Completion criterion**: The user has confirmed their country and currency and all 5 variables (or opted out, with assumptions stated).
 
 ### Step 2: Add the not-buying options and apply dealbreakers
 
@@ -114,7 +115,7 @@ Route each claim by type:
 
 Using `references/cost-math.md`, scaled to the rigor tier: TCO over $T$ net of realistic resale, cost per use or per hour at both stated and **50% of stated usage**, break-even uses against any rent or pay-per-use option, cost per net hour saved for time-saving purchases, and the opportunity cost of the same money.
 
-**Completion criterion**: TCO, 50%-deflated cost per use or hour, any applicable break-even or cost per hour saved, and opportunity cost are calculated from verified numbers.
+**Completion criterion**: Every metric above is calculated from verified numbers in the user's currency.
 
 ### Step 5: Debias and run a 12-month premortem
 
@@ -129,7 +130,7 @@ Using `references/cost-math.md`, scaled to the rigor tier: TCO over $T$ net of r
 
 Pick one label from the **Verdict table** and write the report in plain language using `references/report-format.md`.
 
-**Completion criterion**: The report gives one verdict, a side-by-side cost table against the best not-buying option, session-verified sources, and exact conditions that would change the verdict, with every internal term replaced by its user-facing label.
+**Completion criterion**: The report gives one verdict, a side-by-side cost table against the best not-buying option, session-verified sources, and exact conditions that would change the verdict, with every internal term replaced by its user-facing label. A last scan finds no foreign amount alone or first, even in prices quoted from news or stores.
 
 ## Verdict table
 

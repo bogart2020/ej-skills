@@ -12,7 +12,7 @@ Reference for reading, creating, and updating an optional persistent traveler pr
 
 1. **Zero-config by default**: Never block trip planning or an itinerary audit because no profile file exists. Gather only the context needed for the current trip via Step 1.
 2. **Opt-in writes only**: Create or update `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` only after delivering the readiness verdict and confirming the user wants to save the newly established preferences or trip post-mortem entry.
-3. **Keep entries compact, durable, and privacy-safe**: Store only durable facts that affect future routing, entry gates, pacing, and accommodation choices (passport nationality, validity year/month, trusted traveler programs, IDP status, home airport/station, walking ceiling, circadian style, dietary/medical rules, and past trip lessons). Never store full passport numbers, KTN/Redress numbers, PNR confirmation codes, credit card numbers, or exact home street addresses.
+3. **Keep entries compact, durable, and privacy-safe**: Store only durable facts that affect future routing, entry gates, pacing, and accommodation choices (passport nationality, validity year/month, trusted traveler programs, IDP status, home airport/station and currency, walking ceiling, circadian style, dietary/medical rules, and past trip lessons). Never store full passport numbers, KTN/Redress numbers, PNR confirmation codes, credit card numbers, or exact home street addresses.
 
 ## Recommended schema (`traveler-profile.md`)
 
@@ -28,6 +28,7 @@ Reference for reading, creating, and updating an optional persistent traveler pr
 
 ## Home Hub & Transit Preferences
 - **Home Airport & Rail Hub**: [e.g., SFO / MNL / LHR]
+- **Home Currency**: [e.g., PHP (₱) / USD ($) / GBP (£)] (budgets and totals are shown in this currency)
 - **Luggage Baseline**: [e.g., Carry-on + personal item only / 1 checked spinner + daypack]
 - **Transit Mode Preferences**: [e.g., High-speed rail > short-haul flights under 4 hrs; avoid overnight buses; motion-sickness sensitivity on rough ferries/winding roads]
 - **Loyalty & Card Protections**: [e.g., Primary rental CDW via Chase Sapphire Reserve; Star Alliance Gold / Oneworld Emerald]

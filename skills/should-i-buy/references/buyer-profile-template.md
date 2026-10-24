@@ -20,9 +20,9 @@ Reference for reading, creating, and updating an optional persistent buyer profi
 # Buyer Profile
 
 ## Baseline & Region
-- **Currency**: USD ($)
+- **Country & Currency**: [e.g., Philippines, PHP (₱) / United States, USD ($)] (every price is shown in this currency)
 - **Region & Tax Baseline**: [Country / State / VAT or sales tax %]
-- **Net Hourly Time Valuation**: $[X]/hr (used for Cost per Net Hour Saved calculations)
+- **Net Hourly Time Valuation**: [X]/hr in your currency (used for Cost per Net Hour Saved calculations)
 
 ## Financial Guardrails
 - **Default Opportunity-Cost Benchmark**: [e.g., 4.5% HYSA / 7% real index return / 22% APR debt payoff]
@@ -42,7 +42,7 @@ Reference for reading, creating, and updating an optional persistent buyer profi
 ## Active Subscriptions
 | Service | Billing Cost | Renewal Cadence | Primary Use / Audit Notes |
 | :--- | :--- | :--- | :--- |
-| [Example Service] | $[X]/mo | Monthly | [Active daily / candidate for rotation] |
+| [Example Service] | [X]/mo | Monthly | [Active daily / candidate for rotation] |
 
 ## Purchase Decision Log & Post-Mortems
 | Date | Item Evaluated | Verdict Assigned | Action Taken | 6-Month Post-Mortem / Lesson |

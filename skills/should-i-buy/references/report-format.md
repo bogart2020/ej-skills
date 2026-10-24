@@ -2,6 +2,8 @@
 
 Section layout for Step 6 of [`SKILL.md`](../SKILL.md). Read it before writing the report.
 
+**Money in every section**: lead every amount with the user's currency, in tables and sentences alike, including prices quoted from foreign sources and costs mentioned in passing. Never write a foreign amount alone, even when quoting a source: write "the price rose from ₱2,800 to ₱3,900 (US\$50 to US\$70)", not "rose from US\$50 to US\$70". If no current exchange rate was found, say so once above the first table and mark converted amounts approximate.
+
 ## 1. Verdict
 
 - **Verdict**: `[Buy | Buy With Conditions / Wait | Buy Alternative Instead | Rent / Borrow / Trial First | Keep Current / Repair | Do Not Buy]`
@@ -19,7 +21,7 @@ A side-by-side Markdown table comparing **This Item**, the **Best Alternative** 
 
 ## 4. What Would Change the Verdict, and Next Steps
 
-- **What would change the verdict**: exact numbers or conditions (for example, *"Switches from `Do Not Buy` to `Buy` if the price drops below \$X or you'd use it more than Y times a month"*).
+- **What would change the verdict**: exact numbers or conditions (for example, *"Switches from `Do Not Buy` to `Buy` if the price drops below [price] or you'd use it more than Y times a month"*).
 - **Next steps**: if buying or trying, the most to pay, where and which version to buy, and a checklist to test it during the return window; if skipping or waiting, the exact price alert or trigger to set.
 
 ## 5. Save for Next Time (when applicable)

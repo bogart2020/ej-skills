@@ -10,15 +10,16 @@ Build or audit any itinerary and deliver one **readiness verdict** with the cond
 
 ## Environment adaptation
 
-- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached bookings or screenshots for traveler context. Search the web to verify entry rules, opening hours, weekly closures, live transit times, and local dining directories. To save preferences, output a copyable snippet following [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` before asking questions. Use Python or shell for exact door-to-door budgets, true nightly cost, rail-pass break-even, and currency math. For **3 or more cities, candidate bases, or multi-week legs**, dispatch parallel verification subagents when the harness supports them; handle 1 or 2 cities inline.
+- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached bookings or screenshots for traveler context. Search the web to verify entry rules, hours, closures, transit times, and local dining guides. To save preferences, output a copyable snippet following [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
+- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` before asking questions. Use Python or shell for exact door-to-door budgets, true nightly cost, rail-pass break-even, and currency math. For **3 or more cities, candidate bases, or multi-week legs**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 cities inline.
 
 ## Plain-language output
 
-The bolded terms and formulas in this skill (true nightly cost, door-to-door transit, Hotel Change Tax, Fixed Anchor, Space-Time Prism, Single-PNR, MCT, IRROPs, premortem, Peak-End Rule) are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
+The bolded terms, formulas, and table's internal terms in this skill are your working vocabulary. Everything the user sees speaks everyday language a non-specialist understands on first read:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
-- Show math as labeled plain arithmetic ("\$180 room + \$25 resort fee + \$12 city tax + \$20 taxis = \$237 a night"), never formulas or symbols.
+- Show math as labeled plain arithmetic ("\$180 room + \$37 fees and taxes + \$20 taxis = \$237 a night"), never formulas or symbols.
+- **Money**: never silently default to US dollars. Lead every cost, in tables and prose, with the user's currency and add the original in local currency when it differs ("₱2,850 (¥7,500)"). State one dated rate per currency from this session (or flag amounts approximate if none is current), and total budgets in the user's currency.
 - Keep step, tier, and gate names internal: describe the work by what it does (*"checking your passport dates for Europe"*).
 - Explain any unavoidable technical term (ETIAS, an IDP) in a short clause the first time it appears.
 
@@ -81,14 +82,14 @@ Run these six steps in order.
 
 ### Step 1: Load traveler context and interview the user
 
-1. Check the traveler profile, memory, and prior turns for passport nationality and validity, home hub, walking ceiling, luggage style, dietary/medical rules, and past trip lessons.
+1. Check the traveler profile, memory, prior turns, and cues (₱, a home airport; with none, ask without suggesting one) for passport nationality and validity, home country and currency, home hub, walking ceiling, luggage style, dietary/medical rules, and past trip lessons.
 2. Settle the **5 verdict-flipping variables**:
    - **Dates and anchors**: exact dates or season, nights on the ground, and inbound/outbound times (they bound Day 1, the final day, weather, and holiday closures).
    - **Party, mobility, and luggage**: who is traveling (solo, couple, stroller, seniors), realistic daily walking, carry-on vs. heavy checked bags.
-   - **Budget and transit style**: nightly or total ceiling, public transit vs. car or private transfers, preferred neighborhood pace.
+   - **Budget and transit style**: nightly or total ceiling in their home currency, public transit vs. car or private transfers, preferred neighborhood pace.
    - **Peaks and anti-goals**: the top 2 to 3 experiences, and explicit dislikes (crowded checklist museums, pre-9:00 AM starts, 1-night hotel hops).
    - **Entry, medical, and dietary knockouts**: passport nationality and issue/expiry dates, severe allergies or dietary laws, altitude or heat sensitivity.
-3. Run **Interview rounds** on these in everyday words (*"How much walking per day feels comfortable?"*), raising any date, visa, or safety warning you can already see in the first round.
+3. Run **Interview rounds** on these in everyday words, raising any date, visa, or safety warning you can already see in the first round.
 
 **Completion criterion**: The user has confirmed all 5 variables (or opted out, with assumptions stated).
 
@@ -100,9 +101,9 @@ Using `references/planning-rules.md` section 1, check passport validity (includi
 
 ### Step 3: Cluster geography, choose bases, and compute true nightly cost
 
-Using `references/planning-rules.md` section 2: group stops into walkable clusters with unbroken night-to-morning continuity, price every hotel change at 2.5 to 4.5 lost hours and turn 1-night hops into day trips when one-way transit is under 90 minutes, and compare bases on all-in nightly cost including fees, taxes, parking, and getting around.
+Using `references/planning-rules.md` section 2: group stops into walkable clusters with unbroken night-to-morning continuity, price every hotel change in lost hours and turn short 1-night hops into day trips, and compare bases on all-in nightly cost including fees, taxes, parking, and getting around.
 
-**Completion criterion**: Stops are grouped into contiguous clusters with unbroken location continuity, 1-night hops are pruned or justified, and base comparisons show true nightly cost alongside daily commute time.
+**Completion criterion**: Stops form contiguous clusters, 1-night hops are pruned or justified, and base comparisons show true nightly cost in the user's currency alongside daily commute time.
 
 ### Step 4: Compute door-to-door transit and connection buffers
 
@@ -142,5 +143,5 @@ Using `references/planning-rules.md` section 4: cap each half-day at 1 main plan
 ## Guardrails
 
 1. **Verified facts only**: never invent routes, timetables, hours, or prices from memory. Verify current hours, closure days, entry rules, and transit times in-session, and state the source and date on time-sensitive facts.
-2. **Official portals**: link visas, ETAs (ESTA, UK ETA, ETIAS), rail tickets, and timed entry (Alhambra, Uffizi, Louvre, Ghibli, Recreation.gov) to the official government or venue site, never resellers.
-3. **No sycophantic pacing**: when a draft is overpacked (*"5 days for Tokyo, Kyoto, Osaka, Hiroshima, and Hakone"*), quantify the hotel-change time and transit share of waking hours first, assign `Cut Stops / Slow Down`, and show a consolidated alternative with its trade-offs.
+2. **Official portals**: link visas, ETAs (ESTA, UK ETA, ETIAS), rail tickets, and timed entry (Alhambra, Louvre, Ghibli) to the official government or venue site, never resellers.
+3. **No sycophantic pacing**: when a draft is overpacked (*"5 days for Tokyo, Kyoto, Osaka, and Hakone"*), quantify the hotel-change time and transit share of waking hours first, assign `Cut Stops / Slow Down`, and show a consolidated alternative with its trade-offs.

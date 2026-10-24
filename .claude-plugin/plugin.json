@@ -1,6 +1,6 @@
 {
   "name": "ej-skills",
-  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head multi-criteria comparisons, financial buying decisions, and stress-tested trip planning across all AI platforms.",
+  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head multi-criteria comparisons, Lightroom Mobile reference photo replication, financial buying decisions, and stress-tested trip planning across all AI platforms.",
   "author": {
     "name": "bogart2020",
     "url": "https://github.com/bogart2020"
@@ -12,8 +12,12 @@
     "compare",
     "head-to-head",
     "fact-check",
+    "lightroom-match",
     "should-i-buy",
     "trip-planner",
+    "lightroom-mobile",
+    "color-grading",
+    "photo-editing",
     "buying-decision",
     "travel-planning",
     "itinerary",
@@ -28,6 +32,7 @@
   "skills": [
     "./skills/compare",
     "./skills/fact-check",
+    "./skills/lightroom-match",
     "./skills/should-i-buy",
     "./skills/trip-planner"
   ]

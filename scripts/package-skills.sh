@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Packages each skill under skills/<skill-name>/ into <skill-name>.zip at the
-# repository root for direct upload into Claude Desktop:
+# Packages each skill under skills/<skill-name>/ into dist/<skill-name>.zip (git-ignored)
+# for direct upload into Claude Desktop:
 #   Claude Desktop -> Settings -> Capabilities -> Skills -> Upload skill
 #
 # Excludes harness-specific metadata (such as agents/openai.yaml and .DS_Store)
@@ -17,7 +17,7 @@ for skill_dir in */; do
     continue
   fi
 
-  out_zip="$REPO/${skill_name}.zip"
+  mkdir -p "$REPO/dist"; out_zip="$REPO/dist/${skill_name}.zip"
   rm -f "$out_zip"
 
   zip -r -q "$out_zip" "$skill_name" \

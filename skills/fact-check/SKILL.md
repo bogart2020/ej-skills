@@ -1,20 +1,17 @@
 ---
 name: fact-check
 description: Deep-research and verify factual accuracy against primary sources. Use when investigating whether a topic, claim, or rumour is true, auditing a document, draft, file, or URL for factual errors and citation entailment, or stress-testing a prior statement in the conversation.
-argument-hint: "[topic, claim, file, or URL]"
 license: MIT
 ---
 
 # Fact Check
 
-Verify claims by interviewing the user on scope and purpose, decomposing the target into **atomic claims**, testing each with paired primary-source and **falsification queries**, and tracing every secondary report back to its **Tier 1 primary source**.
+Verify claims by splitting the target into **atomic claims**, testing each with primary-source and **falsification queries**, and tracing every report back to its **Tier 1 source**.
 
 ## Environment adaptation
 
-Adapt tool use to the active runtime:
-
-- **Chat environment** (Claude Desktop, web chat): verify claims using web search, URL fetching, and any attached documents or images. Run the verification sequence inline.
-- **Code and CLI environment** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor): combine web search with local codebase inspection (`grep`, file reads, `git log`), shell/Python execution for quantitative checks, and test runs. When auditing **4 or more atomic claims** or investigating a broad topic in a harness that supports subagents, dispatch parallel verification subagents so raw search pages stay out of the main context window; handle 1 to 3 claims inline.
+- **Chat** (Claude Desktop, web): verify with web search, URL fetching, and any attached documents or images, inline.
+- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor): combine web search with local inspection (`grep`, file reads, `git log`), shell or Python for quantitative checks, and test runs. For **4 or more claims** or a broad topic, dispatch parallel verification subagents when the harness supports them; handle 1 to 3 inline.
 
 ## Plain-language output
 
@@ -38,11 +35,11 @@ The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, falsification, 
 
 Interview the user in rounds before researching, so the check answers the question they actually care about.
 
-1. Ask at least one round on every run. Skip the interview only when the user explicitly says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
-2. The **frontier** is every open question whose prerequisites are already settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word each question so "yes" accepts your recommendation. Then stop and wait for the user's answers.
-3. Find facts yourself (web search, the attached document, conversation history, memory). Ask the user only for decisions, preferences, and facts only they know. When existing context already answers a question, turn it into a quick confirmation with that answer as your recommendation.
-4. Each answer can open new questions: recompute the frontier and ask the next round. A question that depends on another question still open in this round belongs to a later round.
-5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin research once the user confirms.
+1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
+2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
+3. Find facts yourself (web search, the attached document, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
+4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
+5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
 Format every round like so:
 
@@ -60,14 +57,7 @@ Format every round like so:
 
 ## Domain playbooks
 
-When a claim falls into one of the specialized domains below, read [`references/domain-playbooks.md`](references/domain-playbooks.md) before running Step 3:
-
-| Claim domain | What `references/domain-playbooks.md` provides |
-| :--- | :--- |
-| **Software, APIs, and benchmarks** | Version-pinned docs lookup, changelog/release-note tracing, benchmark methodology auditing |
-| **Science, medicine, and academic papers** | DOI/arXiv verification, study hierarchy, sample-size and p-hacking checks, retraction checks |
-| **Economics, finance, and statistics** | Denominator/base-rate checks, inflation/seasonality adjustments, regulatory filing (`10-K`/`8-K`) tracing |
-| **Quotes, history, and viral media** | Earliest-appearance tracing, misattribution traps, context-stripping checks |
+**Before Step 3**, when a claim falls in one of these domains, read its section of [`references/domain-playbooks.md`](references/domain-playbooks.md): software, APIs, and benchmarks (version-pinned docs, changelogs, benchmark methodology); science, medicine, and papers (DOI/arXiv, study hierarchy, sample size, p-hacking, retractions); economics, finance, and statistics (denominators, base rates, inflation and seasonality, `10-K`/`8-K` filings); or quotes, history, and viral media (earliest appearance, misattribution, stripped context).
 
 ## Verification sequence
 
@@ -104,12 +94,12 @@ Run **Interview rounds** on these verdict-shaping questions, showing the numbere
 
 Route each atomic claim to the tool that owns its ground truth:
 
-- **Codebase or local repository claims**: inspect the source files, git history, or run the test/command directly.
-- **Mathematical, percentage, or statistical claims**: compute the exact figures in Python or shell (`python3 -c ...`) when a code tool is available, or write out the explicit arithmetic step by step.
-- **World, documentation, or literature claims**: run **paired search queries** for every claim:
-  1. **Neutral primary-source query**: strip adjectives and presuppositions (`"Bun vs Node.js HTTP throughput methodology"` rather than `"Why Bun is 4x faster than Node.js"`), targeting official documentation, specs, filings, or primary datasets.
-  2. **Popperian falsification query**: actively search for counter-evidence, errata, deprecations, retractions, or methodological critiques (`"<topic or claim>" errata OR deprecated OR criticism OR limitation OR retraction`).
-  3. **Temporal anchor**: include the relevant year, date, or version number in queries for time-sensitive facts.
+- **Code or repository claims**: inspect the files, git history, or run the test or command.
+- **Math and statistics**: compute exact figures in Python or shell, or write the arithmetic out step by step.
+- **World, documentation, or literature claims**: run **paired queries** for every claim:
+  1. **Neutral primary-source query**, stripped of presuppositions (`"Bun vs Node.js HTTP throughput methodology"`, not `"Why Bun is 4x faster"`), aimed at official docs, specs, filings, or datasets.
+  2. **Falsification query** for counter-evidence (`"<claim>" errata OR deprecated OR criticism OR limitation OR retraction`).
+  3. **Temporal anchor**: the year, date, or version in queries for time-sensitive facts.
 
 **Completion criterion**: Every atomic claim in scope has been tested by both a primary-source retrieval pass and an explicit falsification pass (or direct local tool execution for code and math).
 
@@ -131,7 +121,7 @@ Assign each atomic claim one categorical label from the **Verdict taxonomy** bel
 
 ### Step 6: Report in plain language
 
-Render the Fact-Check Report inline in the plain language set by **Plain-language output**, using three sections (write to a Markdown file on disk only when the user asks to save a file):
+Render the report inline in plain language, in three sections (write a file only when the user asks):
 
 1. **Bottom Line**:
    - **Scorecard**: `X of Y claims hold up`, plus how many came out `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`.
@@ -155,10 +145,10 @@ Render the Fact-Check Report inline in the plain language set by **Plain-languag
 
 | Tier | Category | Examples | Evidentiary role |
 | :--- | :--- | :--- | :--- |
-| **Tier 1** | **Primary & authoritative** | Official specs and technical docs (RFCs, W3C, MDN, vendor docs for their own API), source code and git history, peer-reviewed empirical studies, court transcripts, SEC/regulatory filings (`10-K`, `8-K`), official government datasets (BLS, Census, WHO), verbatim primary recordings | **Terminal proof.** Sufficient to verify or refute a claim within its domain. |
-| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, established newsrooms of record citing named sources, peer-reviewed systematic reviews and meta-analyses, authoritative textbooks | **Corroborating proof**, or fallback proof when Tier 1 is paywalled or offline (state explicitly that Tier 1 was not directly inspected). |
-| **Tier 3** | **Community & tertiary** | Wikipedia articles, Stack Overflow answers, GitHub issue threads, personal engineering blogs, corporate press releases (for competitor comparisons) | **Discovery only.** Use to locate the Tier 1 footnote or link, then verify the Tier 1 source directly. |
-| **Tier 4** | **Unverified / synthetic** | SEO content farms, AI-generated summary sites, anonymous social media posts, scraped wiki mirrors, unsourced marketing copy | **Disqualified.** If a claim appears only in Tier 4 sources, mark it `Unverifiable` or `Refuted`. |
+| **Tier 1** | **Primary** | Official specs and docs (RFCs, W3C, vendor docs for their own API), source code and git history, peer-reviewed studies, court transcripts, `10-K`/`8-K` filings, government datasets (BLS, Census, WHO), primary recordings | **Terminal proof** within its domain. |
+| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, newsrooms of record citing named sources, systematic reviews and meta-analyses, authoritative textbooks | **Corroboration**, or fallback when Tier 1 is unreachable (say so explicitly). |
+| **Tier 3** | **Community** | Wikipedia, Stack Overflow, GitHub issues, personal blogs, press releases | **Discovery only**: use it to find the Tier 1 source, then check that directly. |
+| **Tier 4** | **Unverified / synthetic** | Content farms, AI summary sites, anonymous posts, scraped mirrors, unsourced marketing | **Disqualified**: a claim found only here is `Unverifiable` or `Refuted`. |
 
 ### Verdict taxonomy
 

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Lightroom Match"
+  short_description: "Match a reference photo's look in Lightroom Mobile"

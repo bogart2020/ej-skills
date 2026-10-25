@@ -11,7 +11,7 @@ Run a rigorous head-to-head comparison of any options: settle the user's priorit
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached files for priorities and constraints. Use web search for symmetric primary and independent data on every option.
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): when the comparison concerns the active project, read relevant workspace files (`package.json`, architecture docs, notes) before asking. Use Python or shell for exact weighted scores, geometric means, purchasing power, TCO, and Z-scores. For **3 or more options**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 2 inline.
+- **Code and CLI**: when the comparison concerns the active project, read relevant workspace files (`package.json`, architecture docs, notes) before asking. Use Python or shell for exact weighted scores, geometric means, purchasing power, TCO, and Z-scores. For **3 or more options**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 2 inline.
 
 ## Plain-language output
 
@@ -25,16 +25,13 @@ The bolded terms, formulas, and table's internal terms in this skill are your wo
 
 | Internal term | User-facing label |
 | :--- | :--- |
-| Contender | Option |
 | Knockout / Veto ($v_j$) | Dealbreaker |
 | Category weight ($w_j$) | How much it matters (%) |
 | Weighted Composite Score ($U$) | Overall score (out of 10) |
 | Category Win-Loss-Tie Record | Categories won |
-| Separate-Evaluation Reality Check | Will you notice it day to day? |
 | Normalized evidence | Like-for-like evidence |
 | Non-alignable differentiators | What only one option has |
 | Even Swap | The core trade-off, in plain units |
-| Crossover thresholds | What would change the winner |
 | TCO / RPP / Z-score / GeoMean | Total cost over N years / cost-of-living-adjusted pay / era-adjusted stats / average across benchmarks |
 
 ## Interview rounds
@@ -43,11 +40,12 @@ Interview the user in rounds before researching, so the comparison is weighted f
 
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state the default priorities and weights in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
-3. Find facts yourself (web search, attached files, workspace, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
+3. Find facts yourself (web search, attached files, workspace, history, memory). Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
 4. Recompute the frontier after each answer. A question that depends on another open question (a budget depends on the currency) belongs to a later round.
-5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
+5. "Yes", "idk", or a skipped question accepts your recommendation. When the user hands you the choice ("you decide", "whatever you think"), adopt your recommendations for every open question, list them as assumptions, and start without another round.
+6. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
-Format every round like so:
+Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line between questions:
 
 ```
 ❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
@@ -63,7 +61,7 @@ Format every round like so:
 
 ## Reference pointers
 
-- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for canonical categories, weights, normalization formulas, and tie thresholds: products and services (TCO, lab benchmarks, failure clusters, resale), places (cost-of-living-adjusted surplus, safety, transit, climate days), job candidates and providers (validity hierarchy, BARS), athletes and historical figures (era-adjusted Z-scores, WAR, JAWS), technologies, and companies, careers, policies, and creative works.
+- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for its canonical categories, weights, like-for-like formulas, and tie thresholds: products and services, places, job candidates and providers, athletes and historical figures, technologies, or companies, careers, policies, and creative works.
 - **Before Step 7**, read [`references/report-format.md`](references/report-format.md) for the five report sections.
 
 ## Comparison sequence
@@ -119,7 +117,7 @@ Score each category across all options before moving to the next, so an early wi
 1. Tally each option's category wins (`Decisive` vs. `Narrow Edge`) and ties.
 2. Compute the weighted score $U(x_i) = \sum_j w_j s_{ij}$ out of 10.
 3. Check for any veto. When the weighted winner took fewer categories than the runner-up, note why for the report: category count never overrides weighted score (two decisive 35% wins beat three narrow 10% wins).
-4. Assign one entry from the **Overall verdict table**.
+4. Assign exactly one row of the **Overall verdict table**. The report prints that row's **Show the user** text once and never mixes in another row's wording.
 
 **Completion criterion**: Every option has a win-loss-tie record and a weighted score, vetoes are identified, any category-count vs. score gap is reconciled, and one overall verdict is assigned.
 
@@ -147,6 +145,4 @@ Write the five sections in `references/report-format.md`.
 
 ## Guardrails
 
-1. **Score across before aggregating**: finish category $j$ for every option before category $j+1$.
-2. **Weighted score beats category count**: always compute $U$ and explain any divergence from the raw win count.
-3. **Session-verified evidence only**: cite only URLs, benchmarks, filings, and datasets retrieved in this session (or provided by the user), with source name and date or version.
+1. **Session-verified evidence only**: cite only URLs, benchmarks, filings, and datasets retrieved in this session (or provided by the user), with source name and date or version.

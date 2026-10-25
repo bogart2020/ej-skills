@@ -11,7 +11,7 @@ Verify claims by splitting the target into **atomic claims**, testing each with 
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, web): verify with web search, URL fetching, and any attached documents or images, inline.
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor): combine web search with local inspection (`grep`, file reads, `git log`), shell or Python for quantitative checks, and test runs. For **4 or more claims** or a broad topic, dispatch parallel verification subagents when the harness supports them; handle 1 to 3 inline.
+- **Code and CLI**: combine web search with local inspection (`grep`, file reads, `git log`), shell or Python for quantitative checks, and test runs. For **4 or more claims** or a broad topic, dispatch parallel verification subagents when the harness supports them; handle 1 to 3 inline.
 
 ## Plain-language output
 
@@ -37,11 +37,12 @@ Interview the user in rounds before researching, so the check answers the questi
 
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
-3. Find facts yourself (web search, the attached document, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
+3. Find facts yourself (web search, the attached document, history, memory). Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
 4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
-5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
+5. "Yes", "idk", or a skipped question accepts your recommendation. When the user hands you the choice ("you decide", "whatever you think"), adopt your recommendations for every open question, list them as assumptions, and start without another round.
+6. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
-Format every round like so:
+Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line between questions:
 
 ```
 ❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
@@ -57,7 +58,7 @@ Format every round like so:
 
 ## Domain playbooks
 
-**Before Step 3**, when a claim falls in one of these domains, read its section of [`references/domain-playbooks.md`](references/domain-playbooks.md): software, APIs, and benchmarks (version-pinned docs, changelogs, benchmark methodology); science, medicine, and papers (DOI/arXiv, study hierarchy, sample size, p-hacking, retractions); economics, finance, and statistics (denominators, base rates, inflation and seasonality, `10-K`/`8-K` filings); or quotes, history, and viral media (earliest appearance, misattribution, stripped context).
+**Before Step 3**, when a claim falls in one of these domains, read its section of [`references/domain-playbooks.md`](references/domain-playbooks.md): software, APIs, and benchmarks; science, medicine, and papers; economics, finance, and statistics; or quotes, history, and viral media.
 
 ## Verification sequence
 
@@ -109,13 +110,13 @@ Defeat **citogenesis** (circular reporting where multiple secondary blogs or new
 
 - **Trace to the root node**: five articles citing the same press release, blog post, or unnamed study count as a single unverified thread. Follow hyperlinks, footnotes, DOIs, and named studies backward until you inspect the **Tier 1 primary source** directly.
 - **Read laterally**: when a claim rests on an unfamiliar domain, organization, benchmark author, or study, run an external search about the source itself (`"<source or author>" funding OR reputation OR criticism OR conflict of interest`) rather than reading the page's self-authored "About" section.
-- Grade every source against the **Source hierarchy** below. Use Tier 3 sources (Wikipedia, Stack Overflow, engineering blogs, press releases) strictly as discovery indices to locate Tier 1 footnotes.
+- Grade every source against the **Source hierarchy** below. When a search surfaces Wikipedia or another Tier 3 page, open the reference it footnotes for that fact and cite that; if none opens, cite Britannica or a newsroom of record.
 
 **Completion criterion**: Every atomic claim's evidence chain terminates at a verified **Tier 1** primary source, or explicitly records why Tier 1 is inaccessible and documents independent **Tier 2** corroboration.
 
 ### Step 5: Assign calibrated verdicts
 
-Assign each atomic claim one categorical label from the **Verdict taxonomy** below (`Verified`, `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`), paired with the highest source tier verified (`Tier 1` or `Tier 2`). Express certainty through the categorical verdict and source tier rather than invented single-claim confidence percentages.
+Assign each atomic claim one categorical label from the **Verdict taxonomy** below (`Verified`, `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`), paired with the highest source tier verified (`Tier 1` or `Tier 2`). Never invent confidence percentages.
 
 **Completion criterion**: Every atomic claim in scope carries one categorical verdict and its verified source tier.
 
@@ -129,13 +130,13 @@ Render the report inline in plain language, in three sections (write a file only
 2. **Claim by Claim**:
    For each numbered claim:
    - **Claim**: the claim spelled out in full (plus the original quote and its location when checking a text).
-   - **Verdict**: the verdict label, then how strong the backing is in plain words: "checked against the original source" or "based on trusted secondhand reporting; the original was not reachable".
+   - **Verdict**: the verdict label word for word, then how strong the backing is in plain words: "checked against the original source" or "based on trusted secondhand reporting; the original was not reachable".
    - **Why**: a short explanation of what the source shows, including anything the search for counter-evidence turned up.
    - **Source**: `[Source Title, Author/Org (YYYY-MM-DD or Version)](URL)` followed by **the exact quote that proves it** (or the exact file and line range `[file.ext](file:///path#L10-L20)` for local code).
 3. **Suggested Fixes** (include whenever any claim is `Refuted`, `Mixed / Needs Context`, or `Outdated`):
    - Provide exact, ready-to-paste replacement text that fixes the error or adds the missing context.
 
-**Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; every flawed claim has a suggested fix; and the report reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
+**Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; no proof link is Wikipedia or another Tier 3 page; every flawed claim has a suggested fix; and the report reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
 ---
 
@@ -146,8 +147,8 @@ Render the report inline in plain language, in three sections (write a file only
 | Tier | Category | Examples | Evidentiary role |
 | :--- | :--- | :--- | :--- |
 | **Tier 1** | **Primary** | Official specs and docs (RFCs, W3C, vendor docs for their own API), source code and git history, peer-reviewed studies, court transcripts, `10-K`/`8-K` filings, government datasets (BLS, Census, WHO), primary recordings | **Terminal proof** within its domain. |
-| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, newsrooms of record citing named sources, systematic reviews and meta-analyses, authoritative textbooks | **Corroboration**, or fallback when Tier 1 is unreachable (say so explicitly). |
-| **Tier 3** | **Community** | Wikipedia, Stack Overflow, GitHub issues, personal blogs, press releases | **Discovery only**: use it to find the Tier 1 source, then check that directly. |
+| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, newsrooms of record citing named sources, systematic reviews and meta-analyses, authoritative textbooks and edited encyclopedias (Britannica) | **Corroboration**, or fallback when Tier 1 is unreachable (say so explicitly). |
+| **Tier 3** | **Community** | Wikipedia, Stack Overflow, GitHub issues, personal blogs, press releases | **Discovery only** (see Step 4), never the proof. |
 | **Tier 4** | **Unverified / synthetic** | Content farms, AI summary sites, anonymous posts, scraped mirrors, unsourced marketing | **Disqualified**: a claim found only here is `Unverifiable` or `Refuted`. |
 
 ### Verdict taxonomy

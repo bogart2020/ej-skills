@@ -24,7 +24,7 @@ Section layout for Step 6 of [`SKILL.md`](../SKILL.md). Read it before writing t
 
 ## 4. What to Book When, and What Would Change the Verdict
 
-- **Booking checklist**: bookings grouped into `90+ Days Out`, `60 to 30 Days Out`, `14 to 7 Days Out`, and `48 Hours / Walk-Up`, each linked to the official booking site.
+- **Booking checklist**: when any before-you-go check is a blocker, the first item fixes it and every non-refundable booking or timed ticket waits until it clears. Then bookings grouped into `90+ Days Out`, `60 to 30 Days Out`, `14 to 7 Days Out`, and `48 Hours / Walk-Up`, each linked to the official booking site.
 - **What would change the verdict**: exact conditions (for example, *"Switches from `Cut Stops / Slow Down` to `Ready to Book` if you add 3 nights or visit Nara as a day trip from Kyoto instead of moving hotels"*).
 
 ## 5. Save for Next Time (when applicable)

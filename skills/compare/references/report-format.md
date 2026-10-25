@@ -6,7 +6,7 @@ Section layout for Step 7 of [`SKILL.md`](../SKILL.md). Read it before writing t
 
 ## 1. Verdict & Bottom Line
 
-- **Verdict**: the user-facing label of the overall verdict (the **Show the user** column of the overall verdict table in `SKILL.md`).
+- **Verdict**: the first line of the report, holding exactly one **Show the user** label from the overall verdict table in `SKILL.md`, written once. Never pair two labels (not "Clear winner" plus "Best for most people").
 - **Scorecard**: each option's categories won (clear wins, slight edges, ties) next to its overall score out of 10.
 - **Bottom line**: 2 to 3 decisive sentences on why the winner won (or why it is too close to call). When the winner took fewer categories than the runner-up, explain in one plain sentence that it won the categories that matter most to the user.
 

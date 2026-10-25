@@ -11,7 +11,7 @@ Evaluate any purchase or financial commitment against **not buying**, real-world
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, web): check history, project instructions, memory, and attachments for buyer context. Search for local prices, lab tests, price history, resale values, and owner failure reports. To save preferences or a decision log, output a copyable snippet following [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` before asking questions. Use Python or shell for exact TCO, APR, NPV, and break-even math. For **3 or more candidate products**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 inline.
+- **Code and CLI**: read `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md` before asking questions. Use Python or shell for exact TCO, APR, NPV, and break-even math. For **3 or more candidate products**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 inline.
 
 ## Plain-language output
 
@@ -31,7 +31,6 @@ The bolded terms, formulas, and table's internal terms in this skill are your wo
 | 50%-deflated $\text{CPU}$ / $\text{CPH}$ | Cost per use / per hour, even if you use it half as much as you expect |
 | $V_{\text{salvage}}$ | Resale value |
 | Break-even $N^*$ | Uses needed before buying beats renting |
-| Non-purchase baseline | Not buying (keep, repair, wait, or rent) |
 | Diderot spiral | Add-ons you'll likely end up buying |
 | Opportunity cost | What else this money could do |
 | 12-month premortem / Action vs. Inaction Regret | If you regret this in a year, here's the likely reason / regret of buying vs. regret of skipping |
@@ -42,11 +41,12 @@ Interview the user in rounds before researching, so the verdict fits their real 
 
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
-3. Find facts yourself (web search, attachments, buyer profile, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
+3. Find facts yourself (web search, attachments, buyer profile, history, memory). Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
 4. Recompute the frontier after each answer. A question that depends on another open question (a budget depends on the currency) belongs to a later round.
-5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
+5. "Yes", "idk", or a skipped question accepts your recommendation. When the user hands you the choice ("you decide", "whatever you think"), adopt your recommendations for every open question, list them as assumptions, and start without another round.
+6. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
-Format every round like so:
+Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line between questions:
 
 ```
 ❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
@@ -62,7 +62,7 @@ Format every round like so:
 
 ## Reference pointers
 
-- **Before Step 3**, read the matching section of [`references/category-playbooks.md`](references/category-playbooks.md): consumer tech and gear (specs, teardowns, repairability, generation pricing, accessories), subscriptions and courses (compounding cost, active hours, cancellation friction), vehicles, real estate, and financed assets (lifecycle cost, APR, depreciation, liquidity stress), B2B and SaaS, health and credence goods, or experiences and time-saving services (cost per hour saved, cancellation and weather risk).
+- **Before Step 3**, read the matching section of [`references/category-playbooks.md`](references/category-playbooks.md): consumer tech and gear, subscriptions and courses, vehicles, real estate, and financed assets, B2B and SaaS, health and credence goods, or experiences and time-saving services.
 - **Before Step 4**, read [`references/cost-math.md`](references/cost-math.md) for the TCO, cost-per-use, break-even, and opportunity-cost formulas.
 - **Before Step 6**, read [`references/report-format.md`](references/report-format.md) for the report sections.
 - **When saving a profile**, read [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
@@ -71,7 +71,7 @@ Format every round like so:
 
 Scale to the commitment's 3-year cash outflow (in US dollars; convert to the user's currency):
 
-- **Everyday** (under \$100, one-time): street price, 50%-deflated cost per use, top failure mode, and a comparison against keeping what the user has or a proven budget pick, in a concise report.
+- **Everyday** (under \$100, one-time): street price, 50%-deflated cost per use, top failure mode, and a comparison against keeping what the user has or a proven budget pick. Skip the full report layout: answer in at most 200 words (verdict, bottom line, cost per use, top risk, next step) with 1 or 2 source links.
 - **Standard** (\$100 to \$2,500, or any subscription): full TCO, resale, deflated cost per use or hour, independent tests and 1-to-3 star failure audit, add-on check, and 12-month premortem.
 - **High stakes** (over \$2,500, financed, vehicles, real estate, B2B): add discounted lifecycle cost, APR and monthly liquidity stress tests, break-even uses against renting, leasing, or building, and explicit opportunity cost against debt payoff or investing.
 
@@ -82,14 +82,13 @@ Run these six steps in order.
 ### Step 1: Load buyer context and interview the user
 
 1. Check the buyer profile, memory, prior turns, and cues (₱, a city, a store; with none, ask without suggesting one) for country and currency, tax region, financial guardrails, owned gear and ecosystem, active subscriptions, and past purchase lessons.
-2. Separate the **fundamental objective** (the job to be done, such as sleeping through street noise) from the **means objective** (the specific product).
-3. Settle the **5 verdict-flipping variables**:
-   - **Fundamental objective**: the problem to solve and why now.
+2. Settle the **5 verdict-flipping variables**:
+   - **Fundamental objective**: the job to be done (such as sleeping through street noise), not the product, and why now.
    - **Current baseline**: what the user owns, uses, or does today, and its exact pain point.
    - **Usage and horizon**: realistic frequency (uses per week or hours per day) and holding period $T$.
    - **Payment and guardrails**: cash vs. credit, financing, or BNPL; budget ceiling; any high-APR debt or emergency-fund limits.
    - **Dealbreakers**: physical size, OS or ecosystem fit, battery platform, safety, offline use, local warranty or repairability.
-4. Run **Interview rounds** on these in everyday words (*"How often will you realistically use it?"*); context-answered variables become quick confirmations.
+3. Run **Interview rounds** on these in everyday words (*"How often will you realistically use it?"*).
 
 **Completion criterion**: The user has confirmed their country and currency and all 5 variables (or opted out, with assumptions stated).
 
@@ -105,7 +104,7 @@ Run these six steps in order.
 Route each claim by type:
 
 1. **Search attributes** (specs, dimensions, ports, license tiers, warranty and return terms): manufacturer documentation, spec sheets, filings, or contract terms.
-2. **Experience attributes** (build, ergonomics, noise, battery life, software stability): independent instrumented testers (RTINGS, Wirecutter, Consumer Reports, Project Farm, Notebookcheck) and 6-to-24-month owner reports.
+2. **Experience attributes** (build, ergonomics, noise, battery life, software stability): independent instrumented testers (see the category playbook) and 6-to-24-month owner reports.
 3. **Credence attributes** (health outcomes, supplement efficacy, safety, security): peer-reviewed human RCTs or primary lab and regulatory certifications (USP, NSF, NIOSH, UL, SOC 2).
 4. **Failure search** (`"<product>" problem OR failure OR "after a year" OR recall OR warranty denied OR teardown`): recurring 1-to-3 star failure clusters and time to failure, silent component downgrades, review hijacking (old reviews on a new model), mandatory cloud accounts, and consumable lock-in.
 
@@ -128,7 +127,7 @@ Using `references/cost-math.md`, scaled to the rigor tier: TCO over $T$ net of r
 
 ### Step 6: Deliver the verdict
 
-Pick one label from the **Verdict table** and write the report in plain language using `references/report-format.md`.
+Pick one label from the **Verdict table**, print it word for word, and write the report in plain language using `references/report-format.md`.
 
 **Completion criterion**: The report gives one verdict, a side-by-side cost table against the best not-buying option, session-verified sources, and exact conditions that would change the verdict, with every internal term replaced by its user-facing label. A last scan finds no foreign amount alone or first, even in prices quoted from news or stores.
 

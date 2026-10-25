@@ -10,8 +10,8 @@ Build or audit any itinerary and deliver one **readiness verdict** with the cond
 
 ## Environment adaptation
 
-- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached bookings or screenshots for traveler context. Search the web to verify entry rules, hours, closures, transit times, and local dining guides. To save preferences, output a copyable snippet following [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
-- **Code and CLI** (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Windsurf): read `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` before asking questions. Use Python or shell for exact door-to-door budgets, true nightly cost, rail-pass break-even, and currency math. For **3 or more cities, candidate bases, or multi-week legs**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 cities inline.
+- **Chat** (Claude Desktop, web): check history, project instructions, memory, and attached bookings or screenshots for traveler context. To save preferences, output a copyable snippet following [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
+- **Code and CLI**: read `.agents/traveler-profile.md` or `~/.agents/traveler-profile.md` before asking questions. Use Python or shell for exact door-to-door budgets, true nightly cost, rail-pass break-even, and currency math. For **3 or more cities, candidate bases, or multi-week legs**, dispatch parallel verification subagents when the harness supports them, briefing each with the user's country and currency; handle 1 or 2 cities inline.
 
 ## Plain-language output
 
@@ -26,7 +26,6 @@ The bolded terms, formulas, and table's internal terms in this skill are your wo
 | Internal term | User-facing label |
 | :--- | :--- |
 | Verdict-flipping variables | The basics of your trip |
-| Logistics and Entry Knockout Gate | Before-you-go checks (passport, visa, permits, health, weather, holidays) |
 | True Location-Adjusted Nightly Cost | Real cost per night (with fees, taxes, and getting around) |
 | Door-to-Door Transit | Door-to-door travel time |
 | Hotel Change Tax | Time lost changing hotels |
@@ -34,7 +33,6 @@ The bolded terms, formulas, and table's internal terms in this skill are your wo
 | Space-Time Prism | Fits between your fixed plans |
 | Single-PNR / Self-Transfer | One booking (the airline rebooks you) / Separate tickets (a missed connection is on you) |
 | MCT | The airport's minimum connection time |
-| IRROPs | Delays and cancellations |
 | Travel Premortem / If/Then Fallback Triggers | What could go wrong / Plan B |
 | 3-Block Rule / native vetting | Eat a few blocks away from the big sights / local review sites |
 | Peak-End Rule / circadian resynchronization | Save the best for unhurried moments / jet-lag recovery |
@@ -45,11 +43,12 @@ Interview the user in rounds before researching, so the plan fits their real tri
 
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
-3. Find facts yourself (web search, bookings, traveler profile, history, memory). Ask only for decisions, preferences, and facts only the user knows; turn already-answered questions into quick confirmations.
+3. Find facts yourself (web search, bookings, traveler profile, history, memory). Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
 4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
-5. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
+5. "Yes", "idk", or a skipped question accepts your recommendation. When the user hands you the choice ("you decide", "whatever you think"), adopt your recommendations for every open question, list them as assumptions, and start without another round.
+6. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
 
-Format every round like so:
+Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line between questions:
 
 ```
 ❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
@@ -84,7 +83,7 @@ Run these six steps in order.
 
 1. Check the traveler profile, memory, prior turns, and cues (₱, a home airport; with none, ask without suggesting one) for passport nationality and validity, home country and currency, home hub, walking ceiling, luggage style, dietary/medical rules, and past trip lessons.
 2. Settle the **5 verdict-flipping variables**:
-   - **Dates and anchors**: exact dates or season, nights on the ground, and inbound/outbound times (they bound Day 1, the final day, weather, and holiday closures).
+   - **Dates and anchors**: exact dates or season, nights on the ground, and inbound/outbound times.
    - **Party, mobility, and luggage**: who is traveling (solo, couple, stroller, seniors), realistic daily walking, carry-on vs. heavy checked bags.
    - **Budget and transit style**: nightly or total ceiling in their home currency, public transit vs. car or private transfers, preferred neighborhood pace.
    - **Peaks and anti-goals**: the top 2 to 3 experiences, and explicit dislikes (crowded checklist museums, pre-9:00 AM starts, 1-night hotel hops).
@@ -95,13 +94,13 @@ Run these six steps in order.
 
 ### Step 2: Clear the entry, health, weather, and calendar gate
 
-Using `references/planning-rules.md` section 1, check passport validity (including the Schengen 10-year issue and 3-month validity rule, and the usual 6-month rule elsewhere), visas and e-authorizations with lead times, driving permits (1949 vs. 1968 IDP), vaccination and medication bans, altitude above 2,500 m, seasonal weather extremes, macro-holidays and strikes, and attractions that sell out 30 to 90+ days ahead.
+Using `references/planning-rules.md` section 1, check passport validity (Schengen 10-year issue and 3-month rule, 6-month rule elsewhere), visas and e-authorizations with lead times, driving permits, vaccination and medication bans, altitude above 2,500 m, weather extremes, holidays and strikes, and attractions that sell out 30 to 90+ days ahead.
 
 **Completion criterion**: Every passport, visa/ETA, IDP, health/medication, altitude, weather, holiday, and advance-ticket item is verified against primary sources and either cleared or flagged as a blocker with exact remediation steps.
 
 ### Step 3: Cluster geography, choose bases, and compute true nightly cost
 
-Using `references/planning-rules.md` section 2: group stops into walkable clusters with unbroken night-to-morning continuity, price every hotel change in lost hours and turn short 1-night hops into day trips, and compare bases on all-in nightly cost including fees, taxes, parking, and getting around.
+Using `references/planning-rules.md` section 2: group stops into walkable clusters, price every hotel change in lost hours and turn short 1-night hops into day trips, and compare bases on all-in nightly cost including fees, taxes, parking, and getting around.
 
 **Completion criterion**: Stops form contiguous clusters, 1-night hops are pruned or justified, and base comparisons show true nightly cost in the user's currency alongside daily commute time.
 
@@ -125,7 +124,7 @@ Using `references/planning-rules.md` section 4: cap each half-day at 1 main plan
    - **Queue or lockout**: a pre-vetted nearby alternative if lines exceed 45 minutes or a lottery is missed.
    - **Low energy or sick day**: dropping any half-day's optional extra leaves all hotel transfers and fixed bookings intact.
    - **Refunds**: free-cancellation dates, fare refundability vs. credit expiry, and insurance or card coverage for non-refundable anchors.
-2. **Verdict and report**: pick one label from the **Verdict table** and write the report in plain language using `references/report-format.md`.
+2. **Verdict and report**: pick one label from the **Verdict table** for the plan as the user gave it (a knockout in it means `Do Not Book As Planned`, even when your revision fixes it), print it word for word, and write the report in plain language using `references/report-format.md`.
 
 **Completion criterion**: The report gives one verdict, verified before-you-go checks, a day-by-day plan by area with door-to-door times and a Plan B per half-day, a booking checklist by lead time, and the exact conditions that would change the verdict, with every internal term replaced by its user-facing label.
 
@@ -138,10 +137,10 @@ Using `references/planning-rules.md` section 4: cap each half-day at 1 main plan
 | **`Cut Stops / Slow Down`** | Too many cities for the nights, more than 35% of waking hours in transit, or back-to-back high-fatigue anchors; prune detours or consolidate bases. |
 | **`Reroute / Change Base`** | The chosen base, hotel, or route loses on true nightly cost, walkability, or connection reliability (a remote budget-lodging trap, a tight unprotected self-transfer). |
 | **`Shift Season / Dates`** | Dates hit monsoon, typhoon, or extreme heat, holiday shutdowns or surges (Golden Week, Lunar New Year, *Ferragosto*), or seasonal closures that block the main goals. |
-| **`Do Not Book As Planned`** | Fails a hard entry or physical knockout: passport fails the Schengen or 6-month rule, too little visa/ETA lead time, unsafe ascent above 2,500 m, or an impossible connection. |
+| **`Do Not Book As Planned`** | Fails a hard entry or physical knockout: passport fails the Schengen or 6-month rule, too little visa/ETA lead time, unsafe ascent above 2,500 m, or an impossible connection. Hold every booking, timed tickets included, until the blocker clears. |
 
 ## Guardrails
 
 1. **Verified facts only**: never invent routes, timetables, hours, or prices from memory. Verify current hours, closure days, entry rules, and transit times in-session, and state the source and date on time-sensitive facts.
-2. **Official portals**: link visas, ETAs (ESTA, UK ETA, ETIAS), rail tickets, and timed entry (Alhambra, Louvre, Ghibli) to the official government or venue site, never resellers.
-3. **No sycophantic pacing**: when a draft is overpacked (*"5 days for Tokyo, Kyoto, Osaka, and Hakone"*), quantify the hotel-change time and transit share of waking hours first, assign `Cut Stops / Slow Down`, and show a consolidated alternative with its trade-offs.
+2. **Official portals**: link visas, e-authorizations, rail tickets, and timed entry to the official government or venue site, never resellers.
+3. **No sycophantic pacing**: when a draft is overpacked, quantify the hotel-change time and transit share of waking hours first, assign `Cut Stops / Slow Down`, and show a consolidated alternative with its trade-offs.

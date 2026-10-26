@@ -23,7 +23,7 @@ Every camera manufacturer encodes a distinct `ColorMatrix1/2`, `ForwardMatrix1/2
 - **Apple ProRAW (`.DNG`)**: keep **Apple ProRAW** selected and lower **Profile Amount to `30%–55%`** (or switch to **Adobe Neutral / Adobe Color**) so Apple's baked `ProfileGainTableMap` Smart HDR tone map does not fight the reference Tone Curve.
 - **Sony (`ARW`) / Canon (`CR3`) / Nikon (`NEF`) / Leica & Ricoh (`DNG`)**: **Adobe Neutral** (low-contrast film/matte references), **Adobe Standard** (balanced natural grades), **Adobe Color** (punchy vibrant references), or **Adobe Monochrome** (B&W), plus the brand pre-offsets in the table above.
 - **Fujifilm (`RAF`)**: the closest **Camera Matching** profile (**Camera Classic Chrome**, **Camera Classic Neg.**, **Camera Nostalgic Neg.**, **Camera Astia**, or **Camera Acros**) when available on RAW, or **Adobe Standard** with matching HSL offsets.
-- **8-bit JPEG / HEIC**: White Balance `Temp` uses the relative **`-100 to +100`** scale; keep global sliders within the anti-banding limits in the table above.
+- **8-bit JPEG / HEIC**: White Balance `Temp` uses the relative **`-100 to +100`** scale; keep global sliders within the anti-banding limits in the table above. Adobe Raw profiles (Adobe Neutral, Standard, Color) are not offered for JPEG/HEIC; start from the Color profile (or Monochrome for black and white) or a creative profile.
 
 ---
 

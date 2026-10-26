@@ -6,16 +6,16 @@ license: MIT
 
 # Fact Check
 
-Verify claims by splitting the target into **atomic claims**, testing each with primary-source and **falsification queries**, and tracing every report back to its **Tier 1 source**.
+Verify claims by splitting the target into **atomic claims**, testing each with primary-source and **counter-evidence queries**, and tracing every report back to its **Tier 1 source**.
 
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, web): verify with web search, URL fetching, and any attached documents or images, inline.
-- **Code and CLI**: combine web search with local inspection (`grep`, file reads, `git log`), shell or Python for quantitative checks, and test runs. For **4 or more claims** or a broad topic, dispatch parallel verification subagents when the harness supports them; handle 1 to 3 inline.
+- **Code and CLI**: combine web search with local inspection, shell or Python for numbers, and test runs. For **4 or more claims**, dispatch parallel verification subagents when supported.
 
 ## Plain-language output
 
-The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, falsification, citogenesis, entailment) are your working vocabulary. Everything the user sees, including interview questions and the report, speaks everyday language a non-specialist understands on first read:
+The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, citogenesis, entailment) are your working vocabulary. Everything the user sees, including questions and the report, is everyday language:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
 - Keep step, tier, and section names from this skill internal: describe the work by what it does (*"checking the original study"*, not *"Step 4: trace to Tier 1"*).
@@ -28,16 +28,14 @@ The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, falsification, 
 | Tier 1 source | Original source (the official document, dataset, study, or recording itself) |
 | Tier 2 source | Trusted secondhand source (a reputable fact-checker, newsroom, or review that cites the original) |
 | Tier 3 / Tier 4 source | Lead only / Unreliable source |
-| Falsification query | Search for counter-evidence |
+| Counter-evidence query | Search for counter-evidence |
 | Citation entailment | The quote that proves it |
 
 ## Interview rounds
 
-Interview the user in rounds before researching, so the check answers the question they actually care about.
-
 1. Ask at least one round on every run. Skip only when the user says "just answer", "no questions", or equivalent; then state your assumptions in one line at the top of the report.
 2. The **frontier** is every open question whose prerequisites are settled. Ask the whole frontier in one round, number each question, give your recommended answer, and word it so "yes" accepts the recommendation. Then stop and wait.
-3. Find facts yourself (web search, the attached document, history, memory). Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
+3. Find facts yourself. Ask only for decisions, preferences, and facts only the user knows. Never ask about anything the user already stated; turn what you only inferred into a quick confirmation.
 4. Recompute the frontier after each answer. A question that depends on another open question belongs to a later round.
 5. "Yes", "idk", or a skipped question accepts your recommendation. When the user hands you the choice ("you decide", "whatever you think"), adopt your recommendations for every open question, list them as assumptions, and start without another round.
 6. When the frontier is empty, summarize the settled answers in 2 to 4 bullets and ask "Ready for me to start?" Begin once the user confirms.
@@ -72,11 +70,13 @@ Identify which input branch applies:
 2. **Document, file, or URL**: extract every checkworthy, falsifiable proposition in the text (skipping pure opinion and boilerplate).
 3. **Prior conversation turn (self-audit)**: treat the target statement as untrusted input and extract every factual claim it made.
 
+In every branch, a claim of taste or ranking ("best", "greatest", "most beautiful") is opinion. Say plainly that it cannot be fact-checked and promise no verdict on it. Offer measurable stand-ins (record sales, chart records, critics' polls) as a question, and check only those.
+
 Rewrite the extracted propositions into a numbered list of **atomic claims**:
 
 - Split compound sentences so each atomic claim tests a single fact (a true clause must never mask a false sibling clause).
-- **Decontextualize** each claim: replace pronouns (`it`, `they`, `this study`), relative dates (`last year`, `recently`), and shorthand with explicit canonical entity names and concrete dates or versions.
-- Preserve causal links (`X caused Y`) and essential qualifiers (`in browsers without WebGPU`, `up to 20%`). Where a sentence is irreducibly ambiguous, list both interpretations explicitly.
+- **Decontextualize** each claim: replace pronouns, relative dates, and shorthand with explicit entity names and concrete dates or versions.
+- Preserve causal links and essential qualifiers (`up to 20%`). Where a sentence is ambiguous, list both interpretations.
 
 **Completion criterion**: Every checkworthy proposition in the target is listed as a numbered, self-contained atomic claim carrying its explicit entity names and temporal anchor.
 
@@ -87,7 +87,7 @@ Run **Interview rounds** on these verdict-shaping questions, showing the numbere
 - **Scope**: which claims to check (all of them, or the ones that matter most to the user).
 - **Meaning**: which interpretation the user means wherever Step 1 found an ambiguous claim.
 - **Time and place frame**: "true as of when, and where" for claims that vary by date, version, or country.
-- **Purpose and depth**: what the user will do with the answer (settle a debate, share a post, publish a piece, make a health or money decision), which sets how deep to dig and how to frame the report.
+- **Purpose and depth**: what the user will do with the answer (settle a debate, publish, make a health or money decision), which sets depth and framing.
 
 **Completion criterion**: The user has confirmed the settled scope, meaning, time frame, and purpose (or explicitly opted out of questions, with assumptions stated), and the atomic claim list reflects their answers.
 
@@ -95,28 +95,28 @@ Run **Interview rounds** on these verdict-shaping questions, showing the numbere
 
 Route each atomic claim to the tool that owns its ground truth:
 
-- **Code or repository claims**: inspect the files, git history, or run the test or command.
+- **Code claims**: inspect the files or git history, or run the test.
 - **Math and statistics**: compute exact figures in Python or shell, or write the arithmetic out step by step.
-- **World, documentation, or literature claims**: run **paired queries** for every claim:
+- **World, documentation, or literature claims**: run both searches below once for each claim:
   1. **Neutral primary-source query**, stripped of presuppositions (`"Bun vs Node.js HTTP throughput methodology"`, not `"Why Bun is 4x faster"`), aimed at official docs, specs, filings, or datasets.
-  2. **Falsification query** for counter-evidence (`"<claim>" errata OR deprecated OR criticism OR limitation OR retraction`).
+  2. **Counter-evidence query** (`"<claim>" errata OR deprecated OR criticism OR retraction`): use words such as myth, wrong, corrected, or retracted; never type the word "falsification" into a search.
   3. **Temporal anchor**: the year, date, or version in queries for time-sensitive facts.
 
-**Completion criterion**: Every atomic claim in scope has been tested by both a primary-source retrieval pass and an explicit falsification pass (or direct local tool execution for code and math).
+**Completion criterion**: Every atomic claim in scope has been tested by both a primary-source search and a counter-evidence search (or direct local tool execution for code and math).
 
 ### Step 4: Read laterally and trace to Tier 1
 
-Defeat **citogenesis** (circular reporting where multiple secondary blogs or news outlets repeat the same unsourced claim):
+Defeat **citogenesis** (many outlets repeating one unsourced claim):
 
-- **Trace to the root node**: five articles citing the same press release, blog post, or unnamed study count as a single unverified thread. Follow hyperlinks, footnotes, DOIs, and named studies backward until you inspect the **Tier 1 primary source** directly.
-- **Read laterally**: when a claim rests on an unfamiliar domain, organization, benchmark author, or study, run an external search about the source itself (`"<source or author>" funding OR reputation OR criticism OR conflict of interest`) rather than reading the page's self-authored "About" section.
-- Grade every source against the **Source hierarchy** below. When a search surfaces Wikipedia or another Tier 3 page, open the reference it footnotes for that fact and cite that; if none opens, cite Britannica or a newsroom of record.
+- **Trace to the root**: five articles citing one press release count as a single unverified thread. Follow links, footnotes, and DOIs back to the **Tier 1 primary source**.
+- **Read laterally**: for an unfamiliar source, search about the source itself (`"<source>" funding OR reputation OR criticism`) rather than reading its own "About" page.
+- Grade every source against the **Source hierarchy** below. When a search surfaces Wikipedia or another Tier 3 page, open the reference it footnotes for that fact and cite that; if none opens, cite Britannica or a newsroom of record. If those fail too, try one more official, university, or newsroom site, or open the likely official page directly; when the answer follows from settled science (boiling point at altitude), compute it and show the arithmetic. If still nothing, keep Tier 3 pages out of Source, label the claim `Unverifiable`, and name the Tier 3 page only in Why as where you looked.
 
 **Completion criterion**: Every atomic claim's evidence chain terminates at a verified **Tier 1** primary source, or explicitly records why Tier 1 is inaccessible and documents independent **Tier 2** corroboration.
 
 ### Step 5: Assign calibrated verdicts
 
-Assign each atomic claim one categorical label from the **Verdict taxonomy** below (`Verified`, `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`), paired with the highest source tier verified (`Tier 1` or `Tier 2`). Never invent confidence percentages.
+Assign each atomic claim one label from the **Verdict taxonomy** below, paired with the highest source tier verified (`Tier 1` or `Tier 2`). Never invent confidence percentages.
 
 **Completion criterion**: Every atomic claim in scope carries one categorical verdict and its verified source tier.
 
@@ -125,16 +125,16 @@ Assign each atomic claim one categorical label from the **Verdict taxonomy** bel
 Render the report inline in plain language, in three sections (write a file only when the user asks):
 
 1. **Bottom Line**:
-   - **Scorecard**: `X of Y claims hold up`, plus how many came out `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable`.
+   - **Scorecard**: `X of Y claims hold up`, plus how many came out `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable` ("X of Y claims hold up; Z could not be checked").
    - **Summary**: 2 to 3 sentences on what holds up, what fails, and the most important context discovered, framed for the purpose the user gave in Step 2.
 2. **Claim by Claim**:
    For each numbered claim:
    - **Claim**: the claim spelled out in full (plus the original quote and its location when checking a text).
-   - **Verdict**: the verdict label word for word, then how strong the backing is in plain words: "checked against the original source" or "based on trusted secondhand reporting; the original was not reachable".
+   - **Verdict**: the verdict label word for word, then how strong the backing is in plain words: "checked against the original source" or "based on trusted secondhand reporting; the original was not reachable". Use one of these two phrases word for word. "Trusted secondhand reporting" means a Tier 2 source only (fact-checker, newsroom of record, systematic review, edited encyclopedia); when only Tier 3 pages back a claim, label it `Unverifiable`.
    - **Why**: a short explanation of what the source shows, including anything the search for counter-evidence turned up.
-   - **Source**: `[Source Title, Author/Org (YYYY-MM-DD or Version)](URL)` followed by **the exact quote that proves it** (or the exact file and line range `[file.ext](file:///path#L10-L20)` for local code).
-3. **Suggested Fixes** (include whenever any claim is `Refuted`, `Mixed / Needs Context`, or `Outdated`):
-   - Provide exact, ready-to-paste replacement text that fixes the error or adds the missing context.
+   - **Source**: `[Source Title, Author/Org (YYYY-MM-DD or Version)](URL)` of the exact page the quote was copied from (a news write-up of a study is linked as such and graded secondhand), followed by **the exact quote that proves it** (or the exact file and line range `[file.ext](file:///path#L10-L20)` for local code).
+3. **Suggested Fixes** (include whenever any claim is not `Verified`):
+   - Provide exact, ready-to-paste replacement text that fixes the error or adds the missing context, using only figures checked in this session.
 
 **Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; no proof link is Wikipedia or another Tier 3 page; every flawed claim has a suggested fix; and the report reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
 
@@ -146,9 +146,9 @@ Render the report inline in plain language, in three sections (write a file only
 
 | Tier | Category | Examples | Evidentiary role |
 | :--- | :--- | :--- | :--- |
-| **Tier 1** | **Primary** | Official specs and docs (RFCs, W3C, vendor docs for their own API), source code and git history, peer-reviewed studies, court transcripts, `10-K`/`8-K` filings, government datasets (BLS, Census, WHO), primary recordings | **Terminal proof** within its domain. |
-| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, newsrooms of record citing named sources, systematic reviews and meta-analyses, authoritative textbooks and edited encyclopedias (Britannica) | **Corroboration**, or fallback when Tier 1 is unreachable (say so explicitly). |
-| **Tier 3** | **Community** | Wikipedia, Stack Overflow, GitHub issues, personal blogs, press releases | **Discovery only** (see Step 4), never the proof. |
+| **Tier 1** | **Primary** | Official specs and docs, source code and git history, peer-reviewed studies, court records, filings, government datasets, primary recordings | **Terminal proof** within its domain. |
+| **Tier 2** | **High-trust secondary** | IFCN-signatory fact-checks, newsrooms of record citing named sources, systematic reviews, edited encyclopedias (Britannica) | **Corroboration**, or fallback when Tier 1 is unreachable (say so explicitly). |
+| **Tier 3** | **Community** | Wikipedia, Stack Overflow, GitHub issues, personal blogs, trivia and explainer sites, pop-science aggregators, commercial reference tables, press releases, any page naming no author or original source | **Discovery only** (see Step 4), never the proof. |
 | **Tier 4** | **Unverified / synthetic** | Content farms, AI summary sites, anonymous posts, scraped mirrors, unsourced marketing | **Disqualified**: a claim found only here is `Unverifiable` or `Refuted`. |
 
 ### Verdict taxonomy
@@ -157,13 +157,15 @@ Render the report inline in plain language, in three sections (write a file only
 | :--- | :--- |
 | **`Verified`** | Directly entailed by Tier 1 (or corroborated Tier 2) evidence with no material omissions. |
 | **`Refuted`** | Directly contradicted by authoritative primary evidence, mathematical calculation, or code/test execution. |
-| **`Mixed / Needs Context`** | Contains a literally true fact or statistic, but omits essential baseline context, cherry-picks an unrepresentative subset, or pairs a true clause with a false implication. |
+| **`Mixed / Needs Context`** | Literally true but omits essential context, cherry-picks, or implies something false. |
 | **`Outdated`** | Was accurate at an earlier date or software version, but is superseded by current primary sources. |
-| **`Disputed`** | Credible Tier 1 or Tier 2 sources actively disagree (e.g., competing peer-reviewed studies or unresolved methodology disputes) with no settled consensus. |
+| **`Disputed`** | Credible Tier 1 or Tier 2 sources actively disagree with no settled consensus. |
 | **`Unverifiable`** | No Tier 1 or Tier 2 evidence exists to confirm or refute the claim after exhaustive search. Separate *absence of evidence* (`Unverifiable`) from *evidence of absence* (`Refuted`). |
+
+If search is unavailable or the user asks you not to search, say so in one plain sentence, label each claim `Unverifiable` unless a page you opened settles it, mark memory-only context as unchecked, and never name tool settings.
 
 ### Citation entailment rules
 
-1. **Session-verified URLs only**: Cite only URLs and file paths retrieved and inspected via tool calls during the current session. Never reconstruct a URL or DOI from memory.
+1. **Session-verified URLs only**: Cite only URLs and file paths retrieved and inspected via tool calls during the current session. Never reconstruct a URL or DOI from memory. A search-result preview is not a retrieved page: open the page or leave it out.
 2. **Mandatory verbatim excerpt**: Pair every citation with the exact quote, figure, or table row from the source that entails or contradicts the claim. A page that merely discusses the same topic without proving the specific claim does not qualify as a supporting citation.
 3. **Explicit provenance**: State the institution/author and publication date (or software version) on every citation so temporal drift is immediately visible.

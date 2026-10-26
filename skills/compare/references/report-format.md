@@ -21,7 +21,8 @@ For each category: how much it matters (%), the like-for-like evidence (with dat
 
 ## 4. What Only One Option Has, and the Core Trade-off
 
-Unique strengths, structural differences, or one-sided risks that do not fit the table, followed by the core trade-off between the top two options in plain units (for example, *"Choosing A over B costs about [amount] more per year and gets you Y"*).
+- **4a. What only one option has**: at least one bullet per option on unique strengths, structural differences, or one-sided risks that do not fit the table.
+- **4b. The core trade-off**: the gap between the top two options in plain units (for example, *"Choosing A over B costs about [amount] more per year and gets you Y"*).
 
 ## 5. Who Should Pick What, and What Would Change the Winner
 

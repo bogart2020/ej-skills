@@ -33,8 +33,9 @@ Specialized verification, transit math, physiological pacing, and anti-tourist-t
    - Check oversized-baggage rules on high-speed rail (such as the **Shinkansen oversized baggage reservation requirement** for bags with total dimensions $160\text{ cm}$ to $250\text{ cm}$ on Tokaido/Sanyo/Kyushu lines, or Eurostar/TGV/Trenitalia rack limits).
 3. **Audit weekly museum closure patterns and timed-entry lotteries**:
    - Cross-check every cultural stop against the city's **Monday vs. Tuesday closure split**:
-     - *Monday closures (examples)*: Musée d'Orsay, Palace of Versailles, Musée de l'Orangerie (Paris); Uffizi Gallery, Galleria dell'Accademia, Vatican Museums [Sundays except last Sunday] (Italy); Reina Sofía [Tuesdays], Thyssen-Bornemisza [Mondays partial] (Madrid); most Tokyo national museums (Ueno).
-     - *Tuesday closures (examples)*: Musée du Louvre, Centre Pompidou, Musée Rodin (Paris); Museo del Prado (open Tue, closed only major holidays, verify hours), Kunsthistorisches Museum (Vienna, seasonal).
+     - *Monday closures (examples)*: Musée d'Orsay, Palace of Versailles, Musée de l'Orangerie (Paris); Musée Rodin (Paris); Uffizi Gallery, Galleria dell'Accademia (Italy); Thyssen-Bornemisza [Mondays partial] (Madrid); Kunsthistorisches Museum (Vienna, Mondays in the off-season); most Tokyo national museums (Ueno).
+     - *Tuesday closures (examples)*: Musée du Louvre, Centre Pompidou (Paris); Reina Sofía (Madrid). The Museo del Prado is open Tuesdays and closes only on major holidays (verify hours).
+     - *Sunday closures (examples)*: Vatican Museums (Rome), except the last Sunday of the month.
    - Separate **30-to-90-day advance booking bottlenecks** into the Booking Action Timeline with exact release timestamps (for example, Ghibli Museum tickets releasing on the 10th of the preceding month at 10:00 JST, Alhambra Nasrid Palaces 60 to 90 days out, Anne Frank House 6 weeks out on Tuesdays at 10:00 CET, Last Supper in Milan quarterly blocks).
 
 ## 3. Road trips, rental vehicles, and island ferries

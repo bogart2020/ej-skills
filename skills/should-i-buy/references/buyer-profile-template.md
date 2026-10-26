@@ -27,8 +27,8 @@ Reference for reading, creating, and updating an optional persistent buyer profi
 ## Financial Guardrails
 - **Default Opportunity-Cost Benchmark**: [e.g., 4.5% HYSA / 7% real index return / 22% APR debt payoff]
 - **Cooling-Off Rules**:
-  - $100 to $500 discretionary: 72-hour wait
-  - Over $500 discretionary: 30-day wait
+  - Everyday purchases (under 100 US dollars' worth in your currency): 72-hour wait
+  - Major spend: 30-day wait
 - **Hard Guardrails**:
   - Cash-only for discretionary wants (no revolving credit or fee-bearing BNPL)
   - Preserve [X]-month emergency fund floor

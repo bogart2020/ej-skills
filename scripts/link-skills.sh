@@ -4,9 +4,10 @@ set -euo pipefail
 # Symlinks every skill in skills/<skill-name>/ into local agent skill directories:
 #   - ~/.claude/skills (Claude Code)
 #   - ~/.agents/skills (Codex and Agent Skills-compatible harnesses)
+#   - ~/.gemini/config/skills (Google Antigravity / Gemini CLI)
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
-DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills")
+DESTS=("$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.gemini/config/skills")
 
 names=()
 srcs=()

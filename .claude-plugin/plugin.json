@@ -34,6 +34,7 @@
     "./skills/fact-check",
     "./skills/lightroom-match",
     "./skills/should-i-buy",
+    "./skills/stress-test",
     "./skills/trip-planner"
   ]
 }

@@ -61,7 +61,7 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Reference pointers
 
-- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for its canonical categories, weights, like-for-like formulas, and tie thresholds: products and services, places, job candidates and providers, athletes and historical figures, technologies, or companies, careers, policies, and creative works.
+- **Before Steps 2 and 3**, read the matching domain section of [`references/entity-playbooks.md`](references/entity-playbooks.md) for its canonical categories, weights, like-for-like formulas, and tie thresholds.
 - **Before Step 7**, read [`references/report-format.md`](references/report-format.md) for the five report sections.
 
 ## Comparison sequence
@@ -71,14 +71,14 @@ Run these seven steps in order.
 ### Step 1: Frame the options, interview the user, and screen dealbreakers
 
 1. **Draft 2 to 5 finalists**: compare all of 2 to 5 named options. With only 1 named (*"Postgres vs. the best alternatives"*), add the top 1 to 2 archetype rivals. With 6 or more, run a fast **Elimination by Aspects** pass down to 3 or 4 finalists, recording why each was cut.
-2. **Interview** on what flips weights or knockouts: the decision and who it serves; the finalist set; dealbreakers (eligibility, budget ceiling, compatibility, a compliance floor); the top 2 to 3 priorities; when prices matter, the user's country and currency (confirm any guess from cues like ₱; with none, ask without suggesting one); and for canonical debates (historical figures, sports eras, general technology or policy), the era or rules, the yardstick (peak vs. career, today vs. then), and what "better" means.
-3. **Screen**: mark options that fail a dealbreaker `Disqualified (Knockout)`; strip asymmetrically dominated decoy tiers and flag unavailable phantom options so they do not distort scoring.
+2. **Interview** on what flips weights or knockouts: the decision and who it serves; the finalist set; dealbreakers (eligibility, budget ceiling, compatibility, a compliance floor); the top 2 to 3 priorities; when prices matter, the user's country and currency (confirm any guess from cues like ₱; with none, ask without suggesting one); and for canonical debates (people, eras, policy), the era or rules, the yardstick (peak vs. career, today vs. then), and what "better" means.
+3. **Screen**: mark options that fail a dealbreaker `Disqualified (Knockout)`; drop decoy tiers and unavailable options.
 
 **Completion criterion**: The user has confirmed 2 to 5 available finalists, their dealbreakers, top priorities, and (when prices matter) their country and currency (or opted out, with default weights stated), and every knocked-out or decoy option is identified.
 
 ### Step 2: Build categories, weights, and tie thresholds
 
-1. Define **4 to 7 MECE categories** covering every dimension that separates the options in real outcomes. **Merge collinear criteria** (rent, taxes, groceries for cities) into one category with sub-metrics so nothing counts twice.
+1. Define **4 to 7 MECE categories** covering every real difference between the options. **Merge collinear criteria** (rent, taxes, groceries for cities) into one category with sub-metrics so nothing counts twice.
 2. Assign **weights $w_j$ summing to 100%**, anchored to the user's priorities or the playbook's canonical weights. When the user lists priorities without ranking them, give them equal shares of 70% and split the other 30% equally across the remaining categories.
 3. Per category, set the **indifference threshold $q_j$** (gap that is noise, a `Tie`), the **strict preference threshold $p_j$** (gap that is a decisive win), and any **veto $v_j$** for catastrophic failure.
 
@@ -119,7 +119,7 @@ Score each category across all options before moving to the next, so an early wi
 
 1. Count the Winner column of the scoreboard to build each option's record (`Decisive`, `Narrow Edge`, ties), and print it as the `Categories won` row.
 2. Compute the weighted score $U(x_i) = \sum_j w_j s_{ij}$ out of 10.
-3. Check for any veto. When the weighted winner took fewer categories than the runner-up, note why for the report: category count never overrides weighted score (two decisive 35% wins beat three narrow 10% wins).
+3. Check for any veto. When the weighted winner took fewer categories than the runner-up, note why for the report: category count never overrides weighted score.
 4. Assign exactly one row of the **Overall verdict table**. The report prints that row's **Show the user** text once and never mixes in another row's wording.
 
 **Completion criterion**: Every option has a win-loss-tie record and a weighted score, vetoes are identified, any category-count vs. score gap is reconciled, one overall verdict is assigned, and the printed record matches the scoreboard's Winner column exactly.
@@ -128,15 +128,11 @@ Score each category across all options before moving to the next, so an early wi
 
 Write the five sections in `references/report-format.md`.
 
-**Completion criterion**: All five sections are present (section 4 with both parts), the verdict line is one overall verdict label with nothing added and a gap that matches that row's rule, any gap between categories won and overall score is explained, every category and the overall matchup has a result, sources are session-verified, the conditions that would change the winner are exact, and every internal term is replaced by its user-facing label. A last scan finds no foreign amount alone or first, even in prices quoted from news or stores.
+**Completion criterion**: All five sections are present (section 4 with both parts), the verdict line is one overall verdict label with nothing added and a gap that matches that row's rule, any gap between categories won and overall score is explained, sources are session-verified, the conditions that would change the winner are exact, and every internal term is replaced by its user-facing label. A last scan finds no foreign amount alone or first, even in prices quoted from news or stores.
 
 ## Verdict tables
 
-| Category verdict | Show the user | When |
-| :--- | :--- | :--- |
-| **`Winner: [Option] (Decisive)`** | `[Option] wins clearly` | See Step 4. |
-| **`Winner: [Option] (Narrow Edge)`** | `[Option] has a slight edge` | See Step 4. |
-| **`Tie`** | `Tie` | See Step 4. |
+Show category calls as `[Option] wins clearly` (Decisive), `[Option] has a slight edge` (Narrow Edge), or `Tie`.
 
 | Overall verdict | Show the user | When |
 | :--- | :--- | :--- |

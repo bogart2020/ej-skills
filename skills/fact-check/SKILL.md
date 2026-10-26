@@ -18,7 +18,7 @@ Verify claims by splitting the target into **atomic claims**, testing each with 
 The bolded terms in this skill (atomic claims, Tier 1 to Tier 4, citogenesis, entailment) are your working vocabulary. Everything the user sees, including questions and the report, is everyday language:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
-- Keep step, tier, and section names from this skill internal: describe the work by what it does (*"checking the original study"*, not *"Step 4: trace to Tier 1"*).
+- Keep step, tier, and section names from this skill internal: describe the work by what it does (*"checking the original study"*).
 - When a technical term is unavoidable (a study type, a filing name), explain it in a short clause the first time it appears.
 
 | Internal term | User-facing label |
@@ -56,7 +56,7 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Domain playbooks
 
-**Before Step 3**, when a claim falls in one of these domains, read its section of [`references/domain-playbooks.md`](references/domain-playbooks.md): software, APIs, and benchmarks; science, medicine, and papers; economics, finance, and statistics; or quotes, history, and viral media.
+**Before Step 3**, read the matching domain section of [`references/domain-playbooks.md`](references/domain-playbooks.md).
 
 ## Verification sequence
 
@@ -67,7 +67,7 @@ Run these six steps in order.
 Identify which input branch applies:
 
 1. **Topic or question**: surface the core factual propositions and common misconceptions circulating on the topic.
-2. **Document, file, or URL**: extract every checkworthy, falsifiable proposition in the text (skipping pure opinion and boilerplate).
+2. **Document, file, or URL**: extract every checkworthy, falsifiable proposition in the text.
 3. **Prior conversation turn (self-audit)**: treat the target statement as untrusted input and extract every factual claim it made.
 
 In every branch, a claim of taste or ranking ("best", "greatest", "most beautiful") is opinion. Say plainly that it cannot be fact-checked and promise no verdict on it. Offer measurable stand-ins (record sales, chart records, critics' polls) as a question, and check only those.
@@ -84,7 +84,7 @@ Rewrite the extracted propositions into a numbered list of **atomic claims**:
 
 Run **Interview rounds** on these verdict-shaping questions, showing the numbered claim list from Step 1 in plain wording so the user can react to it:
 
-- **Scope**: which claims to check (all of them, or the ones that matter most to the user).
+- **Scope**: which claims to check.
 - **Meaning**: which interpretation the user means wherever Step 1 found an ambiguous claim.
 - **Time and place frame**: "true as of when, and where" for claims that vary by date, version, or country.
 - **Purpose and depth**: what the user will do with the answer (settle a debate, publish, make a health or money decision), which sets depth and framing.
@@ -98,7 +98,7 @@ Route each atomic claim to the tool that owns its ground truth:
 - **Code claims**: inspect the files or git history, or run the test.
 - **Math and statistics**: compute exact figures in Python or shell, or write the arithmetic out step by step.
 - **World, documentation, or literature claims**: run both searches below once for each claim:
-  1. **Neutral primary-source query**, stripped of presuppositions (`"Bun vs Node.js HTTP throughput methodology"`, not `"Why Bun is 4x faster"`), aimed at official docs, specs, filings, or datasets.
+  1. **Neutral primary-source query**, stripped of presuppositions, aimed at official docs, specs, filings, or datasets.
   2. **Counter-evidence query** (`"<claim>" errata OR deprecated OR criticism OR retraction`): use words such as myth, wrong, corrected, or retracted; never type the word "falsification" into a search.
   3. **Temporal anchor**: the year, date, or version in queries for time-sensitive facts.
 
@@ -125,7 +125,7 @@ Assign each atomic claim one label from the **Verdict taxonomy** below, paired w
 Render the report inline in plain language, in three sections (write a file only when the user asks):
 
 1. **Bottom Line**:
-   - **Scorecard**: `X of Y claims hold up`, plus how many came out `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, or `Unverifiable` ("X of Y claims hold up; Z could not be checked").
+   - **Scorecard**: `X of Y claims hold up`, the count for each other verdict, and "Z could not be checked" for any `Unverifiable`.
    - **Summary**: 2 to 3 sentences on what holds up, what fails, and the most important context discovered, framed for the purpose the user gave in Step 2.
 2. **Claim by Claim**:
    For each numbered claim:
@@ -136,7 +136,7 @@ Render the report inline in plain language, in three sections (write a file only
 3. **Suggested Fixes** (include whenever any claim is not `Verified`):
    - Provide exact, ready-to-paste replacement text that fixes the error or adds the missing context, using only figures checked in this session.
 
-**Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; no proof link is Wikipedia or another Tier 3 page; every flawed claim has a suggested fix; and the report reads cleanly to a non-specialist with every internal term from **Plain-language output** replaced by its user-facing label.
+**Completion criterion**: Every claim in scope appears in Claim by Claim with a session-verified URL, date/version, plain-language source strength, and verbatim excerpt; no proof link is Wikipedia or another Tier 3 page; every flawed claim has a suggested fix; and every internal term is replaced by its user-facing label.
 
 ---
 

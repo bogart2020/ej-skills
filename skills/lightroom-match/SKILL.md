@@ -60,15 +60,15 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Reference pointers
 
-- **Before Step 2**, read [`references/camera-raw-and-style-playbooks.md`](references/camera-raw-and-style-playbooks.md) for Photo 1's camera baseline and pre-offsets, the starting Profile list, percentile formulas, look archetypes, and the Free-tier workaround table.
-- **Before Steps 4 to 6 and in Pass 2 mode**, read [`references/recipe-output-format.md`](references/recipe-output-format.md) for every panel's fields and value ranges, the report layout, and the 4x4 Tone Curve template.
+- **Before Step 2**, read [`references/camera-raw-and-style-playbooks.md`](references/camera-raw-and-style-playbooks.md) for camera baselines and pre-offsets, starting Profiles, look archetypes, and Free-tier workarounds.
+- **Before Steps 4 to 6 and in Pass 2 mode**, read [`references/recipe-output-format.md`](references/recipe-output-format.md) for panel fields and ranges, the report layout, and the Tone Curve template.
 - **When saving a profile** in Step 6, read [`references/photo-profile-template.md`](references/photo-profile-template.md).
 
 ## Modes
 
 - **No photos and no named look**: ask which they want: copy a photo's look, turn one photo into a preset, or a named film look.
 - **Full two-photo replication** (Photo 1 + Photo 2): run all 6 steps and deliver the full recipe plus the Pass 2 prompt.
-- **Pass 2 screenshot calibration** (user sends their edited Photo 1): compare it (and any visible histogram) against Photo 2, isolate the remaining 1% to 10% gap in exposure, white balance, skin-tone orange luminance, shadow tint, or black-point fade, and output a **Pass 2 Fine-Tuning Delta Table** (`Slider | Current Value -> New Value | Why`). If the first message says Photo 1 is already edited, use this table when its current values are known (screenshot or stated); otherwise build a full recipe from `Reset`.
+- **Pass 2 screenshot calibration** (user sends their edited Photo 1): compare it (and any visible histogram) against Photo 2, isolate the remaining 1% to 10% gap, and output a **Pass 2 Fine-Tuning Delta Table** (`Slider | Current Value -> New Value | Why`). If the first message says Photo 1 is already edited, use this table when its current values are known (screenshot or stated); otherwise build a full recipe from `Reset`.
 - **Single-reference reverse-engineering** (only Photo 2): ask which camera and file format the preset is for, decompose Photo 2's edit, and build a reusable preset for that camera.
 - **Named look, no photo** (a film stock or style such as Portra or teal and orange): use the playbook's matching look archetype as Photo 2, settle only camera, file format, and tier, and label the result a starting preset, with no verdict label or fidelity percentage.
 
@@ -104,7 +104,7 @@ Run these six steps in order.
    - **Midtones & Skin** (`30%–70%`): exposure and skin luminance (`55%–68%` natural radiant, `42%–54%` moody low-key).
    - **Highlights** (`70%–90%`): sky and bright background.
    - **White Point** (`90%–100%`): crisp full whites (`98%–100%`) or creamy film highlights pulled to `86%–95%`.
-2. **Color**: for each Color Mix band (`Red`, `Orange`, `Yellow`, `Green`, `Aqua`, `Blue`, `Purple`, `Magenta`), the hue shift, saturation, and luminance. Judge Temp, Tint, and grading casts only from neutral objects (white, grey, black), never from sky or foliage, which Color Mix handles. If neutral objects match in both photos, keep Temp and Tint at As Shot and put the cast in Color Grading, setting each wheel's hue from that zone's measured cast (a warm highlight shift means a Highlights hue of 30° to 60°).
+2. **Color**: for each of the 8 Color Mix bands, the hue shift, saturation, and luminance. Judge Temp, Tint, and grading casts only from neutral objects (white, grey, black), never from sky or foliage, which Color Mix handles. If neutral objects match in both photos, keep Temp and Tint at As Shot and put the cast in Color Grading, setting each wheel's hue from that zone's measured cast (a warm highlight shift means a Highlights hue of 30° to 60°).
 
 **Completion criterion**: All 5 zones, all 8 bands, and the shadow/midtone/highlight casts are stated as explicit deltas from Photo 1's current state to Photo 2's target.
 
@@ -112,7 +112,7 @@ Run these six steps in order.
 
 Translate the tonal deltas into exact **Light** sliders and **Tone Curves** using the fields in `references/recipe-output-format.md` section 1. Set `Blacks` and `Whites` to the pre-curve range so they work with the curve's black and white points instead of canceling them; with a lifted curve black point, keep Blacks between -10 and 0.
 
-**Completion criterion**: Every Light slider has an exact value, and the Tone Curve has a 4x4 grid plot plus a coordinate table (`(In %, Out %)` and `(0–255, 0–255)`) with thumb-drag landmarks for Master RGB and every active R, G, B curve.
+**Completion criterion**: Every Light slider has an exact value, and the Tone Curve has a 4x4 grid plot plus a coordinate table with thumb-drag landmarks for Master RGB and every active R, G, B curve.
 
 ### Step 5: Set Color, Color Mix, Color Grading, Effects, Detail, and Masks
 
@@ -140,5 +140,5 @@ Pick one label from the **Verdict table**, print it word for word, and render th
 ## Guardrails
 
 1. **No blind presets**: never output a preset before confirming (or, after an opt-out, stating as assumptions) which photo is which, Photo 1's camera and file format, and the Lightroom Mobile tier.
-2. **Delta math, not static presets**: compute every slider as the bridge from Photo 1 to Photo 2. A warm golden-hour reference needs `+1,200K` Temp from cool shade but `-400K` from warm tungsten.
+2. **Delta math, not static presets**: compute every slider as the bridge from Photo 1 to Photo 2.
 3. **Exact numbers only**: every panel states values (`Exposure -0.35 EV`, `Orange Hue -4, Sat -10, Lum +12`), plus a one-line note on what a screenshot check would tweak.

@@ -62,16 +62,16 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Reference pointers
 
-- **Before each of Steps 2 to 5**, read the matching section of [`references/planning-rules.md`](references/planning-rules.md) for exact entry rules, cost and transit formulas, buffers, and pacing thresholds.
-- **When the trip matches a domain below**, read that section of [`references/destination-and-mode-playbooks.md`](references/destination-and-mode-playbooks.md): native food and activity vetting, urban and multi-city rail, road trips and ferries, high altitude and extreme climates, family and accessible travel, or complex air routing and self-transfers.
+- **Before each of Steps 2 to 5**, read the matching section of [`references/planning-rules.md`](references/planning-rules.md) for exact rules and formulas.
+- **When the trip matches a domain** (food vetting, rail, road trips, altitude, family, air routing), read that section of [`references/destination-and-mode-playbooks.md`](references/destination-and-mode-playbooks.md).
 - **Before Step 6**, read [`references/report-format.md`](references/report-format.md) for the report sections.
 - **When saving a profile**, read [`references/traveler-profile-template.md`](references/traveler-profile-template.md).
 
 ## Proportional rigor
 
-- **Short hop** (1 to 3 nights, one domestic or regional base, no visa or jet lag): verify weekday hours and holidays, cluster by walkable neighborhood, apply the half-day cap, and vet dining locally in a concise plan.
+- **Short hop** (1 to 3 nights, one domestic or regional base, no visa or jet lag): verify weekday hours and holidays, cluster by walkable neighborhood, apply the half-day cap, and vet dining locally.
 - **Standard** (4 to 10 nights, 1 to 3 bases, or international short/medium haul): run all 6 steps.
-- **Complex expedition** (10+ nights, multi-country, 5+ time zones, separate-ticket connections, altitude above 2,500 m, or multi-generational/accessibility needs): add jet-lag scheduling, altitude profiles, connection-failure planning, and a 90/60/30/7-day booking timeline.
+- **Complex expedition** (10+ nights, multi-country, 5+ time zones, separate-ticket connections, altitude above 2,500 m, or accessibility needs): add jet-lag scheduling, altitude profiles, connection-failure planning, and a 90/60/30/7-day booking timeline.
 
 ## Planning and audit sequence
 
@@ -94,7 +94,7 @@ Run these six steps in order.
 
 Using `references/planning-rules.md` section 1, check passport validity, visas and e-authorizations with lead times, driving permits, medication bans, altitude, weather extremes, holidays and strikes, and attractions that sell out 30 to 90+ days ahead.
 
-**Completion criterion**: Every passport, visa/ETA, IDP, health/medication, altitude, weather, holiday, and advance-ticket item is verified against primary sources and either cleared or flagged as a blocker with exact remediation steps. If the official page does not load, say so, cite the best dated secondary source, and keep the item as a blocker to re-check before booking.
+**Completion criterion**: Every item above is verified against primary sources and either cleared or flagged as a blocker with exact remediation steps. If the official page does not load, say so, cite the best dated secondary source, and keep the item as a blocker to re-check before booking.
 
 ### Step 3: Cluster geography, choose bases, and compute true nightly cost
 
@@ -119,7 +119,7 @@ Using `references/planning-rules.md` section 4: cap each half-day at 1 main plan
 1. **Premortem**: assume 1 to 2 days went badly wrong and attach an If/Then Plan B for each:
    - **Weather**: indoor or shaded swaps in the same cluster.
    - **Transit or strike**: backup mode, last viable return of the evening, luggage forwarding.
-   - **Queue or lockout**: a pre-vetted nearby alternative if lines exceed 45 minutes or a lottery is missed.
+   - **Queue or lockout**: a pre-vetted nearby alternative.
    - **Low energy**: dropping any optional extra leaves transfers and fixed bookings intact.
    - **Refunds**: free-cancellation dates and coverage for non-refundable anchors.
 2. **Verdict and report**: pick one label from the **Verdict table** for the plan as the user gave it (a knockout in it means `Do Not Book As Planned`, even when your revision fixes it), print it word for word, and write the report in plain language using `references/report-format.md`. "The plan as the user gave it" is the user's draft or, with none, your plan before revisions. After a hard blocker, still write every section for the plan as it would run once the blocker clears, labeling unchecked hours and prices as not checked.
@@ -133,9 +133,9 @@ Using `references/planning-rules.md` section 4: cap each half-day at 1 main plan
 | **`Ready to Book`** | Clears every entry, altitude, weather, and calendar check; respects the half-day cap and fixed-plan windows; uses realistic door-to-door times and buffers; no unprotected single point of failure. Every before-you-go row is cleared from a source checked this session; any row marked not checked caps the verdict at `Viable With Adjustments`. |
 | **`Viable With Adjustments`** | Sound destination, dates, and bases, with 1 to 3 pacing, closure-day, ordering, or buffer flaws fixed in the revised plan. When the user only asks which base or hotel to pick, grade the recommended base: `Ready to Book` when every check clears, this label only for a named flaw. |
 | **`Cut Stops / Slow Down`** | More stops than nights minus 1, 2 or more 1-night hotel stays in a row, more than 35% of waking hours in transit, or back-to-back high-fatigue anchors; prune detours or consolidate bases. |
-| **`Reroute / Change Base`** | The chosen base, hotel, or route loses on true nightly cost, walkability, or connection reliability (a remote budget-lodging trap, a tight unprotected self-transfer). |
+| **`Reroute / Change Base`** | The chosen base, hotel, or route loses on true nightly cost, walkability, or connection reliability. |
 | **`Shift Season / Dates`** | Dates hit monsoon, typhoon, or extreme heat, holiday shutdowns or surges (Golden Week, *Ferragosto*), or seasonal closures that block the main goals. |
-| **`Do Not Book As Planned`** | Fails a hard entry or physical knockout: passport fails the Schengen or 6-month rule, too little visa/ETA lead time, unsafe ascent above 2,500 m, or an impossible connection. Hold every booking, timed tickets included, until the blocker clears. |
+| **`Do Not Book As Planned`** | Fails a hard entry or physical knockout (passport validity, visa lead time, unsafe ascent, an impossible connection). Hold every booking, timed tickets included, until the blocker clears. |
 
 ## Guardrails
 

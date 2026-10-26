@@ -60,8 +60,8 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Reference pointers
 
-- **Before Step 3**, read the matching section of [`references/category-playbooks.md`](references/category-playbooks.md): consumer tech and gear, subscriptions and courses, vehicles, real estate, and financed assets, B2B and SaaS, health and credence goods, or experiences and time-saving services.
-- **Before Step 4**, read [`references/cost-math.md`](references/cost-math.md) for the TCO, cost-per-use, break-even, and opportunity-cost formulas.
+- **Before Step 3**, read the matching category section of [`references/category-playbooks.md`](references/category-playbooks.md).
+- **Before Step 4**, read [`references/cost-math.md`](references/cost-math.md) for the formulas.
 - **Before Step 6**, read [`references/report-format.md`](references/report-format.md) for the report sections.
 - **When saving a profile**, read [`references/buyer-profile-template.md`](references/buyer-profile-template.md).
 
@@ -81,7 +81,7 @@ Run these six steps in order.
 
 1. Check the buyer profile, memory, prior turns, and cues (₱, a city, a store; with none, ask without suggesting one) for country and currency, guardrails, owned gear, subscriptions, and past purchase lessons.
 2. Settle the **5 verdict-flipping variables**:
-   - **Fundamental objective**: the job to be done (such as sleeping through street noise), not the product, and why now.
+   - **Fundamental objective**: the job to be done, not the product, and why now.
    - **Current baseline**: what the user owns, uses, or does today, and its exact pain point.
    - **Usage and horizon**: realistic frequency (uses per week or hours per day) and holding period $T$.
    - **Payment and guardrails**: cash vs. credit, financing, or BNPL; budget ceiling; any high-APR debt or emergency-fund limits. Keep the payment method the user chose in every section, including any profile offer; if their plan cannot be confirmed, say so and price it as they described next to cash.
@@ -104,13 +104,13 @@ Route each claim by type:
 1. **Search attributes** (specs, warranty and return terms): manufacturer documentation, spec sheets, or contract terms.
 2. **Experience attributes** (build, noise, battery life, stability): independent instrumented testers and 6-to-24-month owner reports.
 3. **Credence attributes** (health, safety, security): peer-reviewed human trials or lab and regulatory certifications (USP, NSF, UL, SOC 2).
-4. **Failure search** (`"<product>" problem OR failure OR "after a year" OR recall OR warranty denied OR teardown`): recurring 1-to-3 star failure clusters and time to failure, silent downgrades, review hijacking, mandatory cloud accounts, and consumable lock-in.
+4. **Failure search** (`"<product>" problem OR failure OR "after a year" OR recall OR warranty denied OR teardown`): recurring 1-to-3 star failure clusters, time to failure, review hijacking, and lock-in.
 
 **Completion criterion**: Every critical claim on surviving options is checked against primary or independent test sources, and the top failure modes and lock-in risks are documented with session-verified links.
 
 ### Step 4: Compute total cost, cost per use, and opportunity cost
 
-Using `references/cost-math.md`, scaled to the rigor tier: TCO over $T$ net of realistic resale, cost per use or per hour at both stated and **50% of stated usage**, break-even uses against any rent or pay-per-use option, cost per net hour saved for time-saving purchases, and the opportunity cost of the same money.
+Using `references/cost-math.md`, scaled to the rigor tier: TCO over $T$ net of realistic resale, cost per use or per hour at both stated and **50% of stated usage**, break-even uses against any rent or pay-per-use option, and the opportunity cost of the same money.
 
 **Completion criterion**: Every metric above appears in the report in the user's currency, including cost per use at stated and half usage and what else this money could do; resale comes from a searched listing or is labeled an estimate.
 
@@ -137,11 +137,11 @@ Pick one label from the **Verdict table**, print it word for word, and write the
 | **`Buy With Conditions / Wait`** | Right fit, but overpriced against price history, a refresh is imminent, or a prerequisite applies (a 30-day cooling-off, selling an item first, a target price of \$X or less). Use only when the user should not buy today at today's street price; ordinary negotiating and loan-shopping tips stay under `Buy`. |
 | **`Buy Alternative Instead`** | A purchase is warranted, but this model loses on TCO, reliability, or value to a competitor, an older or refurbished tier, or a one-time-purchase option. |
 | **`Rent / Borrow / Trial First`** | Projected uses fall below break-even ($N_{\text{projected}} < N^*$), or preference uncertainty makes a cheap rental, borrow, or trial the better first step, or leasing beats buying on the side-by-side total over the holding period. |
-| **`Keep Current / Repair`** | The current setup, or a cheap repair, battery swap, consumable, or workflow change, covers 80%+ of the goal for a fraction of the replacement TCO. |
+| **`Keep Current / Repair`** | The current setup, or a cheap repair or workflow change, covers 80%+ of the goal for a fraction of the replacement TCO. |
 | **`Do Not Buy`** | Fails a dealbreaker, has severe reliability or lock-in defects, relies on high-APR financing or emergency savings for a want, or is worth less than keeping the cash. |
 
 ## Guardrails
 
 1. **Liquidity and APR**: financing a depreciating consumer good on revolving credit, fee-bearing BNPL, or deferred-interest promos means `Do Not Buy` or `Buy With Conditions / Wait`, unless the item is required for livelihood or health and safety.
 2. **Session-verified prices and sources only**: cite only URLs, prices, and test data retrieved in this session (or provided by the user), with source name and date. A search snippet counts only when labeled "from a search summary"; prefer an opened page for prices.
-3. **No sycophancy**: treat enthusiasm (*"I really want X, convince me"*, *"I already decided, just checking"*) as a reason to apply the 50% usage test, add-on audit, and premortem harder, never to validate the impulse.
+3. **No sycophancy**: treat enthusiasm (*"I already decided, just checking"*) as a reason to apply the 50% usage test, add-on audit, and premortem harder, never to validate the impulse.

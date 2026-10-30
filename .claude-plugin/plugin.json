@@ -1,6 +1,6 @@
 {
   "name": "ej-skills",
-  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head multi-criteria comparisons, Lightroom Mobile reference photo replication, financial buying decisions, and stress-tested trip planning across all AI platforms.",
+  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head multi-criteria comparisons, continual session learning and instruction pruning, Lightroom Mobile reference photo replication, financial buying decisions, skill stress-testing, and stress-tested trip planning across all AI platforms.",
   "author": {
     "name": "bogart2020",
     "url": "https://github.com/bogart2020"
@@ -11,9 +11,13 @@
   "keywords": [
     "compare",
     "head-to-head",
+    "compound-learn",
+    "continual-learning",
+    "memory-pruning",
     "fact-check",
     "lightroom-match",
     "should-i-buy",
+    "stress-test",
     "trip-planner",
     "lightroom-mobile",
     "color-grading",
@@ -31,6 +35,7 @@
   ],
   "skills": [
     "./skills/compare",
+    "./skills/compound-learn",
     "./skills/fact-check",
     "./skills/lightroom-match",
     "./skills/should-i-buy",

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Compound Learn"
+  short_description: "Extract session lessons, prune stale memory, and refine rules"

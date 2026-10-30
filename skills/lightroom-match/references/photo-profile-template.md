@@ -23,17 +23,19 @@ Reference for reading, creating, and updating an optional persistent photo and L
 - **Main Camera / Phone**: [e.g., Sony A7 IV / Fujifilm X-T5 / Canon R6 II / iPhone 16 Pro]
 - **Default File Format in LR Mobile**: [e.g., Uncompressed/Compressed RAW (.ARW / .RAF / .CR3) / Apple ProRAW (.DNG) / 8-bit HEIC or JPEG]
 - **Common Lenses & Focal Lengths**: [e.g., 35mm f/1.4 GM, 24-70mm f/2.8, iPhone 24mm 1x main camera]
-- **Sensor Calibration Notes**: [e.g., Sony A7 IV needs +3 to +6 Magenta Tint offset in shade; iPhone ProRAW needs Profile Amount reduced to 40–50% before grading]
+- **Sensor Calibration Notes**: [e.g., Sony A7 IV needs +3 to +6 Magenta Tint offset in shade; iPhone ProRAW needs Profile Amount reduced to 40-50% before grading]
 
 ## Lightroom Mobile Setup
 - **Subscription Tier**: [e.g., Lightroom Mobile Premium (Masking, Point Color, Cloud RAW unlocked) / Lightroom Mobile Free (Global sliders, Tone Curve, HSL Color Mix, Color Grading only)]
 - **Device Screen & True Tone**: [e.g., iPhone OLED with True Tone & Night Shift OFF during editing]
 - **Preferred Base Profile**: [e.g., Adobe Color / Adobe Neutral / Camera Classic Chrome / Apple ProRAW at 45%]
 
-## Style & Skin-Tone Guardrails
-- **Skin-Tone Preference**: [e.g., Natural warm golden skin (Orange Hue -2 to +4, Sat -8 to -4, Lum +5 to +12); avoid overly orange or magenta skin casts]
-- **Grain & Texture Baseline**: [e.g., Subtle 35mm film grain (Grain 12–18, Size 25, Roughness 50) vs. clean zero-grain digital look]
-- **Black Point Preference**: [e.g., Slight matte film fade (RGB Black Point lifted to 4–7%) vs. deep true blacks (0%)]
+## Style, Optical Emulation & Border Guardrails
+- **Target Sensor / Look Emulation**: [e.g., Fujifilm X100VI (40.2MP X-Trans CMOS 5 HR + X-Processor 5) with Classic Chrome Portra Hybrid / Classic Chrome cyan skies and Color Chrome luminance compression]
+- **Sharpness & Halation Preference**: [e.g., "Not too sharp" soft organic bloom (Sharpening 10-15, Masking 75, Clarity -14 to -18, Texture -4 to -8, 18% highlight halation)]
+- **Skin-Tone Preference**: [e.g., Natural warm golden skin (Orange Hue -2 to +4, Sat -8 to +6, Lum +5 to +12); avoid overly orange or magenta skin casts]
+- **Grain & Texture Baseline**: [e.g., 6x6 aperiodic X-Trans film grain (Grain 35-40, Size 45, Roughness 60) vs. subtle 35mm grain (18-28)]
+- **Black Point & Border Preference**: [e.g., Matte film fade (RGB Black Point lifted to 5-7%) with clean white exhibition borders (3.8% min-edge padding)]
 
 ## Saved Reference Look & Preset Log
 | Date | Look / Preset Name | Source Camera & Format | Key Signature (Curve + HSL + Grading) | Final Calibrated Notes (Pass 2 Delta) |

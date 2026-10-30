@@ -11,6 +11,7 @@ Personal [Agent Skills](https://agentskills.io) plugin encoding how I research, 
 Reachable automatically when your prompt matches their trigger conditions, or explicitly via `/skill-name`:
 
 - **[compare](./skills/compare/SKILL.md)**: Compare any two or more options head-to-head across weighted MECE categories (products, places/cities/neighborhoods, job candidates, athletes/historical figures, software/architectures, companies, careers, or policies). Normalizes domain metrics (PPP/RPP real surplus, era-adjusted Z-scores and JAWS, BARS anchors, geometric mean benchmark ratios, and 7-bucket TCO), applies Separate-Evaluation reality checks and PROMETHEE indifference thresholds to call `Winner (Decisive)`, `Winner (Narrow Edge)`, or `Tie` in every category, audits non-alignable differentiators, and reconciles the Category Win-Loss-Tie tally with the Weighted Composite Score ($U$) to deliver a calibrated overall winner and crossover conditions.
+- **[compound-learn](./skills/compound-learn/SKILL.md)**: Extract durable lessons from every session, fine-tune workspace instruction files, prune stale rules or environment caches, and compound project knowledge across a 5-stage competency index (`Stage 1: Baseline Capture` to `Stage 5: Institutional Mastery`). Audits active steering files and `.agents/compound-memory.md`, harvests session deltas across 4 continual-learning channels (user corrections, bug root causes, architecture seams, and reusable workflows), verifies live paths and commands, scores Ebbinghaus memory retention ($R = e^{-\Delta s / S}$), exclusivity ($E$), and composite utility ($U$), consolidates scattered notes into positively framed rules under a core token budget, and delivers a calibrated 6-level verdict (`Compounded & Pruned`, `Fine-Tuned With Consolidations`, `Pruned Stale Drift`, `Promoted To Scoped Reference`, `Baseline Initialized`, `Confirmation Needed On Invariants`).
 - **[fact-check](./skills/fact-check/SKILL.md)**: Deep-research and verify factual accuracy against Tier 1 primary sources. Decomposes topics, drafts, URLs, or prior AI answers into self-contained atomic claims, runs paired primary-source and Popperian falsification queries, traces secondary claims back to root sources to defeat circular reporting (citogenesis), assigns a calibrated 6-level verdict (`Verified`, `Refuted`, `Mixed / Needs Context`, `Outdated`, `Disputed`, `Unverifiable`), and supplies verbatim excerpts plus drop-in corrections.
 - **[lightroom-match](./skills/lightroom-match/SKILL.md)**: Replicate a reference photo's color grade, tone curve, and look onto a source or RAW photo in Adobe Lightroom Mobile at 95% to 100% perceptual fidelity (`95%–100% Exact Lock`, `95%+ Match With Local Masks`, `Screenshot Check Needed for 95%+ Lock`, `85%–94% Close Approximation`, `Lighting or Time-of-Day Mismatch`, `Missing or Unclear Reference/Source`). Relentlessly interviews on the 5 recipe-flipping variables (consulting an optional `.agents/photo-profile.md` or `~/.agents/photo-profile.md`), neutralizes camera RAW sensor baselines (Sony ARW, Canon CR2/CR3, Nikon NEF, Fujifilm RAF X-Trans + Camera Matching, Leica/Ricoh DNG, Apple ProRAW `ProfileGainTableMap` Profile Amount slider, Samsung Expert RAW, and 8-bit JPEG/HEIC safe bounds), decomposes the 5 tonal zones and 8 HSL color bands, renders visual $4\times 4$ ASCII/Unicode Tone Curves alongside `(In %, Out %)` and `(0–255, 0–255)` coordinate tables across RGB, Red, Green, and Blue, maps Color Grading wheels ($0^\circ\text{–}360^\circ$), Effects, Detail/Optics, and Local Masks (plus Free-tier global workarounds), and includes a Pass 2 screenshot fine-tuning loop.
 - **[should-i-buy](./skills/should-i-buy/SKILL.md)**: Evaluate buying and financial decisions across any category to deliver a calibrated 6-level verdict (`Buy`, `Buy With Conditions / Wait`, `Buy Alternative Instead`, `Rent / Borrow / Trial First`, `Keep Current / Repair`, `Do Not Buy`) with explicit reversal conditions. Gathers missing context on the 5 verdict-flipping variables (consulting an optional `.agents/buyer-profile.md` or `~/.agents/buyer-profile.md`), benchmarks against non-purchase baselines, audits independent tests and 1-to-3 star failure modes, computes 7-bucket Total Cost of Ownership (TCO) and 50%-deflated Cost-Per-Use (`CPU`), and runs a Diderot spiral check plus 12-month premortem.
@@ -75,9 +76,11 @@ npx skills@latest add bogart2020/ej-skills
 
 # Or install a single skill:
 npx skills@latest add bogart2020/ej-skills --skill=compare
+npx skills@latest add bogart2020/ej-skills --skill=compound-learn
 npx skills@latest add bogart2020/ej-skills --skill=fact-check
 npx skills@latest add bogart2020/ej-skills --skill=lightroom-match
 npx skills@latest add bogart2020/ej-skills --skill=should-i-buy
+npx skills@latest add bogart2020/ej-skills --skill=stress-test
 npx skills@latest add bogart2020/ej-skills --skill=trip-planner
 ```
 
@@ -109,6 +112,14 @@ ej-skills/
     │   └── references/
     │       ├── entity-playbooks.md
     │       └── report-format.md
+    ├── compound-learn/
+    │   ├── SKILL.md            # Core 6-step continual session learning, pruning & competency sequence
+    │   ├── agents/
+    │   │   └── openai.yaml     # OpenAI Codex UI metadata
+    │   └── references/
+    │       ├── instruction-refinement-playbooks.md
+    │       ├── learning-and-pruning-math.md
+    │       └── memory-ledger-and-report-format.md
     ├── fact-check/
     │   ├── SKILL.md            # Core verification sequence & reference rules
     │   ├── agents/

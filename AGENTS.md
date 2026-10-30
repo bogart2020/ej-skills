@@ -21,7 +21,7 @@ skills/<skill-name>/
 **Users install one skill at a time. Each skill works alone.**
 
 - Never reference, route to, or depend on a sibling skill or its files. Users install a single `.zip` in Claude Desktop or a single skill via `npx skills@latest add bogart2020/ej-skills --skill=<skill-name>`.
-- Never point a skill at repo-only files (`AGENTS.md`, `README.md`, `research/`, `scripts/`) or local machine paths.
+- Never point a skill at repo-only files (`AGENTS.md`, `README.md`, `research/`, `scripts/`, `docs/`, `*-stress-test-report.md`) or local machine paths.
 - Every relative link resolves inside the skill's own folder.
 
 ## 3. Write for Agents, Answer in Plain Language
@@ -58,7 +58,16 @@ skills/<skill-name>/
 - Single-skill route: `bash scripts/package-skills.sh` builds `dist/<skill-name>.zip` for `Customize > Skills > + > Create skill > Upload a skill`.
 - Never commit a `.zip`; `dist/` is git-ignored.
 
-## 6. Keep This File Current
+## 6. Ground and Test Every Skill
+
+**Research before writing, test before shipping.**
+
+- Save primary-source research to `research/YYYY-MM-DD-<slug>-best-practices.md`. `research/` is git-ignored and stays on the author's machine.
+- Save design specs to `docs/superpowers/specs/` and implementation plans to `docs/superpowers/plans/`. Keep local machine paths out of them; the pre-commit hook blocks them.
+- Test with blind runs on a weak model (such as Claude Haiku) told to ignore this file: once without the skill as a baseline, then with it until every scenario passes.
+- Record the scenarios, baseline and final pass rates, and each fix in `<skill-name>-stress-test-report.md` at the repo root.
+
+## 7. Keep This File Current
 
 **Update this file when it would otherwise be wrong. Not otherwise.**
 

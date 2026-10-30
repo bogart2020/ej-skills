@@ -4,11 +4,11 @@ Read at Step 2 of [../SKILL.md](../SKILL.md) when the target makes songs, speech
 
 ### Song generators (Suno, Udio, others)
 
-- **Fields and limits:** separate **Style** and **Lyrics** boxes, plus a title. Suno style box about 1,000 characters on newer versions (about 200 on older ones); lyrics about 5,000. Limits change by version, so show the count and note it.
+- **Fields and limits:** separate **Style** and **Lyrics** boxes, plus a title. Suno style box about 1,000 characters on newer versions (about 200 on older ones); lyrics about 5,000. Limits change by version. When the user has not named a version, use the 1,000-character limit and say in one line that you assumed a newer version.
 - **Format:** Style is comma-separated tags in this order: genre and era, mood, tempo or BPM, key instruments, vocal type and delivery, production feel. Lyrics carry structure tags on their own lines: `[Intro]`, `[Verse 1]`, `[Pre-Chorus]`, `[Chorus]`, `[Bridge]`, `[Outro]`.
 - **Detail slots:** genre and era, tempo, two to four named instruments, vocal (range, texture, delivery), mood arc, song structure, and lyric details taken from the user's own story (names, objects, places, times).
 - **Negatives:** some versions offer an exclude-styles box; otherwise leave unwanted styles out.
-- **Known failure modes:** contradicting tags confuse it; fewer than about 15 lyric lines tends to give a short song; stock lyric images (see `slop-patterns.md`) make it sound generic. Avoid naming real artists; describe the sound.
+- **Known failure modes:** contradicting tags confuse it; fewer than about 15 lyric lines tends to give a short song; stock lyric images (see `slop-patterns.md`) make it sound generic. Avoid naming living artists; describe the sound (genre, era, instruments, vocal texture).
 - **Source:** lead (no official limits page; third-party guides disagree)
 
 ### Voice and speech (ElevenLabs and others)

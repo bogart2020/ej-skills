@@ -1,7 +1,7 @@
 # prompt-writer: Design Spec
 
 **Date:** 2026-10-30
-**Research:** `research/2026-10-30-ai-slop-detection-and-anti-slop-prompting-best-practices.md` (sections 1 to 4, plus Addendum section 5)
+**Research:** `research/2026-10-30-ai-slop-detection-and-anti-slop-prompting-best-practices.md` (sections 1 to 4, plus Addendum section 5). Local only: `research/` is git-ignored, so this file exists only on the author's machine.
 **Status:** Approved in design interview (2026-10-30)
 
 ## Purpose
@@ -17,7 +17,7 @@ Write a prompt for any AI model on any topic, or sharpen a prompt the user alrea
 | D3 | Scope | Public: `.claude-plugin/plugin.json`, root `plugin.json` suggestedPrompts, `README.md` |
 | D4 | Jobs | Main: write a new prompt. Second: improve a prompt the user pastes, for the same model. Cleanup of general essays, emails, or web pages is out of scope |
 | D5 | Coverage | One general method for any model, plus seven profile groups: text and chat; agents and coding; image generation; image editing with references; video; audio; 3D and other generators |
-| D6 | Target model | When the user has not named the model, ask one question: which model will run the prompt ("Not sure" yields a model-neutral prompt) |
+| D6 | Target model | When the user has not named the model, ask one question: which model will run the prompt ("Not sure" yields a model-neutral prompt). Exception (amended 2026-10-30 after stress test S9): when only the tool type is named for a chat, text, or agent prompt ("a coding agent"), skip the question and write a model-neutral prompt. Safety rules are checked before any question |
 | D7 | Unknown or new model | Open its official prompt guide if browsing is available; otherwise use the general method, state the assumption in one line |
 | D8 | Input surface first | Before writing, map the target's fields and limits: separate boxes (system and user, style and lyrics, positive and negative), character caps, settings that live outside the prose (aspect ratio, duration, seed), whether negatives are supported and in what form |
 | D9 | Output | Copy-ready prompt in a code block per field, in the target's native format, then a "Choices I made" list of every detail that replaced a typical default, then any setting to change outside the prompt |

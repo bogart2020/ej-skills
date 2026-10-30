@@ -12,7 +12,7 @@ Task, audience, purpose of the output, voice (with one example sentence), length
 - **Format:** clear sections in XML-style tags (`<context>`, `<instructions>`, `<examples>`, `<input>`). Explain the reason behind each rule, because Claude generalizes from the reason. Treat it as a capable new colleague with no context.
 - **Detail slots:** the shared list above.
 - **Negatives:** say what to do instead of what to avoid ("write in flowing prose paragraphs" in place of "no markdown"). Match the prompt's own style to the output style you want: a prompt with no markdown gets less markdown back.
-- **Known failure modes:** without guidance it converges on generic, typical output, so name the defaults to steer away from. Newer models write dense, metaphor-heavy prose; the line "Please remove all mannered prose." helps. Newer models also format less, so drop old blanket "no bullets" rules and state when lists are useful instead. Opus 5 replies run long; ask for concision directly.
+- **Known failure modes:** without guidance it converges on generic, typical output, so name the defaults to steer away from. Fable 5.1 writes denser prose than earlier models (longer sentences, fewer paragraph breaks); the source suggests the short line "Please remove all mannered prose." or a fuller definition of mannered prose. Newer models also format less, so drop old blanket "no bullets" rules and state when lists are useful instead. Opus 5 replies run long; ask for concision directly.
 - **Source:** verified https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices and https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1
 
 ### GPT (ChatGPT, OpenAI API)

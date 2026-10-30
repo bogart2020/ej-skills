@@ -23,7 +23,7 @@ Then find five things: the **target model**, the **medium** (text, agent, image,
 - User answers "not sure": write a model-neutral prompt in plain sentences, with no tool-specific syntax.
 - Everything else unclear (purpose, mood, style): decide it yourself in Step 3 and show it under "Choices I made". Ask no further questions.
 
-**Done when:** all five are known, or the one model question is sent.
+**Done when:** the target model and medium are known (or the one model question is sent), and purpose and style are either known or left for you to decide in Step 3.
 
 ### Step 2: Map the input surface
 
@@ -52,8 +52,8 @@ Take the profile's **Detail slots** and give each one a value:
 1. **User-fixed details go in word for word.** Copy the user's exact phrase ("85mm", "red coat"), even when you would choose differently. Add your detail before or after the phrase, never inside it: "red coat in heavy wool", not "brick-red wool coat".
 2. **Open slots get a specific choice** a reader could not guess from the topic alone. Swap "a woman in a cafe" for "a woman in her late 50s with cropped grey hair, wiping down a zinc counter at closing time". Name materials, light source and direction, lens, era, texture, small imperfections, and for text the audience, voice, and one concrete example.
 3. **People:** when people appear and the user did not describe them, choose a specific, believable age, ethnicity, build, gender, and setting that fit the brief. Avoid stereotypes, such as tying a job, a skill, or a setting to one group. List the choices so the user can swap them.
-4. **Open creative briefs** (album covers, posters, stories, concept art, songs): in your thinking, sketch five unusual directions that a typical answer would not take. Pick the most specific one that still fits the brief. In the reply, name the other four in one line.
-5. **The user wants the typical look** ("generic stock photo", "standard corporate tone"): give them the conventional version done well. The specificity rule still applies to light, framing, and usage, with no unusual twist.
+4. **Open creative briefs** (album covers, posters, stories, concept art, songs), unless rule 5 applies: in your thinking, sketch five unusual directions that a typical answer would not take. Pick the most specific one that still fits the brief. In the reply, name the other four in one line.
+5. **The user wants the typical look** ("generic stock photo", "standard corporate tone"): give them the conventional version done well. This rule overrides rule 4: sketch no unusual directions and list none. The specificity rule still applies to light, framing, and usage, with no unusual twist.
 6. **Sets** (storyboards, multi-shot video, character sheets, series): write one locked description of each character, place, and style. Paste it word for word into every prompt in the set, and change only the action, camera, or moment.
 7. **Text that must appear in the output** (signs, captions, lyrics, labels): keep it exactly as given, in its own language and script, inside quotation marks.
 8. **Exclusions:** write them the way the profile says. When the model has no negative field, describe what should be there instead ("an empty, quiet street" in place of "no cars").
@@ -62,7 +62,7 @@ Take the profile's **Detail slots** and give each one a value:
 
 ### Step 4: Write the prompt
 
-Write each field in the model's native format from the profile. Write the prompt in English, which most tools follow best, unless the user asks for another language; text that must appear in the output stays exactly as given. Write everything around the prompt blocks in the user's language. Put the most important details first, because some tools shorten or rewrite long prompts. Count the characters of every field that has a limit. When a field is over its limit, cut the least specific words first and keep every user-fixed detail.
+Write each field in the model's native format from the profile. Write the prompt in English, which most tools follow best, unless the user asks for another language; text that must appear in the output stays exactly as given. Write everything around the prompt blocks in the user's language. Put the most important details first, because some tools shorten or rewrite long prompts. Count the characters of every field that has a limit, with a code tool when one is available. Without one, keep the estimate at least 10% under the limit. When a field is over its limit, cut the least specific words first and keep every user-fixed detail.
 
 **Improving a pasted prompt:** keep its model, intent, and every concrete detail. Remove filler quality tags ("masterpiece", "8k", "best quality", "ultra detailed", "trending"), replace vague words with specific ones, and move parts into the right fields.
 
@@ -82,7 +82,7 @@ Read [references/slop-patterns.md](references/slop-patterns.md), then check:
 
 Use this order, and leave out sections that are empty:
 
-1. One fenced code block per field. Put a bold label above each block, with the count when the field has a limit: **Style** (412 / 1000 characters).
+1. One fenced code block per field. Put a bold label above each block, with the count when the field has a limit: **Style** (412 / 1000 characters = 41%).
 2. **Choices I made:** one short bullet per detail you chose in place of the model's default, people details included.
 3. **Other directions:** one line naming the four unused ideas (open creative briefs only).
 4. **Settings outside the prompt:** aspect ratio, duration, voice, or seed to set in the tool.
@@ -112,6 +112,6 @@ The reply is for a non-specialist. Use these labels in place of internal terms:
 | Tail direction | unusual idea |
 | Mode collapse, typicality bias | every answer coming out alike |
 
-- Show limits as labeled arithmetic: `Characters used / Limit = Share of limit`, for example `412 / 1000 = 41%`.
+- Show limits as labeled arithmetic: `Characters used / Limit = Share of limit`, for example `412 / 1000 characters = 41%`.
 - Explain any unavoidable technical term in a short clause the first time it appears, for example "seed (a number that repeats the same result)".
 - Keep the reply short. The prompt blocks are the main content.

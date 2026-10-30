@@ -78,3 +78,14 @@ Fixes:
 7. **Word-for-word details.** The S15 rerun turned "red coat" into "brick-red wool coat". Step 3 now says to add details before or after the user's phrase, never inside it.
 
 Final pass rate: 20 / 20 = 100%
+
+## Minor fixes
+
+8. Step 1's done check no longer pushes the agent to ask about purpose or style.
+9. A typical-look request now overrides the five-directions step: S11 lists no other directions (it listed four before).
+10. One count format everywhere (`412 / 1000 characters = 41%`), counted with a code tool when available, else kept 10% under the limit.
+11. Suno prompts state which version limit was assumed (S7 now says so; it did not before).
+12. The audio tips now say "living artists", matching SKILL.md.
+13. The Claude tips now describe Fable 5.1 prose as "denser", matching the source.
+
+Retest of S1, S2, S7, S11 on fresh Haiku agents: 4 / 4 pass.

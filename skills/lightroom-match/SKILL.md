@@ -1,24 +1,24 @@
 ---
 name: lightroom-match
-description: Replicate a reference photo's color grade, tone curve, and look onto a source or RAW photo in Adobe Lightroom Mobile at 95% to 100% fidelity, cull and grade batches of RAW/DNG photos (with optional exhibition borders and .xmp presets), emulate camera sensors and film recipes (such as Fujifilm X100VI or Ricoh GR Positive Film), reverse-engineer any photo's edit into exact Lightroom Mobile sliders, curves, and masks, or fine-tune an in-progress edit from a screenshot.
+description: Replicate a reference photo's color grade, tone curve, and look onto a source or RAW photo in Adobe Lightroom Mobile at 95% to 100% fidelity, cull and grade batches of RAW/DNG photos (with optional borders and .xmp presets), emulate camera sensors and film recipes (such as Fujifilm X100VI), reverse-engineer any photo's edit into exact Lightroom Mobile sliders, curves, and masks, build a preset from a folder or web page of reference photos, or fine-tune an in-progress edit from a screenshot.
 license: MIT
 ---
 
 # Lightroom Match
 
-Copy the look of **Photo 2 (reference)**, or a target camera or film recipe, onto **Photo 1 (source or RAW batch)** in **Lightroom Mobile** at **95% to 100% fidelity**, with exact numbers for every panel, optional graded exports, and a **Pass 2 screenshot loop**.
+Copy the look of **Photo 2 (reference)**, or a target camera or film recipe, onto **Photo 1 (source or RAW batch)** in **Lightroom Mobile** at **95% to 100% fidelity**, with exact numbers for every panel.
 
 ## Environment adaptation
 
 - **Chat** (Claude Desktop, mobile, web): check photos, history, and memory for camera context. With a code sandbox, measure the photos; otherwise audit them visually. To save a camera baseline, output a snippet following [`references/photo-profile-template.md`](references/photo-profile-template.md).
-- **Code and CLI**: read `.agents/photo-profile.md` or `~/.agents/photo-profile.md` before asking questions. When files are local, use Python (`PIL` / `numpy`) or macOS `sips` for EXIF, luminance percentiles, and per-zone casts before computing deltas. Run `ImageOps.exif_transpose()` on every preview and render.
+- **Code and CLI**: read `.agents/photo-profile.md` or `~/.agents/photo-profile.md` before asking questions. When files are local, use Python (`PIL` / `numpy`) or macOS `sips` for EXIF, luminance percentiles, and per-zone casts before computing deltas.
 
 ## Plain-language output
 
 The bolded terms are your working vocabulary. Everything the user sees is everyday language a phone photo editor understands:
 
 - Print the **user-facing label** from the table below wherever an internal term would appear.
-- Show adjustments as labeled numbers and thumb-drag directions ("drag the bottom-left Black Point straight up about a quarter of the first grid box to `(0%, 6%)`"), never color-science equations.
+- Show adjustments as labeled numbers and drag directions ("drag the bottom-left Black Point up to `(0%, 6%)`"), never color-science equations.
 - Keep step, gate, and pass names internal: describe the work by what it does.
 - When an app term is unavoidable (**Point Curve**, **Color Mix**, **Luminance Mask**), say where to tap it the first time it appears.
 
@@ -42,7 +42,7 @@ The bolded terms are your working vocabulary. Everything the user sees is everyd
 5. "Yes", "idk", or a skipped question accepts your recommendation. When the user says "you decide", adopt your recommendations as listed assumptions and start.
 6. When the frontier is empty, summarize the setup in 2 to 4 bullets and ask "Ready for me to generate your Lightroom Mobile recipe?" Start once the user confirms.
 
-Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line between questions:
+Copy this format exactly, with the ❓ and ➡️ markers and a `---` line between questions:
 
 ```
 ❓ **Q1** - **<short title>**: <question in everyday words, with options when useful>
@@ -58,7 +58,7 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 
 ## Reference pointers
 
-- **Before Steps 1 and 2**, read [`references/camera-raw-and-style-playbooks.md`](references/camera-raw-and-style-playbooks.md) for camera baselines, batch culling (including Google Drive downloads), cross-sensor emulation, look archetypes, and Free-tier workarounds.
+- **Before Steps 1 and 2**, read [`references/camera-raw-and-style-playbooks.md`](references/camera-raw-and-style-playbooks.md) for camera baselines, batch culling (Drive downloads, unreadable DNGs), cross-sensor emulation, look archetypes, and Free-tier workarounds.
 - **Before Steps 4 to 6, in Pass 2 mode, or when exporting**, read [`references/recipe-output-format.md`](references/recipe-output-format.md) for panel fields, the report layout, the Tone Curve template, and the grading, border, and `.xmp` pipeline.
 - **Before Step 6**, read [`references/maestro-critique-and-qa-gate.md`](references/maestro-critique-and-qa-gate.md) for the 3-pillar QA gate (composition, pixel bounds, `.xmp` validation).
 - **When saving a profile** in Step 6, read [`references/photo-profile-template.md`](references/photo-profile-template.md).
@@ -71,7 +71,8 @@ Copy this format exactly, keeping the ❓ and ➡️ markers and the `---` line 
 - **Cross-sensor emulation** (mimic a camera or lens such as the Fujifilm X100VI, or *"not too sharp"*): run all 6 steps with the Step 2 emulation.
 - **Pass 2 screenshot calibration** (user sends their edited Photo 1): compare it (and any histogram) against Photo 2, isolate the remaining 1% to 10% gap, and output a **Pass 2 Fine-Tuning Delta Table** (`Slider | Current Value -> New Value | Why`). Use it only when Photo 1's current values are known; otherwise build a full recipe from `Reset`.
 - **Single-reference reverse-engineering** (only Photo 2): ask which camera and file format the preset is for, then decompose Photo 2's edit into a reusable preset.
-- **Named look, no photo** (such as Classic Chrome Portra Hybrid, Portra 400, or teal and orange): use the playbook's matching archetype as Photo 2, settle only camera, file format, and tier, and label the result a starting preset, with no verdict label or fidelity percentage.
+- **Named look, no photo** (a film stock, a style like teal and orange, or a creator's preset): use the closest playbook archetype as Photo 2; settle only camera, file format, and tier; label the result a starting preset, with no verdict or fidelity percentage. For a creator's preset, say you haven't seen it and ask for 1 to 2 photos edited with it or a page of their work.
+- **Reference-set match** (a folder or web page of photos in the target look, plus Photo 1 files and code): run the loop in [`references/match-engine.md`](references/match-engine.md).
 
 ## Replication sequence
 
@@ -79,7 +80,7 @@ Run these six steps in order.
 
 ### Step 1: Read the camera, cull batches, and settle setup variables
 
-1. **EXIF first**: whenever files are readable, extract `make`, `model`, file format (`.DNG`, `.ARW`, `.CR3`, `.NEF`, `.RAF`, or 8-bit `.JPG`/`.HEIC`), and orientation before proposing any sliders.
+1. **EXIF first**: from readable files, extract `make`, `model`, the true file type (RAW or 8-bit JPEG/HEIC, whatever the extension says), and orientation before proposing any sliders.
 2. **Batch mode**: view every oriented preview and apply the playbook's **Culling Knockout Criteria**.
 3. **Settle the 5 recipe-flipping variables** (from EXIF, profile, or interview):
    - **Photo mapping**: which image is Photo 1 and Photo 2 (or target look), and whether Photo 1 starts from `Reset`.
@@ -140,9 +141,8 @@ Fill every remaining panel in toolbar order using `references/recipe-output-form
 
 ## Guardrails
 
-1. **Camera before sliders**: check EXIF (when readable) or confirm the camera and file format before outputting a recipe.
-2. **Delta math, not static presets**: compute every slider as the bridge from Photo 1's neutralized baseline to the target look.
-3. **Honor softness requests**: for an analog or *"not too sharp"* look, set `Sharpening` `0-15`, `Masking` `70-80`, and negative `Clarity`/`Texture`; never leave default sharpening (`40`) on.
-4. **Exact numbers only**: every panel states values (`Exposure -0.35 EV`), plus a one-line note on what a screenshot check would tweak.
-5. **Starting point, not a fix**: every recipe card and export carries `CREATOR NOTE: NOT A ONE-CLICK PRESET`: the values are a baseline that needs Exposure and White Balance matched to the light.
-6. **No film names on outputs**: never title recipes, cards, or presets with film simulation or stock names ("Classic Neg", "Portra 400") unless the user asks; use descriptive names ("Warm Nostalgic Baseline").
+1. **Delta math, not static presets**: compute every slider as the bridge from Photo 1's neutralized baseline to the target look.
+2. **Honor softness requests**: for an analog or *"not too sharp"* look, set `Sharpening` `0-15`, `Masking` `70-80`, and negative `Clarity`/`Texture`; never leave default sharpening (`40`) on.
+3. **Exact numbers only**: every panel states values (`Exposure -0.35 EV`), plus a one-line note on what a screenshot check would tweak.
+4. **Starting point, not a fix**: every recipe card and export carries `CREATOR NOTE: NOT A ONE-CLICK PRESET`: the values are a baseline that needs Exposure and White Balance matched to the light.
+5. **Descriptive names on outputs**: title recipes, cards, and presets descriptively ("Warm Nostalgic Baseline"), never after a person; film stock names ("Portra 400") only on request.

@@ -10,15 +10,18 @@ Authoring rules for `ej-skills`, a personal skill repo for Claude Desktop, Claud
 skills/<skill-name>/
 ├── SKILL.md              # Required: frontmatter + instructions
 ├── agents/openai.yaml    # Required: Codex UI metadata and invocation policy
-└── references/           # Optional: reference docs reached by pointer
+├── references/           # Optional: reference docs reached by pointer
+└── scripts/              # Optional: helper code, run by path relative to SKILL.md's folder
 ```
+
+- Scripts depend only on the Python standard library, `numpy`, and `pillow` (preinstalled in Claude's code sandbox); treat anything else as optional with a fallback.
 
 ## 2. Standalone Skills
 
 **Users install one skill at a time. Each skill works alone.**
 
 - Never reference or depend on a sibling skill or its files.
-- Never point a skill at repo-only files (`AGENTS.md`, `README.md`, `research/`, `scripts/`, `docs/`, `*-stress-test-report.md`) or local machine paths. Every relative link stays inside the skill's folder.
+- Never point a skill at repo-only files (`AGENTS.md`, `README.md`, `research/`, root `scripts/`, `docs/`, `*-stress-test-report.md`) or local machine paths. Every relative link stays inside the skill's folder.
 
 ## 3. Write for Agents, Answer in Plain Language
 

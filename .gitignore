@@ -4,3 +4,4 @@ node_modules/
 dist/
 research/
 skills/create-skill/
+__pycache__/

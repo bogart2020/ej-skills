@@ -35,6 +35,7 @@ skills/<skill-name>/
 - Give every procedural step a checkable, exhaustive completion criterion.
 - Keep universal steps and core rules in `SKILL.md`; push branch-specific reference into `references/`, with each pointer naming when to read the file. A reference over 100 lines opens with a `## Contents` list.
 - Frame instructions positively and avoid em-dashes in prose.
+- Name looks, styles, and recipes with neutral descriptive labels, never after real people, their handles, sites, or paid presets. Author names belong only in source citations.
 - Every skill keeps a `## Plain-language output` section that tells the agent to answer per ISO 24495-1:2023 (relevant, findable, understandable, usable): map each internal term to a user-facing label, show math as labeled plain arithmetic, and explain any unavoidable technical term in a short clause on first use.
 
 ## 4. Keep Metadata in Sync

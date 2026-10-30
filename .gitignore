@@ -5,3 +5,4 @@ dist/
 research/
 skills/create-skill/
 __pycache__/
+.vscode/

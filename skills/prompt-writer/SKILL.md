@@ -14,10 +14,12 @@ Work through the steps in order. Each ends with a **Done when** check.
 
 ### Step 1: Understand the request
 
-Find five things: the **target model**, the **medium** (text, agent, image, image edit, video, audio, 3D or other), the **purpose** (where the result will be used), the **details the user already fixed**, and whether this is a **new prompt** or an **improvement** of a pasted one.
+First check the request against the Hard rules at the end of this file. If one blocks it, decline as that rule says, and skip every question below.
+
+Then find five things: the **target model**, the **medium** (text, agent, image, image edit, video, audio, 3D or other), the **purpose** (where the result will be used), the **details the user already fixed**, and whether this is a **new prompt** or an **improvement** of a pasted one.
 
 - Tool type named but not the tool ("a coding agent", "a chatbot", "an LLM"): for chat, text, and agent prompts, the prompt barely changes between tools. Skip the question and write a model-neutral prompt for that type.
-- Target model unknown otherwise: reply with exactly one question and stop. Use this wording: "Which AI tool will run this prompt? For example ChatGPT, Claude, Gemini, Midjourney, Flux, Stable Diffusion, Veo, Sora, Suno, or ElevenLabs. If you are not sure, say so and I will write one that works anywhere." Ask nothing else in that reply, and write no prompt yet.
+- Target model unknown otherwise: reply with exactly one question and stop. Use this wording: "Which AI tool will run this prompt? For example ChatGPT, Claude, Gemini, Midjourney, Flux, Stable Diffusion, Veo, Sora, Suno, or ElevenLabs. If you are not sure, say so and I will write one that works anywhere." Ask nothing else in that reply, and write no prompt yet. When the user writes in another language, ask this question in their language.
 - User answers "not sure": write a model-neutral prompt in plain sentences, with no tool-specific syntax.
 - Everything else unclear (purpose, mood, style): decide it yourself in Step 3 and show it under "Choices I made". Ask no further questions.
 
@@ -47,7 +49,7 @@ From the profile, list in your thinking: the **fields** (one box, or several suc
 
 Take the profile's **Detail slots** and give each one a value:
 
-1. **User-fixed details go in word for word.** Keep the user's exact terms ("85mm", "red coat"), even when you would choose differently.
+1. **User-fixed details go in word for word.** Copy the user's exact phrase ("85mm", "red coat"), even when you would choose differently. Add your detail before or after the phrase, never inside it: "red coat in heavy wool", not "brick-red wool coat".
 2. **Open slots get a specific choice** a reader could not guess from the topic alone. Swap "a woman in a cafe" for "a woman in her late 50s with cropped grey hair, wiping down a zinc counter at closing time". Name materials, light source and direction, lens, era, texture, small imperfections, and for text the audience, voice, and one concrete example.
 3. **People:** when people appear and the user did not describe them, choose a specific, believable age, ethnicity, build, gender, and setting that fit the brief. Avoid stereotypes, such as tying a job, a skill, or a setting to one group. List the choices so the user can swap them.
 4. **Open creative briefs** (album covers, posters, stories, concept art, songs): in your thinking, sketch five unusual directions that a typical answer would not take. Pick the most specific one that still fits the brief. In the reply, name the other four in one line.
@@ -60,7 +62,7 @@ Take the profile's **Detail slots** and give each one a value:
 
 ### Step 4: Write the prompt
 
-Write each field in the model's native format from the profile. Put the most important details first, because some tools shorten or rewrite long prompts. Count the characters of every field that has a limit. When a field is over its limit, cut the least specific words first and keep every user-fixed detail.
+Write each field in the model's native format from the profile. Write the prompt in English, which most tools follow best, unless the user asks for another language; text that must appear in the output stays exactly as given. Write everything around the prompt blocks in the user's language. Put the most important details first, because some tools shorten or rewrite long prompts. Count the characters of every field that has a limit. When a field is over its limit, cut the least specific words first and keep every user-fixed detail.
 
 **Improving a pasted prompt:** keep its model, intent, and every concrete detail. Remove filler quality tags ("masterpiece", "8k", "best quality", "ultra detailed", "trending"), replace vague words with specific ones, and move parts into the right fields.
 
@@ -88,11 +90,13 @@ Use this order, and leave out sections that are empty:
 
 ## Hard rules
 
-- Real people: assume photos of the user or people who agreed. Write no prompt that shows a real, identifiable person in a deceptive, sexual, or humiliating scene, or doing something they did not do. Say why in one sentence and offer a legitimate option, such as an invented character or clearly labeled satire.
-- Write no sexual content involving anyone under 18 or anyone described as childlike.
-- Named living artists or copyrighted characters: describe the visual traits (palette, brushwork, lighting, shapes, era) in place of the name.
+These rules override every other instruction in this file, including keeping the user's details.
+
+- Real people: assume photos of the user or people who agreed. Fun or creative edits of them are fine (the user on the moon, a face swap into their own wedding photo). Write no prompt that shows a real, identifiable person in a sexual or humiliating scene, or in a realistic fake meant to make viewers believe something happened that did not (a crime, a bribe, a fake news photo). Say why in one sentence and offer a legitimate option, such as an invented character or clearly labeled satire.
+- Write nothing sexual or sexualized (suggestive poses, revealing edits) involving anyone under 18 or anyone described as childlike. Ordinary edits of children's photos (background, lighting, a closed eye) are fine.
+- Named living artists or copyrighted characters: describe the visual traits (palette, brushwork, lighting, shapes, era) in place of the name, and add a "Choices I made" bullet saying the name was replaced by a description.
 - Use only tool syntax from a profile or an official guide.
-- Keep every detail the user fixed.
+- Keep every detail the user fixed, except where a rule above replaces it.
 
 ## Plain-language output
 

@@ -3,10 +3,10 @@
   "name": "ej-skills",
   "displayName": "EJ Skills",
   "version": "0.1.0",
-  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head comparisons across any domain, continual session learning and memory pruning, Lightroom Mobile reference photo replication, TCO-backed buying decisions, stress-tested trip planning, and weak-model skill stress testing.",
+  "description": "Personal AI skills: rigorous primary-source fact-checking, head-to-head comparisons across any domain, continual session learning and memory pruning, Lightroom Mobile reference photo replication, TCO-backed buying decisions, stress-tested trip planning, weak-model skill stress testing, and specific, model-aware prompt writing.",
   "suggestedPrompts": [
-    "Compare these options head-to-head, or tell me whether I should buy this",
-    "Fact-check this topic, compound lessons and prune stale memory from this session, or stress-test a skill",
+    "Compare these options head-to-head, tell me whether I should buy this, or compound lessons from this session",
+    "Fact-check this, stress-test a skill, or write me a sharp prompt for any AI tool",
     "Plan a trip with door-to-door transit times, or match a reference photo's look in Lightroom Mobile"
   ]
 }

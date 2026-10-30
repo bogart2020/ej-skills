@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prompt Writer"
+  short_description: "Write specific, model-aware prompts for any AI tool or topic"
